@@ -7,8 +7,28 @@
 \begin{document}
 \maketitle
 \newpage
-
+\tableofcontents
 \section{Introduction}
+
+\section{Laboratoire d'accueil}
+
+
+
+\section{Etat de l'art et matériel existant}
+\subsection{Résumé vidéo}
+
+\subsection{Anaglyphe et side-by-side}
+Actuellement, le vidéo 3D par anaglyphe propose deux algorithmes majeurs, un algorithme simple et l'algorithme de Dubois.
+Le premier algorithme consiste à séparer et extraire les canaux RGB d'une image 2D et d'en faire une image 3D. Le principe réside dans le filtrage des couleurs par l'oeil devant lequel se trouve un filtre.
+Chaque oeil ayant un filtre différent, il ne perçoit que les couleurs que le filtre laise passer. Actuellement, le filtre le plus répandu est le filtre rouge/cyan.
+Il suffit donc dans le cas de cet algortihme, d'extraire le canal rouge de l'image et d'en génerer un nouvelle. Ensuite il faut à partir de l'image source créer une nouvelle image à partir du mélange des canaux bleu et vert. On obtient ainsi deux images, une cyan et l'autre rouge. Il faut ensuites les superposer en leur appliquant un décalage.
+
+
+\section{Cahier des charges et architecture}
+\section{Implémentation}
+\section{Phase de test}
+
+\section{Conclusion}
 
 
 
