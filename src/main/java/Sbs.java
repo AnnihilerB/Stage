@@ -5,13 +5,11 @@ import org.openimaj.image.MBFImage;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * Created by Ali on 15/06/2016.
- */
+
 public class Sbs {
 
     //Correspond à l'espacement entre les deux yeux.
-    public static final int ESPACEMENT = 246; //6.5cm -> pixel
+    private static final int ESPACEMENT = 246; //6.5cm -> pixel
 
     public static void main(String args[]) throws IOException {
 
@@ -37,13 +35,13 @@ public class Sbs {
         for (int y = 0; y< source.getHeight(); ++y){
             //Remplissage de l'image gauche.
             for (int x = 0; x < parcoursX; ++x){
-                Float[] pixels = new Float[3];
+                Float[] pixels;
                 pixels = source.getPixel(x,y);
                 gauche.setPixel(x,y,pixels);
             }
             //Remplissage de l'aimge droite. On commence à partir de l'espcaement.
             for (int xD = ESPACEMENT; xD < source.getWidth(); ++xD){
-                Float[] pixels = new Float[3];
+                Float[] pixels;
                 pixels = source.getPixel(xD,y);
                 //Besoin d'un index pour remplir l'imge de destination depuis 0 et non depuis l'espacement.
                 //Ananlyse si on est en fin de parcours d'un ligne de pixel.

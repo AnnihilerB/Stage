@@ -8,7 +8,11 @@ import java.io.IOException;
 
 public class Barcode {
 	
-	public static final int TAILLEBANDE = 5;
+	private static final int TAILLEBANDE = 5;
+
+	public int add(int a ,int b){
+        return a+b;
+    }
 	
 
     public static void main(String args[]) throws IOException {
@@ -19,8 +23,8 @@ public class Barcode {
     	int cptX = 0;
     	int cpt = 0;
     	
-    	MBFImage frame = null;
-    	MBFImage frameResume = null;
+    	MBFImage frame;
+    	MBFImage frameResume;
     	MBFImage imgSortie = new MBFImage((int)(TAILLEBANDE * video.countFrames()) / 10,video.getCurrentFrame().getHeight() );
     	System.out.println(video.getCurrentFrame().getHeight());
     	
