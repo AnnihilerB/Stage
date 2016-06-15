@@ -8,6 +8,7 @@
 \maketitle
 \newpage
 \tableofcontents
+\newpage
 \section{Introduction}
 
 \section{Laboratoire d'accueil}
@@ -16,27 +17,28 @@
 
 \section{Etat de l'art et matériel existant}
 \subsection{Résumé vidéo}
+Le résumé vidéo peut aussi être appelé "Movie Barcode". Il permet de faire ressortir la couleur générale d'un film ou d'une vidéo. En récupérant la bande du milieu de chaque image et en concatenant tout cela pour
+tout le film, on obtient une image très similaire à un code barre représentant l'ambiance générale de la vidéo.
+Il existe un logiciel disponible réalisant ce traitement nommé "Movie Barcode Generator". Le logiciel est écrit en C\# et ses sources sont disponibles à tous. L'auteur du logiciel accepte la vente des
+résultats produit par son logiciel.
 
 \subsection{Anaglyphe et side-by-side}
 Actuellement, le vidéo 3D par anaglyphe propose deux algorithmes majeurs, un algorithme simple et l'algorithme de Dubois.
 Le premier algorithme consiste à séparer et extraire les canaux RGB d'une image 2D et d'en faire une image 3D. Le principe réside dans le filtrage des couleurs par l'oeil devant lequel se trouve un filtre.
 Chaque oeil ayant un filtre différent, il ne perçoit que les couleurs que le filtre laise passer. Actuellement, le filtre le plus répandu est le filtre rouge/cyan.
-Il suffit donc dans le cas de cet algortihme, d'extraire le canal rouge de l'image et d'en génerer un nouvelle. Ensuite il faut à partir de l'image source créer une nouvelle image à partir du mélange des canaux bleu et vert. On obtient ainsi deux images, une cyan et l'autre rouge. Il faut ensuites les superposer en leur appliquant un décalage.
+Il suffit donc dans le cas de cet algortihme, d'extraire le canal rouge de l'image et d'en génerer un nouvelle. Ensuite il faut à partir de l'image source créer une nouvelle image à partir du mélange des canaux bleu et vert.
+On obtient ainsi deux images, une cyan et l'autre rouge. Il faut ensuites les superposer en leur appliquant un décalage.\newline
 
-L'agorithme de Dubois propose quant à lui de modifier les couleurs de l'image avant de lui appliquer l'algorithme vu précedemment. En effet, afin de génerer des couleurs anaglyphe les plus proche possible de l'originale, Dubois tiens compte de la sensibilité spectrale de l'oeil humain, le spectre d'absorption des filtre des lunettes et de la densité du spectre des moniteurs. Dubois a alors pu en déduire une matrice à appliquer sur l'image originale 
-
+La méthode de Dubois propose quant à lui de modifier les couleurs de l'image avant de lui appliquer l'algorithme vu précedemment.
+En effet, afin de génerer des couleurs anaglyphe les plus proche possible de l'originale, Dubois tiens compte de la sensibilité spectrale de l'oeil humain,
+le spectre d'absorption des filtre des lunettes et de la densité du spectre des moniteurs.
+Dubois a alors pu en déduire une matrice à appliquer sur l'image originale permettant
+Le logiciel open-source Gimpel3D remet de faire de l'anaglyphe à partir d'images seulement et ne propose pas la méthode de Dubois. Nombre de logiciels payant existent et propose de réaliser des vidéos 3D
+anaglyphe seuivant l'algortithme basique comme par exemple DVDFab 8 ou  3D Video Converter.
 
 \section{Cahier des charges et architecture}
-\section{Implémentation}
-\section{Phase de test}
 
-\section{Conclusion}
-
-
-
-
-
-Besoins fonctionnels : 
+Besoins fonctionnels :
 
 S'affiche sous forme de fenêtre.
 Choisir fichier(s)
@@ -53,6 +55,16 @@ simple
 léger
 sans bugs.
 Au pire tps = 1/1
-Aide disponible 
+Aide disponible
+\section{Implémentation}
+\section{Phase de test}
+
+\section{Conclusion}
+
+
+
+
+
+
 
 \end{document}
