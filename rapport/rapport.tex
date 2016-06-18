@@ -34,28 +34,36 @@ En effet, afin de génerer des couleurs anaglyphe les plus proche possible de l'
 le spectre d'absorption des filtre des lunettes et de la densité du spectre des moniteurs.
 Dubois a alors pu en déduire une matrice à appliquer sur l'image originale permettant
 Le logiciel open-source Gimpel3D remet de faire de l'anaglyphe à partir d'images seulement et ne propose pas la méthode de Dubois. Nombre de logiciels payant existent et propose de réaliser des vidéos 3D
-anaglyphe seuivant l'algortithme basique comme par exemple DVDFab 8 ou  3D Video Converter.
+anaglyphe seuivant l'algortithme basique comme par exemple DVDFab 9 ou  3D Video Converter.
+
+En ce qui concerne le side-by-side, le principe est de reproduire la disinction entre l'oeil droit et l'oeil gauche à travers une vidéo en comportant deux légérement décalés.
+Il existe à l'heure actuelle beaucoup de logiciels qui proposent de faire ceci mais uniquement à partir de deux vidéos enregistrés préalablement avec le décalage.
+Un seul logiciel exécute ce traitement avec une seule vidéo et il s'agit de DVDFab 9. Il est cependant payant et il n'existe aucun autre logiciel gratuit ou open-source réalisant ce traitement.
 
 \section{Cahier des charges et architecture}
 
-Besoins fonctionnels :
+Besoins fonctionnels :\newline
+\begin{itemize}
+\item S'affiche sous forme de fenêtre.
+\item Choisir fichier(s)
+\item Préciser si la vidéo est décodable par le logiciel ou non. Si non, précisez les formats acceptés.
+\item choix du mode de traitement/algo(anaglyphe choisir entre algo classique et dubois)
+\item Effectuer le traitement à l'aide d'un bouton
+\item Montrer l'avancement du traitement.
+\item Sauvegarder le fichier sous le nom que l'on veut.
+\item ouvrir fichier en fin de traitement ou son emplacement.
+\item prévisualiser la vidéo séléctionnée\newline
+\end{itemize}
 
-S'affiche sous forme de fenêtre.
-Choisir fichier(s)
-Préciser si la vidéo est décodable par le logiciel ou non. Si non, précisez les formats acceptés.
-choix du mode de traitement/algo(anaglyphe choisir entre algo classique et dubois)
-Effectuer le traitement à l'aide d'un bouton
-Montrer l'avancement du traitement.
-Sauvegarder le fichier sous le nom que l'on veut.
-ouvrir fichier en fin de traitement ou son emplacement.
-prévisualiser la vidéo séléctionnée
+Non fonctionnels :\newline
+\begin{itemize}
+\item Le logiciel doit être rapide. Le traitement doit s'effectuer dans le pire des cas dans le temps de la vidéo.
+\item Le logiciel doit être simple à prendre en main et ne doit pas dérouter l'utilisateur.
+\item Fidélité. Le logiciel ne doit pas détériorer la qualité de la vidéo originelle.
+\item
 
-Non fonctionnels :
-simple
-léger
-sans bugs.
-Au pire tps = 1/1
-Aide disponible
+\end{itemize}
+
 \section{Implémentation}
 \section{Phase de test}
 
