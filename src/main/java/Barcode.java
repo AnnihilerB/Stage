@@ -10,10 +10,6 @@ public class Barcode {
 	
 	private static final int TAILLEBANDE = 5;
 
-	public int add(int a ,int b){
-        return a+b;
-    }
-	
 
     public static void main(String args[]) throws IOException {
     	
@@ -28,12 +24,14 @@ public class Barcode {
     	MBFImage imgSortie = new MBFImage((int)(TAILLEBANDE * video.countFrames()) / 10,video.getCurrentFrame().getHeight() );
     	System.out.println(video.getCurrentFrame().getHeight());
     	
-    	System.out.println(video.countFrames());    	
+    	System.out.println(video.countFrames());
+
+        frame = video.getCurrentFrame();
+
     	while (video.hasNextFrame()){
     		
     		if (cpt %13 == 0){
 
-    			frame = video.getCurrentFrame();
     			frameResume = new MBFImage(TAILLEBANDE,frame.getHeight());
 
     			frameResume.drawImage(frame, 0,0);
