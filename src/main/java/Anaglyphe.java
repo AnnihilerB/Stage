@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class Anaglyphe {
 
-    public static final int DECALAGE = 5;
+    private static final int DECALAGE = 5;
 
     public static void main(String args[]) throws IOException {
 
