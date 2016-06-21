@@ -60,8 +60,24 @@ Non fonctionnels :\newline
 \item Le logiciel doit être rapide. Le traitement doit s'effectuer dans le pire des cas dans le temps de la vidéo.
 \item Le logiciel doit être simple à prendre en main et ne doit pas dérouter l'utilisateur.
 \item Fidélité. Le logiciel ne doit pas détériorer la qualité de la vidéo originelle.
-
+pdf\newline
 \end{itemize}
+
+Afin de traiter les flux vidéos et de faire le traitement nécessaire sur les images tirées des vidéos,
+nous utiliserons la bibliothèque OpenImaj car multimédia, et maintenue à jour.
+Cette bibliothèque présente de nombreux avantages. Tout d'abord elle est
+disponible via Maven sous forme de modules. On peut donc récupérer uniquement les élèments de la bibliothèque
+les plus pertinents. Nous aurons donc besoin ici des modules de décodage vidéo et de son, du module de traitemant d'images
+et du module gérant les entrées/sorties. OpenImaj présente également l'avantage d'être un wrapper autour de ffmpeg.
+Cela simplifie donc grandement l'utilisation des traitements à faire d'autant que ffmpeg fait exactement ce que l'on veut ici,
+c'est-à-dire extraire des images d'un flux vidéo. On aura donc l'avantage ici de pouvoir décoder les formats vidéos
+les plus utilisés mais aussi les fomats inhabituels, causant alors très peu de problèmes de compatibilité dans notre
+programme. L'encodage quant à lui est par contre beaucoup plus restreint. Cela ne nous empêchera pas de produire
+le fichier de sortie dans les formats les plus courants c'est-à-dire MP4, AVI ou MKV.
+En ce qui concerne l'image, notre programme donnera en sortie une image au format PNG afin d'éviter la perte de donnée et
+pour pouvoir l'exporter facilement sur le web.
+Le son des vidéos sera quant à lui restitué tel qu'il l'était sur le fichier source.
+
 
 \section{Implémentation}
 \section{Phase de test}
