@@ -23,20 +23,21 @@ Il existe un logiciel disponible réalisant ce traitement nommé "Movie Barcode 
 résultats produit par son logiciel.
 
 \subsection{Anaglyphe et side-by-side}
-Actuellement, le vidéo 3D par anaglyphe propose deux algorithmes majeurs, un algorithme simple et l'algorithme de Dubois.
+Actuellement, le vidéo 3D par anaglyphe propose deux méthodes majeures, un algorithme simple et la méthode de Dubois.
 Le premier algorithme consiste à séparer et extraire les canaux RGB d'une image 2D et d'en faire une image 3D. Le principe réside dans le filtrage des couleurs par l'oeil devant lequel se trouve un filtre.
-Chaque oeil ayant un filtre différent, il ne perçoit que les couleurs que le filtre laise passer. Actuellement, le filtre le plus répandu est le filtre rouge/cyan.
+Chaque oeil ayant un filtre différent, il ne perçoit que les couleurs que le filtre laisse passer. Actuellement, le filtre le plus répandu est le filtre rouge/cyan.
 Il suffit donc dans le cas de cet algortihme, d'extraire le canal rouge de l'image et d'en génerer un nouvelle. Ensuite il faut à partir de l'image source créer une nouvelle image à partir du mélange des canaux bleu et vert.
 On obtient ainsi deux images, une cyan et l'autre rouge. Il faut ensuites les superposer en leur appliquant un décalage.\newline
 
 La méthode de Dubois propose quant à elle de modifier les couleurs de l'image avant de lui appliquer l'algorithme vu précedemment.
 En effet, afin de génerer des couleurs anaglyphe les plus proche possible de l'originale, Dubois tiens compte de la sensibilité spectrale de l'oeil humain,
 le spectre d'absorption des filtre des lunettes et de la densité du spectre des moniteurs.
-Dubois a alors pu en déduire une matrice à appliquer sur l'image originale permettant
-Le logiciel open-source Gimpel3D remet de faire de l'anaglyphe à partir d'images seulement et ne propose pas la méthode de Dubois. Nombre de logiciels payant existent et propose de réaliser des vidéos 3D
+Dubois a alors pu en déduire une matrice à appliquer sur l'image originale permettant un effet 3D amélioré et la quasi
+disparition des images fantômes qui sont des images résultat d'une supersition mal effectuée.
+Le logiciel open-source Gimpel3D permet de faire de l'anaglyphe à partir d'images seulement et ne propose pas la méthode de Dubois. Nombre de logiciels payant existent et propose de réaliser des vidéos 3D
 anaglyphe seuivant l'algortithme basique comme par exemple DVDFab 9 ou  3D Video Converter.
 
-En ce qui concerne le side-by-side, le principe est de reproduire la disinction entre l'oeil droit et l'oeil gauche à travers une vidéo en comportant deux légérement décalés.
+En ce qui concerne le side-by-side, le principe est de reproduire la distinction entre l'oeil droit et l'oeil gauche à travers une vidéo en comportant deux légérement décalés.
 Il existe à l'heure actuelle beaucoup de logiciels qui proposent de faire ceci mais uniquement à partir de deux vidéos enregistrés préalablement avec le décalage.
 Un seul logiciel exécute ce traitement avec une seule vidéo et il s'agit de DVDFab 9. Il est cependant payant et il n'existe aucun autre logiciel gratuit ou open-source réalisant ce traitement.
 
@@ -45,13 +46,14 @@ Un seul logiciel exécute ce traitement avec une seule vidéo et il s'agit de DV
 Besoins fonctionnels :\newline
 \begin{itemize}
 \item S'affiche sous forme de fenêtre.
-\item Choisir fichier(s)
+\item Choisir le fichier à traiter.
 \item Préciser si la vidéo est décodable par le logiciel ou non. Si non, précisez les formats acceptés.
-\item choix du mode de traitement/algo(anaglyphe choisir entre algo classique et dubois)
-\item Effectuer le traitement à l'aide d'un bouton
+\item choix du mode de traitement et de l'algorithme (pour l'anaglyphe choisir entre l'agorithme classique ou la méthode
+de Dubois).
+\item Effectuer le traitement à l'aide d'un bouton.
 \item Montrer l'avancement du traitement.
 \item Sauvegarder le fichier sous le nom que l'on veut.
-\item ouvrir fichier en fin de traitement ou son emplacement.
+\item ouvrir le fichier en fin de traitement ou son emplacement.
 \item prévisualiser la vidéo séléctionnée\newline
 \end{itemize}
 
@@ -60,19 +62,25 @@ Non fonctionnels :\newline
 \item Le logiciel doit être rapide. Le traitement doit s'effectuer dans le pire des cas dans le temps de la vidéo.
 \item Le logiciel doit être simple à prendre en main et ne doit pas dérouter l'utilisateur.
 \item Fidélité. Le logiciel ne doit pas détériorer la qualité de la vidéo originelle.
-pdf\newline
+pdf.
+\item Portable, le logiciel doit contenir toutes les biliothèques nécessaires pour fonctionner sur n'import quelle machine.\newline
 \end{itemize}
 
 Afin de traiter les flux vidéos et de faire le traitement nécessaire sur les images tirées des vidéos,
 nous utiliserons la bibliothèque OpenImaj car multimédia, et maintenue à jour.
 Cette bibliothèque présente de nombreux avantages. Tout d'abord elle est
-disponible via Maven sous forme de modules. On peut donc récupérer uniquement les élèments de la bibliothèque
+disponible via un dépot Maven sous forme de modules. On peut donc récupérer uniquement les élèments de la bibliothèque
 les plus pertinents. Nous aurons donc besoin ici des modules de décodage vidéo et de son, du module de traitemant d'images
-et du module gérant les entrées/sorties. OpenImaj présente également l'avantage d'être un wrapper autour de ffmpeg.
+et du module gérant les entrées/sorties.
+
+OpenImaj présente également l'avantage d'être un wrapper autour de ffmpeg.
 Cela simplifie donc grandement l'utilisation des traitements à faire d'autant que ffmpeg fait exactement ce que l'on veut ici,
-c'est-à-dire extraire des images d'un flux vidéo. On aura donc l'avantage ici de pouvoir décoder les formats vidéos
+c'est-à-dire extraire des images d'un flux vidéo.
+On aura donc l'avantage ici de pouvoir décoder les formats vidéos
 les plus utilisés mais aussi les fomats inhabituels, causant alors très peu de problèmes de compatibilité dans notre
-programme. L'encodage quant à lui est par contre beaucoup plus restreint. Cela ne nous empêchera pas de produire
+programme.
+
+L'encodage quant à lui est par contre beaucoup plus restreint. Cela ne nous empêchera pas de produire
 le fichier de sortie dans les formats les plus courants c'est-à-dire MP4, AVI ou MKV.
 En ce qui concerne l'image, notre programme donnera en sortie une image au format PNG afin d'éviter la perte de donnée et
 pour pouvoir l'exporter facilement sur le web.
