@@ -40,16 +40,13 @@ public class InterfaceSsClass {
         conteneur.setBackground(Color.blue);
 
         //Init panFichiers
-        panFichiers.setPreferredSize(new Dimension((int) (fenetre.getPreferredSize().getWidth() - 10),
+        panFichiers.setPreferredSize(new Dimension((int) (fenetre.getPreferredSize().getWidth()),
                 (int)fenetre.getPreferredSize().getHeight() / 2));
         panFichiers.setBackground(Color.GREEN);
 
-
-
-        JLabel source = new JLabel("Source : ");
-        JButton parcourir = new JButton("Parcourir...");
-
         //Init panTraitement
+        panTraitement.setPreferredSize(new Dimension(534,300));
+        panTraitement.setBackground(Color.orange);
 
         //Init panOptions
         panOptions.setPreferredSize(new Dimension(266,300));
@@ -74,10 +71,15 @@ public class InterfaceSsClass {
         gbc.fill = GridBagConstraints.VERTICAL;
         conteneur.add(panOptions,gbc);
 
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridheight = 1;
+        gbc.weightx = gbc.weighty = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        conteneur.add(panTraitement,gbc);
+
+        fenetre.setResizable(false);
         fenetre.setContentPane(conteneur);
-
-
-
         //Affichage
         fenetre.pack();
         fenetre.setVisible(true);
