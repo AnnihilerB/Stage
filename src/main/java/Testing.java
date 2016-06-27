@@ -1,20 +1,14 @@
-import org.openimaj.video.VideoPlayer;
-import org.openimaj.video.xuggle.XuggleVideo;
+import interfacegraphique.Conteneur;
+import interfacegraphique.Fenetre;
 
-/**
- * Created by ali on 22/06/16.
- */
 public class Testing {
 
     public static void main(String args[]) {
 
-//      FenetrePrincipale f = new FenetrePrincipale();
+        Fenetre f = new Fenetre();
+        Conteneur cont = new Conteneur(f);
+        f.ajouterConteneur(cont);
 
-        XuggleVideo video = new XuggleVideo("src/main/resources/resume2.mp4");
-        VideoPlayer player = new VideoPlayer(video);
-        player.play();
-        System.out.print("FENETRE");
-        player.showFrame();
 
     }
 }
