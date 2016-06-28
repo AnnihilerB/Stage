@@ -1,6 +1,7 @@
 package interfacegraphique;
 
 import javax.swing.*;
+import boutons.chargerImage;
 import java.awt.*;
 
 /**
@@ -17,6 +18,7 @@ public class InterfaceSsClass {
         JPanel panFichiers;
         JPanel panTraitement;
         JPanel panOptions;
+        
 
         GridBagLayout gb = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
@@ -41,20 +43,23 @@ public class InterfaceSsClass {
 
         //Init panFichiers
         panFichiers.setPreferredSize(new Dimension((int) (fenetre.getPreferredSize().getWidth()),
-                (int)fenetre.getPreferredSize().getHeight() / 2));
+                (int)(fenetre.getPreferredSize().getHeight() / 2) + 100));
         panFichiers.setBackground(Color.GREEN);
 
         //Init panTraitement
-        panTraitement.setPreferredSize(new Dimension(534,300));
+        panTraitement.setPreferredSize(new Dimension(534,200));
         panTraitement.setBackground(Color.orange);
 
         //Init panOptions
-        panOptions.setPreferredSize(new Dimension(266,300));
+        panOptions.setPreferredSize(new Dimension(266,200));
         panOptions.setBackground(Color.pink);
 
         //Ajout des éléments
-        //panFichiers.add(source,BorderLayout.WEST);
-        //panFichiers.add(parcourir,BorderLayout.EAST);
+        
+        JButton source = new JButton("Source");
+        
+        panFichiers.add(source,BorderLayout.WEST);
+        source.addActionListener(new chargerImage());
 
         gbc.gridx = 0;
         gbc.gridy = 0;
