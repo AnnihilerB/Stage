@@ -1,17 +1,100 @@
+package traitements;
+
+
 import org.openimaj.image.DisplayUtilities;
 import org.openimaj.image.ImageUtilities;
 import org.openimaj.image.MBFImage;
+import org.openimaj.video.xuggle.XuggleVideo;
 
 import java.io.File;
 import java.io.IOException;
 
+public class Traitement {
 
-public class Sbs {
+    private static final int DECALAGE = 5;
+    private static final int TAILLEBANDE = 5;
 
     //Correspond à l'espacement entre les deux yeux.
     private static final int ESPACEMENT = 246; //6.5cm -> pixel
 
-    public static void main(String args[]) throws IOException {
+    public static void anaglypheDubois(){
+
+    }
+
+    public static void anaglyphe() throws IOException {
+
+        MBFImage source = ImageUtilities.readMBF(new File("src/main/resources/anaglyphe.jpg"));
+
+        int hauteur = source.getHeight();
+        int largeur = source.getWidth();
+
+        MBFImage dest = new MBFImage(largeur,hauteur);
+
+        for (int y = DECALAGE; y <hauteur - DECALAGE; ++y){
+            for (int x = DECALAGE; x < largeur - DECALAGE; ++x){
+
+                Float[] pixels;
+                Float[] pixelsDest;
+
+                //Recupere la couleur rouge
+                pixelsDest = source.getPixel(x - DECALAGE,y);
+
+                pixels = source.getPixel(x + DECALAGE,y);
+
+                pixelsDest[1] = pixels[1];
+                pixelsDest[2] = pixels[2];
+
+                dest.setPixel(x,y,pixelsDest);
+
+            }
+        }
+
+        DisplayUtilities.display(dest);
+
+    }
+
+    public static void barcode() throws IOException {
+        XuggleVideo video = new XuggleVideo("src/main/resources/resume2.mp4");
+
+        File sortie;
+        int cptX = 0;
+        int cpt = 0;
+
+        MBFImage frame;
+        MBFImage frameResume;
+        MBFImage imgSortie = new MBFImage((int)(TAILLEBANDE * video.countFrames()) / 10,video.getCurrentFrame().getHeight() );
+        System.out.println(video.getCurrentFrame().getHeight());
+
+        System.out.println(video.countFrames());
+
+        frame = video.getCurrentFrame();
+
+        while (video.hasNextFrame()){
+
+            if (cpt %13 == 0){
+
+                frameResume = new MBFImage(TAILLEBANDE,frame.getHeight());
+
+                frameResume.drawImage(frame, 0,0);
+
+
+                imgSortie.drawImage(frameResume,cptX,0);
+                cptX += TAILLEBANDE;
+                System.out.println(cpt);
+
+            }
+
+            frame = video.getNextFrame();
+            cpt++;
+
+        }
+        sortie = new File("frame.png");
+        ImageUtilities.write(imgSortie,"png", sortie);
+        video.close();
+    }
+
+    public static void sideBySide() throws IOException{
+
 
         //Récupération de l'image source et création de l'image de destination contenant les deux images gauche et droite.
         MBFImage source = ImageUtilities.readMBF(new File("src/main/resources/sbs.jpg"));
@@ -66,6 +149,8 @@ public class Sbs {
         //DisplayUtilities.displayName(gauche,"gauche");
         //DisplayUtilities.displayName(droite,"droite");
         DisplayUtilities.display(dest);
-
     }
+
+
 }
+
