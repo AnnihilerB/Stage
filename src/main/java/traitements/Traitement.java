@@ -16,7 +16,7 @@ public class Traitement {
     //Correspond à l'espacement entre les deux yeux.
     private static final int ESPACEMENT = 246; //6.5cm -> pixel
 
-    XuggleVideo video;
+    public static XuggleVideo video;
 
     public Traitement(XuggleVideo v){
         video = v;
@@ -63,7 +63,7 @@ public class Traitement {
 
     }
 
-    public void barcode() throws IOException {
+    public static void barcode() throws IOException {
 
         File sortie;
         int cptX = 0;
