@@ -1,7 +1,10 @@
 package interfacegraphique;
 
+import boutons.ChargerVideo;
+import boutons.TraitementBarcode;
+import traitements.Traitement;
+
 import javax.swing.*;
-import boutons.chargerImage;
 import java.awt.*;
 
 /**
@@ -12,6 +15,8 @@ public class InterfaceSsClass {
 
 
     public static void main (String args[]){
+
+        Traitement t;
 
         JFrame fenetre;
         JPanel conteneur;
@@ -55,11 +60,17 @@ public class InterfaceSsClass {
         panOptions.setBackground(Color.pink);
 
         //Ajout des éléments
+
+        ChargerVideo loadvideo = new ChargerVideo();
         
         JButton source = new JButton("Source");
+        JButton traitement = new JButton("Traitement");
         
         panFichiers.add(source,BorderLayout.WEST);
-        source.addActionListener(new chargerImage());
+        panFichiers.add(traitement,BorderLayout.EAST);
+
+        source.addActionListener(loadvideo);
+        traitement.addActionListener(new TraitementBarcode(loadvideo.getTraitement()));
 
         gbc.gridx = 0;
         gbc.gridy = 0;
