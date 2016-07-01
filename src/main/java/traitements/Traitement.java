@@ -12,16 +12,26 @@ import java.io.IOException;
 public class Traitement {
 
     private static final int DECALAGE = 5;
-    private static final int TAILLEBANDE = 5;
-
+    private static final int TAILLEBANDE = 250;
     //Correspond à l'espacement entre les deux yeux.
     private static final int ESPACEMENT = 246; //6.5cm -> pixel
 
-    public static void anaglypheDubois(){
+    XuggleVideo video;
+
+    public Traitement(XuggleVideo v){
+        video = v;
+    }
+
+    public void setVideo(XuggleVideo v){
+        video = v;
 
     }
 
-    public static void anaglyphe() throws IOException {
+    public void anaglypheDubois(){
+
+    }
+
+    public void anaglyphe() throws IOException {
 
         MBFImage source = ImageUtilities.readMBF(new File("src/main/resources/anaglyphe.jpg"));
 
@@ -53,8 +63,7 @@ public class Traitement {
 
     }
 
-    public static void barcode() throws IOException {
-        XuggleVideo video = new XuggleVideo("src/main/resources/resume2.mp4");
+    public void barcode() throws IOException {
 
         File sortie;
         int cptX = 0;
@@ -63,15 +72,12 @@ public class Traitement {
         MBFImage frame;
         MBFImage frameResume;
         MBFImage imgSortie = new MBFImage((int)(TAILLEBANDE * video.countFrames()) / 10,video.getCurrentFrame().getHeight() );
-        System.out.println(video.getCurrentFrame().getHeight());
-
-        System.out.println(video.countFrames());
 
         frame = video.getCurrentFrame();
 
         while (video.hasNextFrame()){
 
-            if (cpt %13 == 0){
+            if (cpt %10 == 0){
 
                 frameResume = new MBFImage(TAILLEBANDE,frame.getHeight());
 
@@ -93,7 +99,7 @@ public class Traitement {
         video.close();
     }
 
-    public static void sideBySide() throws IOException{
+    public void sideBySide() throws IOException{
 
 
         //Récupération de l'image source et création de l'image de destination contenant les deux images gauche et droite.
@@ -151,6 +157,36 @@ public class Traitement {
         DisplayUtilities.display(dest);
     }
 
+    public void getBandeCentrale() throws IOException {
+
+        MBFImage source = ImageUtilities.readMBF(new File("src/main/resources/lena.png"));
+
+
+        int hauteur = source.getHeight();
+        int milieu = source.getWidth() / 2;
+
+        //Parcours des X
+        int cptXDest = 0;
+
+        MBFImage sortie = new MBFImage(TAILLEBANDE,hauteur);
+
+        for (int y = 0; y < hauteur; ++y){
+            for (int x = milieu - (TAILLEBANDE / 2); x < milieu + (TAILLEBANDE / 2); ++x ){
+                sortie.setPixel(cptXDest,y,source.getPixel(x,y));
+                cptXDest ++;
+            }
+            cptXDest = 0;
+        }
+        DisplayUtilities.display(sortie);
+
+
+
+
+
+
+
+
+    }
 
 }
 
