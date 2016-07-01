@@ -70,7 +70,7 @@ public class InterfaceSsClass {
         panFichiers.add(traitement,BorderLayout.EAST);
 
         source.addActionListener(loadvideo);
-        traitement.addActionListener(new TraitementBarcode(loadvideo.getTraitement()));
+        traitement.addActionListener(new TraitementBarcode());
 
         gbc.gridx = 0;
         gbc.gridy = 0;
