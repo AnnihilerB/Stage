@@ -11,15 +11,9 @@ import java.io.IOException;
  */
 public class TraitementBarcode implements ActionListener {
 
-    Traitement t;
-
-    public TraitementBarcode(Traitement tra){
-        t = tra;
-    }
-
     public void actionPerformed(ActionEvent actionEvent) {
         try {
-            t.barcode();
+            Traitement.barcode();
         } catch (IOException e) {
             e.printStackTrace();
         }
