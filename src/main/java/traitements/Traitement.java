@@ -16,15 +16,11 @@ public class Traitement {
     //Correspond à l'espacement entre les deux yeux.
     private static final int ESPACEMENT = 246; //6.5cm -> pixel
 
+    //Donnée membre en static pour qu'elle soit la même pour toutes les méthodes. (Non spécifique à une instance).
     public static XuggleVideo video;
 
     public Traitement(XuggleVideo v){
         video = v;
-    }
-
-    public void setVideo(XuggleVideo v){
-        video = v;
-
     }
 
     public void anaglypheDubois(){
