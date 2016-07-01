@@ -1,13 +1,9 @@
-import interfacegraphique.Conteneur;
-import interfacegraphique.Fenetre;
+import java.io.IOException;
 
 public class Testing {
 
-    public static void main(String args[]) {
+    public static void main(String args[]) throws IOException {
 
-        Fenetre f = new Fenetre();
-        Conteneur cont = new Conteneur(f);
-        f.ajouterConteneur(cont);
 
 
     }
