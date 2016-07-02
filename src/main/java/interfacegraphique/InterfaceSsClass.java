@@ -23,6 +23,10 @@ public class InterfaceSsClass {
         JPanel panFichiers;
         JPanel panTraitement;
         JPanel panOptions;
+        JPanel panVideo;
+
+        JRadioButton barcode = new JRadioButton("Resume Video",true);
+
         
 
         GridBagLayout gb = new GridBagLayout();
@@ -35,8 +39,9 @@ public class InterfaceSsClass {
         fenetre = new JFrame("Video 0.1");
         conteneur = new JPanel(gb);
         panFichiers = new JPanel(bl);
-        panTraitement = new JPanel();
-        panOptions = new JPanel(cl);
+        panTraitement = new JPanel(cl);
+        panOptions = new JPanel(bl);
+        panVideo = new JPanel();
 
         //Init Fenetre
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,7 +54,6 @@ public class InterfaceSsClass {
         //Init panFichiers
         panFichiers.setPreferredSize(new Dimension((int) (fenetre.getPreferredSize().getWidth()),
                 (int)(fenetre.getPreferredSize().getHeight() / 2) + 100));
-        panFichiers.setBackground(Color.GREEN);
 
         //Init panTraitement
         panTraitement.setPreferredSize(new Dimension(534,200));
@@ -59,15 +63,18 @@ public class InterfaceSsClass {
         panOptions.setPreferredSize(new Dimension(266,200));
         panOptions.setBackground(Color.pink);
 
+        panVideo.setPreferredSize(new Dimension(800,200));
+
         //Ajout des éléments
 
-        ChargerVideo loadvideo = new ChargerVideo();
+        ChargerVideo loadvideo = new ChargerVideo(conteneur);
         
         JButton source = new JButton("Source");
         JButton traitement = new JButton("Traitement");
         
         panFichiers.add(source,BorderLayout.WEST);
         panFichiers.add(traitement,BorderLayout.EAST);
+
 
         source.addActionListener(loadvideo);
         traitement.addActionListener(new TraitementBarcode());
@@ -81,20 +88,20 @@ public class InterfaceSsClass {
         gbc.gridwidth = GridBagConstraints.REMAINDER;
 
         gbc.gridx = 0;
-        gbc.gridy = 0;
+        gbc.gridy = 1;
         gbc.gridheight = 2;
         gbc.weightx = gbc.weighty = 1;
         gbc.fill = GridBagConstraints.VERTICAL;
         conteneur.add(panOptions,gbc);
 
-        gbc.gridx = 0;
-        gbc.gridy = 1;
+        gbc.gridx = 1;
+        gbc.gridy = 2;
         gbc.gridheight = 1;
         gbc.weightx = gbc.weighty = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         conteneur.add(panTraitement,gbc);
 
-        fenetre.setResizable(false);
+        //fenetre.setResizable(false);
         fenetre.setContentPane(conteneur);
         //Affichage
         fenetre.pack();
