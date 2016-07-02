@@ -6,6 +6,7 @@ import org.openimaj.image.ImageUtilities;
 import org.openimaj.image.MBFImage;
 import org.openimaj.video.xuggle.XuggleVideo;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -17,10 +18,14 @@ public class Traitement {
     private static final int ESPACEMENT = 246; //6.5cm -> pixel
 
     //Donnée membre en static pour qu'elle soit la même pour toutes les méthodes. (Non spécifique à une instance).
-    public static XuggleVideo video;
+    protected static XuggleVideo video;
 
-    public Traitement(XuggleVideo v){
+    protected static File sortie;
+    protected static JPanel conteneur;
+
+    public Traitement(XuggleVideo v, JPanel cont){
         video = v;
+        conteneur = cont;
     }
 
     public void anaglypheDubois(){
@@ -61,7 +66,6 @@ public class Traitement {
 
     public static void barcode() throws IOException {
 
-        File sortie;
         //Placement horizontal dans image de sortie.
         int cptX = 0;
         //Compteur de frame.
@@ -93,9 +97,9 @@ public class Traitement {
             cpt++;
 
         }
-        sortie = new File("frame.png");
         ImageUtilities.write(imgSortie,"png", sortie);
         video.close();
+        JOptionPane.showMessageDialog(conteneur, "Traitement terminé !","Résumé vidéo",JOptionPane.PLAIN_MESSAGE);
     }
 
     public void sideBySide() throws IOException{
@@ -174,6 +178,10 @@ public class Traitement {
             cptXDest = 0;
         }
         return sortie;
+    }
+
+    public static void setFile(File f){
+        sortie = f;
     }
 
 }
