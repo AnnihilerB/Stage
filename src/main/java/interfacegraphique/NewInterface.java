@@ -1,6 +1,8 @@
 package interfacegraphique;
 
 import boutons.ChargerVideo;
+import boutons.Sauver;
+import boutons.TraitementBarcode;
 import traitements.Traitement;
 
 import javax.swing.*;
@@ -16,33 +18,64 @@ public class NewInterface {
 
         JFrame fenetre;
         JPanel conteneur;
-        JPanel panVideo;
         JMenuBar menu;
 
         fenetre = new JFrame("Video 0.1");
         conteneur = new JPanel();
-        panVideo = new JPanel();
         menu = new JMenuBar();
 
-        ChargerVideo loadvideo = new ChargerVideo(conteneur);
+        JButton source = new JButton("Parcourir...");
+        JButton destination = new JButton("Destination...");
 
-        fenetre.setPreferredSize(new Dimension(1024,768));
+        JLabel lSource = new JLabel("Source : ");
+        JLabel lDest = new JLabel("Destination :");
+
+        JTextArea tSource = new JTextArea(1,35);
+        JTextArea tDest = new JTextArea(1,35);
+
+        ChargerVideo loadvideo = new ChargerVideo(tSource,conteneur);
+        Sauver saveVideo = new Sauver(tDest);
+
+        tSource.setEditable(true);
+
+
+        tDest.setEditable(true);
+
+        conteneur.setLayout(new FlowLayout(FlowLayout.LEFT,15,25));
+        fenetre.setPreferredSize(new Dimension(700,150));
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         conteneur.setPreferredSize(fenetre.getPreferredSize());
-        conteneur.setBackground(Color.blue);
+
+        conteneur.add(lSource);
+        conteneur.add(tSource);
+        conteneur.add(source);
+
+        conteneur.add(lDest);
+        conteneur.add(tDest);
+        conteneur.add(destination);
 
 
         fenetre.setContentPane(conteneur);
         fenetre.setJMenuBar(menu);
 
-        JMenu file = new JMenu("File");
-        menu.add(file);
+        JMenu traitements = new JMenu("Traitements...");
+        menu.add(traitements);
 
         JMenuItem open = new JMenuItem("Ouvrir vidéo");
-        file.add(open);
 
-        open.addActionListener(loadvideo);
+        JMenuItem barcode = new JMenuItem("Résumé vidéo");
+        JMenuItem anaglyphe = new JMenuItem("Anaglyphe...");
+        JMenuItem sbs = new JMenuItem("Side-by-side");
+
+        traitements.add(barcode);
+        traitements.add(anaglyphe);
+        traitements.add(sbs);
+
+        source.addActionListener(loadvideo);
+        barcode.addActionListener(new TraitementBarcode());
+        destination.addActionListener(saveVideo);
+
 
         fenetre.setResizable(false);
         fenetre.pack();
