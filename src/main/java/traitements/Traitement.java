@@ -65,6 +65,8 @@ public class Traitement {
     }
 
     public static void barcode() throws IOException {
+        ThreadEnCours t = new ThreadEnCours(conteneur);
+        t.start();
 
         //Placement horizontal dans image de sortie.
         int cptX = 0;
@@ -95,6 +97,7 @@ public class Traitement {
         }
         ImageUtilities.write(imgSortie,"png", sortie);
         video.close();
+        t.detruire();
         JOptionPane.showMessageDialog(conteneur, "Traitement terminé !","Résumé vidéo",JOptionPane.PLAIN_MESSAGE);
     }
 
