@@ -1,5 +1,3 @@
-package interfacegraphique;
-
 import boutons.ChargerVideo;
 import boutons.Sauver;
 import boutons.TraitementBarcode;
@@ -11,7 +9,7 @@ import java.awt.*;
 /**
  * Created by ali on 02/07/16.
  */
-public class NewInterface {
+public class Main {
 
     public static void main (String args[]){
         Traitement t;
@@ -36,10 +34,8 @@ public class NewInterface {
         ChargerVideo loadvideo = new ChargerVideo(tSource,conteneur);
         Sauver saveVideo = new Sauver(tDest);
 
-        tSource.setEditable(true);
-
-
-        tDest.setEditable(true);
+        tSource.setEditable(false);
+        tDest.setEditable(false);
 
         conteneur.setLayout(new FlowLayout(FlowLayout.LEFT,15,25));
         fenetre.setPreferredSize(new Dimension(700,150));
