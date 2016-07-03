@@ -1,5 +1,6 @@
 package boutons;
 
+import traitements.ThreadBarcode;
 import traitements.Traitement;
 
 import java.awt.event.ActionEvent;
@@ -12,10 +13,7 @@ import java.io.IOException;
 public class TraitementBarcode implements ActionListener {
 
     public void actionPerformed(ActionEvent actionEvent) {
-        try {
-            Traitement.barcode();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ThreadBarcode t = new ThreadBarcode();
+        t.start();
     }
 }
