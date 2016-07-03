@@ -89,13 +89,8 @@ public class Traitement {
                 //Dessine dans l'image de sortie, la bande centrale récupérée.
                 imgSortie.drawImage(frameResume,cptX,0);
                 cptX += TAILLEBANDE;
-                System.out.println(cpt);
-
             }
-
             frame = video.getNextFrame();
-            cpt++;
-
         }
         ImageUtilities.write(imgSortie,"png", sortie);
         video.close();
