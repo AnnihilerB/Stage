@@ -75,6 +75,7 @@ public class Main {
 
         fenetre.setResizable(false);
         fenetre.pack();
+        fenetre.setLocationRelativeTo(null);
         fenetre.setVisible(true);
 
 
