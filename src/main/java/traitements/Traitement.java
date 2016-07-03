@@ -91,6 +91,7 @@ public class Traitement {
                 cptX += TAILLEBANDE;
             }
             frame = video.getNextFrame();
+            cpt++;
         }
         ImageUtilities.write(imgSortie,"png", sortie);
         video.close();
