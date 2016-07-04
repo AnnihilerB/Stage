@@ -69,19 +69,20 @@ public class Traitement {
 
         //Placement horizontal dans image de sortie.
         int cptX = 0;
-        //Compteur de frame.
-        int cpt = 0;
+        //Compteur de KeyFrame
+        int kFrameCpt = 0;
 
         MBFImage frame;
         MBFImage frameResume;
-        MBFImage imgSortie = new MBFImage((int) (TAILLEBANDE * video.countFrames()) / 10, video.getCurrentFrame().getHeight());
-
+        MBFImage imgSortieTmp = new MBFImage((int) (TAILLEBANDE * video.countFrames()) / 10, video.getCurrentFrame().getHeight());
+        
         //Récupération de la première frame.
         frame = video.getCurrentFrame();
 
         while (video.hasNextFrame()) {
             System.out.println("While");
             if (video.nextFrameIsKeyFrame) {
+                kFrameCpt ++;
                 System.out.println("KeyFrame");
                 
                 frame = video.getNextFrame();
@@ -91,15 +92,14 @@ public class Traitement {
                 frameResume = getBandeCentrale(frame);
 
                 //Dessine dans l'image de sortie, la bande centrale récupérée.
-                imgSortie.drawImage(frameResume, cptX, 0);
+                imgSortieTmp.drawImage(frameResume, cptX, 0);
                 cptX += TAILLEBANDE;
-                
-                System.out.println(cpt);
-                cpt++;
             }
             frame = video.getNextFrame();
         }
-        ImageUtilities.write(imgSortie, "png", sortie);
+        MBFImage ImageSortie = new MBFImage( (int)(TAILLEBANDE * kFrameCpt), video.getCurrentFrame().getHeight());
+        ImageSortie.drawImage(imgSortieTmp, 0,0);
+        ImageUtilities.write(ImageSortie, "png", sortie);
         video.close();
         t.detruire();
         JOptionPane.showMessageDialog(conteneur, "Traitement terminé !", "Résumé vidéo", JOptionPane.PLAIN_MESSAGE);
