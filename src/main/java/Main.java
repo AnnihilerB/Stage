@@ -27,7 +27,7 @@ public class Main {
 
         JLabel lSource = new JLabel("Source : ");
         JLabel lDest = new JLabel("Destination :");
-
+        
         JTextArea tSource = new JTextArea(1,35);
         JTextArea tDest = new JTextArea(1,35);
 
