@@ -2,13 +2,13 @@ package boutons;
 
 import exceptions.VideoNonSupporte;
 import org.openimaj.video.VideoPlayer;
+import org.openimaj.video.xuggle.XuggleAudio;
 import org.openimaj.video.xuggle.XuggleVideo;
 import traitements.Traitement;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.openimaj.video.xuggle.XuggleAudio;
 
 public class ChargerVideo implements ActionListener {
 
@@ -32,6 +32,9 @@ public class ChargerVideo implements ActionListener {
     public void chargerVideo(JFileChooser fichier) throws VideoNonSupporte{
         //Création de deux vidéos à partir du même fichier pour supprimer le lien affichage traitement.
         XuggleVideo video = new XuggleVideo(fichier.getSelectedFile());
+        if (video.countFrames() <=0 ){
+            throw new VideoNonSupporte();
+        }
         XuggleAudio audio = new XuggleAudio(fichier.getSelectedFile());
         XuggleVideo videoTraiter = new XuggleVideo(fichier.getSelectedFile());
         text.setText(fichier.getSelectedFile().getAbsolutePath());
