@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class Traitement {
 
-    private static final int DECALAGE = 5;
+    private static final int DECALAGE = 10;
     private static final int TAILLEBANDE = 5;
     //Correspond à l'espacement entre les deux yeux.
     private static final int ESPACEMENT = 246; //6.5cm -> pixel
@@ -31,12 +31,10 @@ public class Traitement {
 
     }
 
-    public void anaglyphe() throws IOException {
+    public static MBFImage anaglyphe(MBFImage source, int largeur, int hauteur) throws IOException {
 
-        MBFImage source = ImageUtilities.readMBF(new File("src/main/resources/anaglyphe.jpg"));
-
-        int hauteur = source.getHeight();
-        int largeur = source.getWidth();
+       // ThreadEnCours t = new ThreadEnCours(conteneur);
+       // t.start();
 
         MBFImage dest = new MBFImage(largeur, hauteur);
 
@@ -58,14 +56,14 @@ public class Traitement {
 
             }
         }
-
-        DisplayUtilities.display(dest);
-
+        return dest;
     }
 
     public static void barcode() throws IOException {
+
         ThreadEnCours t = new ThreadEnCours(conteneur);
         t.start();
+
 
         //Placement horizontal dans image de sortie.
         int cptX = 0;
@@ -80,12 +78,10 @@ public class Traitement {
         frame = video.getCurrentFrame();
 
         while (video.hasNextFrame()) {
-            System.out.println("While");
             if (video.nextFrameIsKeyFrame) {
                 kFrameCpt ++;
-                System.out.println("KeyFrame");
                 
-                frame = video.getNextFrame();
+
 
                 //Modulo 10 sinon frame trop similaires.
                 //Recuperation de la bande centrale.
@@ -94,6 +90,8 @@ public class Traitement {
                 //Dessine dans l'image de sortie, la bande centrale récupérée.
                 imgSortieTmp.drawImage(frameResume, cptX, 0);
                 cptX += TAILLEBANDE;
+
+                frame = video.getNextFrame();
             }
             frame = video.getNextFrame();
         }
@@ -183,6 +181,9 @@ public class Traitement {
 
     public static void setFile(File f) {
         sortie = f;
+    }
+
+    private static void setOptions(){
     }
 
 }
