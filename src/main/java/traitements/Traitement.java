@@ -103,7 +103,7 @@ public class Traitement {
         JOptionPane.showMessageDialog(conteneur, "Traitement terminé !", "Résumé vidéo", JOptionPane.PLAIN_MESSAGE);
     }
 
-    public void sideBySide() throws IOException {
+    public static void sideBySide() throws IOException {
 
         //Récupération de l'image source et création de l'image de destination contenant les deux images gauche et droite.
         MBFImage source = ImageUtilities.readMBF(new File("src/main/resources/sbs.jpg"));
