@@ -6,24 +6,29 @@ import utils.OptionsBarcode;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * Created by ali on 02/07/16.
  */
 public class Main {
 
-    public static void main (String args[]){
+    public static void main (String args[]) throws IOException {
         // Instance de traitement pour pouvoir l'avoir partout
         Traitement t;
 
         //Déclaration des principales composantes.
         JFrame fenetre;
         JPanel conteneur;
+        JPanel panSource;
+        JPanel panDest;
         JMenuBar menu;
 
         //Initialisation de la fenetre et du conteneur
         fenetre = new JFrame("Video 0.1");
         conteneur = new JPanel();
+        panSource = new JPanel();
+        panDest = new JPanel();
 
         //Initialisation du menu et sous-menus.
         menu = new JMenuBar();
@@ -45,20 +50,29 @@ public class Main {
         JTextArea tDest = new JTextArea(1,35);
 
         //Paramètres de la fenètre
-        fenetre.setPreferredSize(new Dimension(700,150));
+        fenetre.setPreferredSize(new Dimension(650,175));
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Paramètres du conteneur.
         conteneur.setPreferredSize(fenetre.getPreferredSize());
-        conteneur.setLayout(new FlowLayout(FlowLayout.LEFT,15,25));
+        conteneur.setLayout(new FlowLayout(FlowLayout.LEFT,15,15));
+
+        //Paramètres des JPanel
+        panSource.setLayout(new FlowLayout(FlowLayout.LEFT));
+        panDest.setLayout(new FlowLayout(FlowLayout.LEFT));
+        panSource.setPreferredSize(new Dimension(700,40));
+        panDest.setPreferredSize(new Dimension(700,40));
 
         //Ajout des composants dans le conteneur.
-        conteneur.add(lSource);
-        conteneur.add(tSource);
-        conteneur.add(source);
-        conteneur.add(lDest);
-        conteneur.add(tDest);
-        conteneur.add(destination);
+        panSource.add(lSource);
+        panSource.add(tSource);
+        panSource.add(source);
+        panDest.add(lDest);
+        panDest.add(tDest);
+        panDest.add(destination);
+
+        conteneur.add(panSource);
+        conteneur.add(panDest);
 
         //Paramètres des TextBox
         tSource.setEditable(false);
@@ -87,6 +101,8 @@ public class Main {
         fenetre.pack();
         fenetre.setLocationRelativeTo(null);
         fenetre.setVisible(true);
+
+
 
 
     }
