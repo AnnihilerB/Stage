@@ -4,6 +4,7 @@ import org.openimaj.image.DisplayUtilities;
 import org.openimaj.image.ImageUtilities;
 import org.openimaj.image.MBFImage;
 import org.openimaj.video.xuggle.XuggleVideo;
+import org.openimaj.video.xuggle.XuggleVideoWriter;
 
 import javax.swing.*;
 import java.io.File;
@@ -11,15 +12,14 @@ import java.io.IOException;
 
 public class Traitement {
 
-    private static final int DECALAGE = 10;
+    private static final int DECALAGE = 1;
     private static final int TAILLEBANDE = 5;
     //Correspond à l'espacement entre les deux yeux.
     private static final int ESPACEMENT = 246; //6.5cm -> pixel
 
     //Donnée membre en static pour qu'elle soit la même pour toutes les méthodes. (Non spécifique à une instance).
     protected static XuggleVideo video;
-
-    protected static File sortie;
+    protected static File fichierSortie;
     protected static JPanel conteneur;
 
     public Traitement(XuggleVideo v, JPanel cont) {
@@ -27,11 +27,39 @@ public class Traitement {
         conteneur = cont;
     }
 
-    public void anaglypheDubois() {
+    public static void anaglypheDubois() throws IOException {
+
+        MBFImage droite = ImageUtilities.readMBF(new File("src/main/resources/right.jpg"));
+        MBFImage gauche = ImageUtilities.readMBF(new File("src/main/resources/left.jpg"));
+
+        int largeur = gauche.getWidth();
+        int hauteur = gauche.getHeight();
+
+        MBFImage inter = new MBFImage(largeur,hauteur);
+
+        for (int y = 0; y < hauteur; ++y){
+            for (int x = 0; x < largeur; ++x){
+                Float[] pixelsDroite;
+                Float[] pixelsGauche;
+
+                Float[] pixelsDest = new Float[3];
+
+                pixelsGauche = gauche.getPixel(x,y);
+                pixelsDroite = droite.getPixel(x,y);
+
+                pixelsDest[0] = doseRougeDubois(pixelsGauche[0],pixelsGauche[1],pixelsGauche[2],pixelsDroite[0],pixelsDroite[1],pixelsDroite[2]);
+                pixelsDest[1] = doseVerteDubois(pixelsGauche[0],pixelsGauche[1],pixelsGauche[2],pixelsDroite[0],pixelsDroite[1],pixelsDroite[2]);
+                pixelsDest[2] = doseBleueDubois(pixelsGauche[0],pixelsGauche[1],pixelsGauche[2],pixelsDroite[0],pixelsDroite[1],pixelsDroite[2]);
+
+                inter.setPixel(x,y,pixelsDest);
+
+            }
+        }
+        DisplayUtilities.display(inter);
 
     }
 
-    public static MBFImage anaglyphe(MBFImage source, int largeur, int hauteur) throws IOException {
+    public static MBFImage anaglypheImage(MBFImage source, int largeur, int hauteur) throws IOException {
 
        // ThreadEnCours t = new ThreadEnCours(conteneur);
        // t.start();
@@ -59,11 +87,30 @@ public class Traitement {
         return dest;
     }
 
+    public static void anaglyphe() throws IOException {
+
+        XuggleVideoWriter sortie = new XuggleVideoWriter(fichierSortie.getName(),video.getWidth(), video.getHeight(),video.getFPS());
+        sortie.initialise();
+
+        MBFImage frame;
+        frame = video.getCurrentFrame();
+
+        while(video.hasNextFrame()){
+
+            sortie.addFrame(Traitement.anaglypheImage(frame,video.getWidth(),video.getHeight()));
+            System.out.println("Traitement");
+            frame = video.getNextFrame();
+
+        }
+        sortie.processingComplete();
+        sortie.close();
+
+    }
+
     public static void barcode() throws IOException {
 
         ThreadEnCours t = new ThreadEnCours(conteneur);
         t.start();
-
 
         //Placement horizontal dans image de sortie.
         int cptX = 0;
@@ -80,10 +127,7 @@ public class Traitement {
         while (video.hasNextFrame()) {
             if (video.nextFrameIsKeyFrame) {
                 kFrameCpt ++;
-                
 
-
-                //Modulo 10 sinon frame trop similaires.
                 //Recuperation de la bande centrale.
                 frameResume = getBandeCentrale(frame);
 
@@ -97,7 +141,7 @@ public class Traitement {
         }
         MBFImage ImageSortie = new MBFImage( (int)(TAILLEBANDE * kFrameCpt), video.getCurrentFrame().getHeight());
         ImageSortie.drawImage(imgSortieTmp, 0,0);
-        ImageUtilities.write(ImageSortie, "png", sortie);
+        ImageUtilities.write(ImageSortie, "png", fichierSortie);
         video.close();
         t.detruire();
         JOptionPane.showMessageDialog(conteneur, "Traitement terminé !", "Résumé vidéo", JOptionPane.PLAIN_MESSAGE);
@@ -180,10 +224,24 @@ public class Traitement {
     }
 
     public static void setFile(File f) {
-        sortie = f;
+        fichierSortie = f;
     }
 
     private static void setOptions(){
     }
+
+
+    private static float doseRougeDubois(float rouge, float vert, float bleu,float rougeD, float vertD, float bleuD) {
+        return (float) ( (rouge * 0.4154) + (vert * 0.4710) + (bleu *0.1669) + (rougeD * -0.0109) + (vertD * -0.0364) + (bleuD * 0.0060) );
+
+    }
+    private static float doseVerteDubois(float rouge, float vert, float bleu,float rougeD, float vertD, float bleuD) {
+        return (float) ( (rouge * -0.0458)+ (vert * -0.0484) + (bleu *-0.0257) + (rougeD * 0.3756) + (vertD * 0.7333) + (bleuD * 0.0111) );
+    }
+
+    private static float doseBleueDubois(float rouge, float vert, float bleu,float rougeD, float vertD, float bleuD) {
+        return (float) ( (rouge * -0.0547) + (vert * 04710) + (bleu *0.0128) + (rougeD * -0.0651) + (vertD * -0.1287) + (bleuD * 1.2971) );
+    }
+
 
 }
