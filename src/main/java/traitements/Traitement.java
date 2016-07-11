@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class Traitement {
 
-    private static final int DECALAGE = 1;
+    private static final int DECALAGE = 5;
     private static final int TAILLEBANDE = 5;
     //Correspond à l'espacement entre les deux yeux.
     private static final int ESPACEMENT = 246; //6.5cm -> pixel
@@ -61,9 +61,6 @@ public class Traitement {
 
     public static MBFImage anaglypheImage(MBFImage source, int largeur, int hauteur) throws IOException {
 
-       // ThreadEnCours t = new ThreadEnCours(conteneur);
-       // t.start();
-
         MBFImage dest = new MBFImage(largeur, hauteur);
 
         for (int y = DECALAGE; y < hauteur - DECALAGE; ++y) {
@@ -89,7 +86,10 @@ public class Traitement {
 
     public static void anaglyphe() throws IOException {
 
-        XuggleVideoWriter sortie = new XuggleVideoWriter(fichierSortie.getName(),video.getWidth(), video.getHeight(),video.getFPS());
+        ThreadEnCours t = new ThreadEnCours(conteneur);
+        t.start();
+
+        XuggleVideoWriter sortie = new XuggleVideoWriter(fichierSortie.getAbsolutePath(),video.getWidth(), video.getHeight(),video.getFPS());
         sortie.initialise();
 
         MBFImage frame;
@@ -98,11 +98,12 @@ public class Traitement {
         while(video.hasNextFrame()){
 
             sortie.addFrame(Traitement.anaglypheImage(frame,video.getWidth(),video.getHeight()));
-            System.out.println("Traitement");
+            //System.out.println("Traitement");
             frame = video.getNextFrame();
 
         }
         sortie.processingComplete();
+        t.detruire();
         sortie.close();
 
     }
