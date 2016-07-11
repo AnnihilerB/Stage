@@ -24,7 +24,5 @@ public class Sauver implements ActionListener {
         sauver.showSaveDialog(null);
         text.setText(sauver.getSelectedFile().getAbsolutePath());
         Traitement.setFile(sauver.getSelectedFile());
-
-
     }
 }
