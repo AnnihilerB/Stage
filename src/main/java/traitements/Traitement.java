@@ -1,5 +1,6 @@
 package traitements;
 
+import exceptions.DestinationManquante;
 import org.openimaj.image.DisplayUtilities;
 import org.openimaj.image.ImageUtilities;
 import org.openimaj.image.MBFImage;
@@ -84,7 +85,9 @@ public class Traitement {
         return dest;
     }
 
-    public static void anaglyphe() throws IOException {
+    public static void anaglyphe() throws IOException, DestinationManquante {
+
+        verifSortie();
 
         ThreadEnCours t = new ThreadEnCours(conteneur);
         t.start();
@@ -105,10 +108,13 @@ public class Traitement {
         sortie.processingComplete();
         t.detruire();
         sortie.close();
+        JOptionPane.showMessageDialog(conteneur, "Traitement terminé !", "Résumé vidéo", JOptionPane.PLAIN_MESSAGE);
 
     }
 
-    public static void barcode() throws IOException {
+    public static void barcode() throws IOException, DestinationManquante {
+
+        verifSortie();
 
         ThreadEnCours t = new ThreadEnCours(conteneur);
         t.start();
@@ -201,12 +207,14 @@ public class Traitement {
         return dest;
     }
 
-    public static void sideBySide() throws IOException {
+    public static void sideBySide() throws IOException, DestinationManquante {
+
+        verifSortie();
 
         ThreadEnCours t = new ThreadEnCours(conteneur);
         t.start();
 
-        XuggleVideoWriter sortie = new XuggleVideoWriter(fichierSortie.getAbsolutePath(),video.getWidth(), video.getHeight(),video.getFPS());
+        XuggleVideoWriter sortie = new XuggleVideoWriter(fichierSortie.getAbsolutePath(),(video.getWidth() - ESPACEMENT) * 2, video.getHeight(),video.getFPS());
         sortie.initialise();
 
         MBFImage frame;
@@ -222,6 +230,7 @@ public class Traitement {
         sortie.processingComplete();
         t.detruire();
         sortie.close();
+        JOptionPane.showMessageDialog(conteneur, "Traitement terminé !", "Résumé vidéo", JOptionPane.PLAIN_MESSAGE);
     }
 
     private static MBFImage getBandeCentrale(MBFImage source) throws IOException {
@@ -248,10 +257,6 @@ public class Traitement {
         fichierSortie = f;
     }
 
-    private static void setOptions(){
-    }
-
-
     private static float doseRougeDubois(float rouge, float vert, float bleu,float rougeD, float vertD, float bleuD) {
         return (float) ( (rouge * 0.4154) + (vert * 0.4710) + (bleu *0.1669) + (rougeD * -0.0109) + (vertD * -0.0364) + (bleuD * 0.0060) );
 
@@ -262,6 +267,11 @@ public class Traitement {
 
     private static float doseBleueDubois(float rouge, float vert, float bleu,float rougeD, float vertD, float bleuD) {
         return (float) ( (rouge * -0.0547) + (vert * 04710) + (bleu *0.0128) + (rougeD * -0.0651) + (vertD * -0.1287) + (bleuD * 1.2971) );
+    }
+
+    private static void verifSortie() throws DestinationManquante {
+        if (fichierSortie == null)
+            throw new DestinationManquante(conteneur);
     }
 
 
