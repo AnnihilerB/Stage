@@ -1,5 +1,7 @@
 package traitements;
 
+import exceptions.DestinationManquante;
+
 import java.io.IOException;
 
 /**
@@ -11,6 +13,8 @@ public class ThreadBarcode extends Thread {
             Traitement.barcode();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (DestinationManquante destinationManquante) {
+
         }
     }
 

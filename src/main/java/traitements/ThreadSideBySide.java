@@ -4,15 +4,16 @@ import exceptions.DestinationManquante;
 
 import java.io.IOException;
 
-public class ThreadAnaglyphe extends Thread {
+/**
+ * Created by ali on 12/07/16.
+ */
+public class ThreadSideBySide extends Thread {
     public void run(){
         try {
-            Traitement.anaglyphe();
+            Traitement.sideBySide();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (DestinationManquante destinationManquante) {
-
         }
     }
-
 }
