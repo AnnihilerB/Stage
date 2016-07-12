@@ -1,8 +1,16 @@
 package exceptions;
 
-public class VideoNonSupporte extends Exception {
+import javax.swing.*;
 
-    public VideoNonSupporte(){
-        System.out.println("Video non supportée");
+public class VideoNonSupporte extends Exception {
+    JPanel conteneur;
+
+    public VideoNonSupporte(JPanel cont){
+        conteneur = cont;
+        afficherMessage();
+    }
+
+    private void afficherMessage(){
+        JOptionPane.showMessageDialog(conteneur, "Traitement terminé !", "Résumé vidéo", JOptionPane.WARNING_MESSAGE);
     }
 }
