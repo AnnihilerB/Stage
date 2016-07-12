@@ -127,6 +127,8 @@ public class Traitement {
 
         while (video.hasNextFrame()) {
             if (video.nextFrameIsKeyFrame) {
+                //r&cupération de la keframe
+                frame = video.getNextFrame();
                 kFrameCpt ++;
 
                 //Recuperation de la bande centrale.
@@ -136,8 +138,10 @@ public class Traitement {
                 imgSortieTmp.drawImage(frameResume, cptX, 0);
                 cptX += TAILLEBANDE;
 
+                //Passage a la frame suivante
                 frame = video.getNextFrame();
             }
+            //Frame n'est pas une keyframe, récupération de la suivante
             frame = video.getNextFrame();
         }
         MBFImage ImageSortie = new MBFImage( (int)(TAILLEBANDE * kFrameCpt), video.getCurrentFrame().getHeight());
@@ -148,10 +152,9 @@ public class Traitement {
         JOptionPane.showMessageDialog(conteneur, "Traitement terminé !", "Résumé vidéo", JOptionPane.PLAIN_MESSAGE);
     }
 
-    public static void sideBySide() throws IOException {
+    public static MBFImage sideBySideImage(MBFImage source) throws IOException {
 
         //Récupération de l'image source et création de l'image de destination contenant les deux images gauche et droite.
-        MBFImage source = ImageUtilities.readMBF(new File("src/main/resources/sbs.jpg"));
         MBFImage dest = new MBFImage((source.getWidth() - ESPACEMENT) * 2, source.getHeight());
 
         //Création des deux images gauches et droite auquels on retire un bout corresspondant à  ce que voit l'oeil.
@@ -190,18 +193,35 @@ public class Traitement {
                     droite.setPixel(indexdroite, y, pixels);
                 }
                 indexdroite++;
-
             }
-
         }
         //Remplissage de l'image finale à l'aide des images gauche et droite.
         dest.drawImage(gauche, 0, 0);
         dest.drawImage(droite, gauche.getWidth(), 0);
+        return dest;
+    }
 
-        //Affichage.
-        //DisplayUtilities.displayName(gauche,"gauche");
-        //DisplayUtilities.displayName(droite,"droite");
-        DisplayUtilities.display(dest);
+    public static void sideBySide() throws IOException {
+
+        ThreadEnCours t = new ThreadEnCours(conteneur);
+        t.start();
+
+        XuggleVideoWriter sortie = new XuggleVideoWriter(fichierSortie.getAbsolutePath(),video.getWidth(), video.getHeight(),video.getFPS());
+        sortie.initialise();
+
+        MBFImage frame;
+        frame = video.getCurrentFrame();
+
+        while(video.hasNextFrame()){
+
+            sortie.addFrame(sideBySideImage(frame));
+            //System.out.println("Traitement");
+            frame = video.getNextFrame();
+
+        }
+        sortie.processingComplete();
+        t.detruire();
+        sortie.close();
     }
 
     private static MBFImage getBandeCentrale(MBFImage source) throws IOException {
