@@ -1,6 +1,7 @@
 import boutons.ChargerVideo;
 import boutons.Sauver;
 import boutons.TraitementAnaglyphe;
+import boutons.TraitementSideBySide;
 import traitements.Traitement;
 import utils.OptionsBarcode;
 
@@ -92,6 +93,7 @@ public class Main {
         source.addActionListener(loadvideo);
         barcode.addActionListener(new OptionsBarcode());
         anaglyphe.addActionListener(new TraitementAnaglyphe());
+        sbs.addActionListener(new TraitementSideBySide());
         destination.addActionListener(saveVideo);
 
         //Construction de la fenetre.
