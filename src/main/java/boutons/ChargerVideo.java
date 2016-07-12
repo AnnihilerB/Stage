@@ -33,7 +33,7 @@ public class ChargerVideo implements ActionListener {
         //Création de deux vidéos à partir du même fichier pour supprimer le lien affichage traitement.
         XuggleVideo video = new XuggleVideo(fichier.getSelectedFile());
         if (video.countFrames() <=0 ){
-            throw new VideoNonSupporte();
+            throw new VideoNonSupporte(conteneur);
         }
         XuggleAudio audio = new XuggleAudio(fichier.getSelectedFile());
         XuggleVideo videoTraiter = new XuggleVideo(fichier.getSelectedFile());
