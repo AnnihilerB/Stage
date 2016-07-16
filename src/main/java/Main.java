@@ -1,5 +1,5 @@
 import boutons.ChargerVideo;
-import boutons.Sauver;
+import boutons.Sauvegarder;
 import boutons.TraitementAnaglyphe;
 import boutons.TraitementSideBySide;
 import traitements.Traitement;
@@ -21,15 +21,15 @@ public class Main {
         //Déclaration des principales composantes.
         JFrame fenetre;
         JPanel conteneur;
-        JPanel panSource;
-        JPanel panDest;
+        JPanel panelSource;
+        JPanel panelDest;
         JMenuBar menu;
 
         //Initialisation de la fenetre et du conteneur
         fenetre = new JFrame("Video 0.1");
         conteneur = new JPanel();
-        panSource = new JPanel();
-        panDest = new JPanel();
+        panelSource = new JPanel();
+        panelDest = new JPanel();
 
         //Initialisation du menu et sous-menus.
         menu = new JMenuBar();
@@ -41,14 +41,14 @@ public class Main {
         JMenuItem sbs = new JMenuItem("Side-by-side");
 
         //Labels et boutons de l'interface.
-        JButton source = new JButton("Parcourir...");
-        JButton destination = new JButton("Destination...");
+        JButton boutonSource = new JButton("Parcourir...");
+        JButton boutonDestination = new JButton("Destination...");
 
-        JLabel lSource = new JLabel("Source : ");
-        JLabel lDest = new JLabel("Destination :");
+        JLabel labelSource = new JLabel("Source : ");
+        JLabel labelDest = new JLabel("Destination :");
         
-        JTextArea tSource = new JTextArea(1,35);
-        JTextArea tDest = new JTextArea(1,35);
+        JTextArea textSource = new JTextArea(1,35);
+        JTextArea textDest = new JTextArea(1,35);
 
         //Paramètres de la fenètre
         fenetre.setPreferredSize(new Dimension(650,175));
@@ -59,25 +59,25 @@ public class Main {
         conteneur.setLayout(new FlowLayout(FlowLayout.LEFT,15,15));
 
         //Paramètres des JPanel
-        panSource.setLayout(new FlowLayout(FlowLayout.LEFT));
-        panDest.setLayout(new FlowLayout(FlowLayout.LEFT));
-        panSource.setPreferredSize(new Dimension(700,40));
-        panDest.setPreferredSize(new Dimension(700,40));
+        panelSource.setLayout(new FlowLayout(FlowLayout.LEFT));
+        panelDest.setLayout(new FlowLayout(FlowLayout.LEFT));
+        panelSource.setPreferredSize(new Dimension(700,40));
+        panelDest.setPreferredSize(new Dimension(700,40));
 
         //Ajout des composants dans le conteneur.
-        panSource.add(lSource);
-        panSource.add(tSource);
-        panSource.add(source);
-        panDest.add(lDest);
-        panDest.add(tDest);
-        panDest.add(destination);
+        panelSource.add(labelSource);
+        panelSource.add(textSource);
+        panelSource.add(boutonSource);
+        panelDest.add(labelDest);
+        panelDest.add(textDest);
+        panelDest.add(boutonDestination);
 
-        conteneur.add(panSource);
-        conteneur.add(panDest);
+        conteneur.add(panelSource);
+        conteneur.add(panelDest);
 
         //Paramètres des TextBox
-        tSource.setEditable(false);
-        tDest.setEditable(false);
+        textSource.setEditable(false);
+        textDest.setEditable(false);
 
         //Ajout des éléments de la barre de menu.
         menu.add(traitements);
@@ -86,15 +86,15 @@ public class Main {
         traitements.add(sbs);
 
         //Chargement des instances.
-        ChargerVideo loadvideo = new ChargerVideo(tSource,conteneur);
-        Sauver saveVideo = new Sauver(tDest);
+        ChargerVideo loadvideo = new ChargerVideo(textSource,conteneur);
+        Sauvegarder saveVideo = new Sauvegarder(textDest);
 
         //Ajout des Listener sur les boutons.
-        source.addActionListener(loadvideo);
+        boutonSource.addActionListener(loadvideo);
         barcode.addActionListener(new OptionsBarcode());
         anaglyphe.addActionListener(new TraitementAnaglyphe());
         sbs.addActionListener(new TraitementSideBySide());
-        destination.addActionListener(saveVideo);
+        boutonDestination.addActionListener(saveVideo);
 
         //Construction de la fenetre.
         fenetre.setContentPane(conteneur);

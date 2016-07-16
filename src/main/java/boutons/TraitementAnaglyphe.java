@@ -10,8 +10,10 @@ import java.awt.event.ActionListener;
  */
 public class TraitementAnaglyphe implements ActionListener{
 
+    //Création d'un thread à l'appui d'un bouton pour permettre l'affichage d'une fenetre et effectuer le traitement.
+
     public void actionPerformed(ActionEvent actionEvent) {
-        ThreadAnaglyphe t = new ThreadAnaglyphe();
-        t.start();
+        ThreadAnaglyphe thread = new ThreadAnaglyphe();
+        thread.start();
     }
 }

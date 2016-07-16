@@ -11,9 +11,11 @@ import java.awt.event.ActionListener;
  */
 public class TraitementBarcode implements ActionListener {
 
+    //Destruction de la fenetre des options et creation du thread
+
     public void actionPerformed(ActionEvent actionEvent) {
         OptionsBarcode.detruireOptions();
-        ThreadBarcode t = new ThreadBarcode();
-        t.start();
+        ThreadBarcode thread = new ThreadBarcode();
+        thread.start();
     }
 }

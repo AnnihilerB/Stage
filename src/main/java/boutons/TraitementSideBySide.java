@@ -9,8 +9,10 @@ import java.awt.event.ActionListener;
  * Created by ali on 12/07/16.
  */
 public class TraitementSideBySide implements ActionListener {
+
+    //Création du thread
     public void actionPerformed(ActionEvent actionEvent) {
-        ThreadSideBySide t = new ThreadSideBySide();
-        t.start();
+        ThreadSideBySide thread = new ThreadSideBySide();
+        thread.start();
     }
 }

@@ -12,7 +12,9 @@ import java.awt.event.ActionListener;
 
 public class ChargerVideo implements ActionListener {
 
+    //TextArea contenant le chemin de la source
     JTextArea text;
+    //Conteneur principal pour le placement
     JPanel conteneur;
 
     public ChargerVideo(JTextArea t, JPanel cont){
@@ -30,18 +32,20 @@ public class ChargerVideo implements ActionListener {
     }
 
     public void chargerVideo(JFileChooser fichier) throws VideoNonSupporte{
-        //Création de deux vidéos à partir du même fichier pour supprimer le lien affichage traitement.
-        XuggleVideo video = new XuggleVideo(fichier.getSelectedFile());
-        if (video.countFrames() <=0 ){
+        //Création de deux vidéos à partir du même fichier pour supprimer le lien affichage/traitement.
+        XuggleVideo videoAAfficher = new XuggleVideo(fichier.getSelectedFile());
+        XuggleVideo videoATraiter = new XuggleVideo(fichier.getSelectedFile());
+
+        if (videoAAfficher.countFrames() <=0 ){
             throw new VideoNonSupporte(conteneur);
         }
         XuggleAudio audio = new XuggleAudio(fichier.getSelectedFile());
-        XuggleVideo videoTraiter = new XuggleVideo(fichier.getSelectedFile());
         text.setText(fichier.getSelectedFile().getAbsolutePath());
-        VideoPlayer p = VideoPlayer.createVideoPlayer(video,audio);
-        p.pause();
-        p.showFrame();
-        new Traitement(videoTraiter,conteneur);
+        VideoPlayer player = VideoPlayer.createVideoPlayer(videoAAfficher,audio);
+        player.pause();
+        player.showFrame();
+        //Création du traitement avec la vidéo à traiter et le conteneur.
+        new Traitement(videoATraiter,conteneur);
     }
 
 }
