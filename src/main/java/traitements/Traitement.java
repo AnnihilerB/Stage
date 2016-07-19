@@ -6,6 +6,7 @@ import org.openimaj.image.ImageUtilities;
 import org.openimaj.image.MBFImage;
 import org.openimaj.video.xuggle.XuggleVideo;
 import org.openimaj.video.xuggle.XuggleVideoWriter;
+import utils.OptionsBarcode;
 
 import javax.swing.*;
 import java.io.File;
@@ -20,22 +21,24 @@ public class Traitement {
     private static final int DECALAGE = 5;
     private static final int TAILLEBANDE = 5;
     //Correspond à l'espacement entre les deux yeux.
-    private static final int ESPACEMENT = 246; //6.5cm -> pixel
+    private static final int ESPACEMENT = 25; //6.5cm -> pixel 246
 
     //Donnée membre en static pour qu'elle soit la même pour toutes les méthodes. (Non spécifique à une instance).
     protected static XuggleVideo video;
     protected static File fichierSortie;
     protected static JPanel conteneur;
+    private OptionsBarcode options;
 
     public Traitement(XuggleVideo v, JPanel cont) {
         video = v;
         conteneur = cont;
+        options = new OptionsBarcode();
     }
 
     public static void anaglypheDubois() throws IOException {
 
-        MBFImage imgDroite = ImageUtilities.readMBF(new File("src/main/resources/right.jpg"));
-        MBFImage imgGauche = ImageUtilities.readMBF(new File("src/main/resources/left.jpg"));
+        MBFImage imgDroite = ImageUtilities.readMBF(new File("testduboisd.png"));
+        MBFImage imgGauche = ImageUtilities.readMBF(new File("testduboisg.png"));
 
         int largeur = imgGauche.getWidth();
         int hauteur = imgGauche.getHeight();
@@ -61,6 +64,7 @@ public class Traitement {
             }
         }
         DisplayUtilities.display(imgSortie);
+        ImageUtilities.write(imgSortie,"png",new File("sortie.png"));
 
     }
 
@@ -79,17 +83,21 @@ public class Traitement {
         for (int y = DECALAGE; y < hauteur - DECALAGE; ++y) {
             for (int x = DECALAGE; x < largeur - DECALAGE; ++x) {
 
+                //Tableaux de pixel de l'image source et de l'image anaglyphée
                 Float[] pixels;
                 Float[] pixelsDest;
 
-                //Recupere la couleur rouge
+                //Recupere la couleur rouge directerment depuis la source.
                 pixelsDest = source.getPixel(x - DECALAGE, y);
 
+                // Récupération des couleurs du pixel de l'image source.
                 pixels = source.getPixel(x + DECALAGE, y);
 
+                //Récupération des canaux rouge/vert pour faire le cyan.
                 pixelsDest[1] = pixels[1];
                 pixelsDest[2] = pixels[2];
 
+                //Coloration de l'image de destination.
                 dest.setPixel(x, y, pixelsDest);
 
             }
@@ -106,8 +114,10 @@ public class Traitement {
 
     public static void anaglyphe() throws IOException, DestinationManquante {
 
+        //Vérification de la spécification de la sortie.
         verifSortie();
 
+        //Création du thread inforamtnt sur le déroulement du traitement.
         ThreadEnCours thread = new ThreadEnCours(conteneur);
         thread.start();
 
@@ -275,7 +285,7 @@ public class Traitement {
      * @throws IOException
      */
 
-    private static MBFImage getBandeCentrale(MBFImage source) throws IOException {
+    public static MBFImage getBandeCentrale(MBFImage source) throws IOException {
 
         int hauteur = source.getHeight();
         int milieu = source.getWidth() / 2;
@@ -287,7 +297,7 @@ public class Traitement {
 
         for (int y = 0; y < hauteur; ++y) {
             //Parcours de la source sur la taille de la bande précisée.
-            for (int x = milieu - (TAILLEBANDE / 2); x < milieu + (TAILLEBANDE / 2); ++x) {
+            for (int x = milieu - (TAILLEBANDE / 2); x <= milieu + (TAILLEBANDE / 2); ++x) {
                 //Ecriture de l'image de sortie.
                 imgSortie.setPixel(parcoursXImgDest, y, source.getPixel(x, y));
                 parcoursXImgDest++;
@@ -357,6 +367,77 @@ public class Traitement {
     private static void verifSortie() throws DestinationManquante {
         if (fichierSortie == null)
             throw new DestinationManquante(conteneur);
+    }
+
+    public static void decouperImageGauche() throws IOException {
+
+        MBFImage source = ImageUtilities.readMBF(new File("src/main/resources/sbs.jpg"));
+
+        //Récupération de l'image source et création de l'image de destination contenant les deux images gauche et droite.
+        MBFImage dest = new MBFImage((source.getWidth() - ESPACEMENT), source.getHeight());
+
+        //Création des deux images gauches et droite auquels on retire un bout corresspondant à  ce que voit l'oeil.
+        MBFImage imgGauche = new MBFImage(source.getWidth() - ESPACEMENT, source.getHeight());
+
+        //Correspond à l'endroit ou doit s'arreter le parcours de l'image source pour générer l'image gauche.
+        int parcoursXSource = source.getWidth() - ESPACEMENT;
+
+
+        //Parcours des y de l'image.
+        for (int y = 0; y < source.getHeight(); ++y) {
+            //Remplissage de l'image gauche.
+            for (int x = 0; x < parcoursXSource; ++x) {
+                Float[] pixels;
+                pixels = source.getPixel(x, y);
+                imgGauche.setPixel(x, y, pixels);
+            }
+        }
+        //Remplissage de l'image finale à l'aide des images gauche et droite.
+        dest.drawImage(imgGauche, 0, 0);
+        DisplayUtilities.display(dest);
+        ImageUtilities.write(imgGauche,"png",new File("testduboisg.png"));
+    }
+
+    public static void decouperImageDroite() throws IOException {
+
+        MBFImage source = ImageUtilities.readMBF(new File("src/main/resources/sbs.jpg"));
+
+        //Récupération de l'image source et création de l'image de destination contenant les deux images gauche et droite.
+        MBFImage dest = new MBFImage((source.getWidth() - ESPACEMENT), source.getHeight());
+
+        //Création des deux images gauches et droite auquels on retire un bout corresspondant à  ce que voit l'oeil.
+        MBFImage imgDroite = new MBFImage(source.getWidth() - ESPACEMENT, source.getHeight());
+
+        //Correspond à l'endroit ou doit s'arreter le parcours de l'image source pour générer l'image gauche.
+        int parcoursXSource = source.getWidth() - ESPACEMENT;
+
+        //Indice de remplissage de l'image de l'oeil droit.
+        int indexRemplissageXImageDroite = 0;
+
+        //Parcours des y de l'image.
+        for (int y = 0; y < source.getHeight(); ++y) {
+            //Remplissage de l'aimge droite. On commence à partir de l'espcaement.
+            for (int xD = ESPACEMENT; xD < source.getWidth(); ++xD) {
+                Float[] pixels;
+                pixels = source.getPixel(xD, y);
+                //Besoin d'un index pour remplir l'imge de destination depuis 0 et non depuis l'espacement.
+                //Ananlyse si on est en fin de parcours d'un ligne de pixel.
+                if (indexRemplissageXImageDroite == imgDroite.getWidth()) {
+                    imgDroite.setPixel(indexRemplissageXImageDroite, y, pixels);
+                    indexRemplissageXImageDroite = 0;
+                } //On est pas en fin de ligne donc remplissage.
+                else {
+                    imgDroite.setPixel(indexRemplissageXImageDroite, y, pixels);
+                }
+                indexRemplissageXImageDroite++;
+            }
+        }
+        //Remplissage de l'image finale à l'aide des images gauche et droite.
+        dest.drawImage(imgDroite, 0, 0);
+        DisplayUtilities.display(imgDroite);
+        ImageUtilities.write(imgDroite,"png",new File("testduboisd.png"));
+
+
     }
 
 
