@@ -19,7 +19,6 @@ public class Traitement {
      */
 
     private static final int DECALAGE = 5;
-    private static final int TAILLEBANDE = 5;
     //Correspond à l'espacement entre les deux yeux.
     private static final int ESPACEMENT = 25; //6.5cm -> pixel 246
 
@@ -27,7 +26,7 @@ public class Traitement {
     protected static XuggleVideo video;
     protected static File fichierSortie;
     protected static JPanel conteneur;
-    private OptionsBarcode options;
+    private static OptionsBarcode options;
 
     public Traitement(XuggleVideo v, JPanel cont) {
         video = v;
@@ -149,6 +148,8 @@ public class Traitement {
 
     public static void barcode() throws IOException, DestinationManquante {
 
+        int tailleBande = options.getTailleBande();
+
         verifSortie();
 
         ThreadEnCours thread = new ThreadEnCours(conteneur);
@@ -156,12 +157,10 @@ public class Traitement {
 
         //Placement horizontal dans image de sortie.
         int parcoursXImgSortie = 0;
-        //Compteur de KeyFrame
-        int nbKeyFrame = 0;
 
         MBFImage frame;
         MBFImage bandeCentralFrame;
-        MBFImage imgSortieTmp = new MBFImage((int) (TAILLEBANDE * video.countFrames()) / 10, video.getCurrentFrame().getHeight());
+        MBFImage imgSortie = new MBFImage(options.getLargeur(), video.getCurrentFrame().getHeight());
         
         //Récupération de la première frame.
         frame = video.getCurrentFrame();
@@ -170,14 +169,16 @@ public class Traitement {
             if (video.nextFrameIsKeyFrame) {
                 //r&cupération de la keframe
                 frame = video.getNextFrame();
-                nbKeyFrame ++;
 
                 //Recuperation de la bande centrale.
-                bandeCentralFrame = getBandeCentrale(frame);
+                bandeCentralFrame = getBandeCentrale(frame,tailleBande);
 
+                if (parcoursXImgSortie == options.getLargeur()){
+                    break;
+                }
                 //Dessine dans l'image de sortie, la bande centrale récupérée.
-                imgSortieTmp.drawImage(bandeCentralFrame, parcoursXImgSortie, 0);
-                parcoursXImgSortie += TAILLEBANDE;
+                imgSortie.drawImage(bandeCentralFrame, parcoursXImgSortie, 0);
+                parcoursXImgSortie += tailleBande;
 
                 //Passage a la frame suivante
                 frame = video.getNextFrame();
@@ -185,9 +186,7 @@ public class Traitement {
             //Frame n'est pas une keyframe, récupération de la suivante
             frame = video.getNextFrame();
         }
-        MBFImage imageSortie = new MBFImage( (int)(TAILLEBANDE * nbKeyFrame), video.getCurrentFrame().getHeight());
-        imageSortie.drawImage(imgSortieTmp, 0,0);
-        ImageUtilities.write(imageSortie, "png", fichierSortie);
+        ImageUtilities.write(imgSortie, "png", fichierSortie);
         video.close();
         thread.detruire();
         JOptionPane.showMessageDialog(conteneur, "Traitement terminé !", "Résumé vidéo", JOptionPane.PLAIN_MESSAGE);
@@ -285,7 +284,7 @@ public class Traitement {
      * @throws IOException
      */
 
-    public static MBFImage getBandeCentrale(MBFImage source) throws IOException {
+    public static MBFImage getBandeCentrale(MBFImage source, int tailleBande) throws IOException {
 
         int hauteur = source.getHeight();
         int milieu = source.getWidth() / 2;
@@ -293,11 +292,11 @@ public class Traitement {
         //Parcours des X
         int parcoursXImgDest = 0;
 
-        MBFImage imgSortie = new MBFImage(TAILLEBANDE, hauteur);
+        MBFImage imgSortie = new MBFImage(tailleBande, hauteur);
 
         for (int y = 0; y < hauteur; ++y) {
             //Parcours de la source sur la taille de la bande précisée.
-            for (int x = milieu - (TAILLEBANDE / 2); x <= milieu + (TAILLEBANDE / 2); ++x) {
+            for (int x = milieu - (tailleBande / 2); x <= milieu + (tailleBande / 2); ++x) {
                 //Ecriture de l'image de sortie.
                 imgSortie.setPixel(parcoursXImgDest, y, source.getPixel(x, y));
                 parcoursXImgDest++;
