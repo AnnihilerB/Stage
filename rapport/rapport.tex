@@ -155,7 +155,37 @@ Le programme n'ouvrant qu'une vidéo, il est plus simple de la mettre en static 
 Je commence ensuite l'élaboration des algorithmes. J'ai donc commencé par l'écriture de l'algorithme du movie barcode.
 \subsection{Movie Barcode}
 
+Le movie barcode doit pour restaurer la couleur d'une image, récupérer la bande centrale de chaque frame de la vidéo. je suis donc passé par l'écriture de la méthode \textit{getBandeCentrale(MBFImage source)},
+qui prends en paramètre une frame et retourne la bande centrale de cette frame. L'agortihme se place au milie de l'image et la parcours de la manière suivante : $milieu - tailleBande /2$ jusqu'à
+$milieu + tailleBande /2$.\\
+Ainsi j'ai pu obtenir la bande centrale de n'importe quelle image qui m'est retournée.
+
+\begin{figure}[!h]
+\center
+\includegraphics[scale = 1]{bandecentrale.png}
+\caption{Méthode de récupération de la bande centrale.}
+\end{figure}
+
+Une fois ceci fait, l'algorithme du barcode se contente de concaténer toutes les bandes centrales dans une seule image finale. Le progrramme ne parcours cependant que les keyframes,
+les keyframes étant les seules mages codées complétement dans une vidéo,
+les autres étant calculées à partir des précédentes (P-frame) ou des suivantes (B-frame)\footnote{http://www.dacast.com/blog/what-is-a-key-frame-for-video/}.
+
+INSERER SCREEN BARCODE.
+
+
 \subsection{Anaglyphe}
+
+L'algorithme d'anaglyphe récupère toutes les frames d'une vidéo et leur applique à chacune l'effet d'anaglyphe. Cela passe donc par la méthode \textit{anaglypheImage(MBFImage source, int largeur, int hauteur)}
+qui récupère l'image en paramètre et retourne la même image anaglyphée. Le passage en paramètre de la hauter et de la largeur évite de recalculer ces deux données à chaque appel de la méthode.
+
+\begin{figure}[!h]
+\center
+\includegraphics[scale = 1]{anaglypheimage.PNG}
+\caption{Algorithme de création de l'effet anaglyphe.}
+\end{figure}
+
+l'algortihme créant la vidéo anaglyphée consiste à envoyer toutes les frames àa cette méthode et à reconstruire une vidéo à partir de ces frames à l'aide de l'objet
+\textit{XuggleVideoWriter}. Le format de sortie de la vidéo est spécifié par le format d'entrée.
 
 \subsection{side-by-side}
 
