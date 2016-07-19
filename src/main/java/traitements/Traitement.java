@@ -173,6 +173,7 @@ public class Traitement {
                 //Recuperation de la bande centrale.
                 bandeCentralFrame = getBandeCentrale(frame,tailleBande);
 
+                // Arret du traitement si il reste des keyframes mais image complètement remplie.
                 if (parcoursXImgSortie == options.getLargeur()){
                     break;
                 }
