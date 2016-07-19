@@ -3,7 +3,7 @@ import boutons.Sauvegarder;
 import boutons.TraitementAnaglyphe;
 import boutons.TraitementSideBySide;
 import traitements.Traitement;
-import utils.OptionsBarcode;
+import utils.FenetreOptionsBarcode;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +15,7 @@ import java.io.IOException;
 public class Main {
 
     public static void main (String args[]) throws IOException {
-        // Instance de traitement pour pouvoir l'avoir partout
+        // Instance de traitement
         Traitement t;
 
         //Déclaration des principales composantes.
@@ -91,7 +91,7 @@ public class Main {
 
         //Ajout des Listener sur les boutons.
         boutonSource.addActionListener(loadvideo);
-        barcode.addActionListener(new OptionsBarcode());
+        barcode.addActionListener(new FenetreOptionsBarcode());
         anaglyphe.addActionListener(new TraitementAnaglyphe());
         sbs.addActionListener(new TraitementSideBySide());
         boutonDestination.addActionListener(saveVideo);
