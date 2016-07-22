@@ -24,15 +24,16 @@ public class ChargerVideo implements ActionListener {
 
     public void actionPerformed(ActionEvent e){
         JFileChooser choixFichier = new JFileChooser();
-        choixFichier.showOpenDialog(null);
+        choixFichier.showOpenDialog(conteneur);
         try{
             chargerVideo(choixFichier);
         }catch (VideoNonSupporte ex){
+            ex.printStackTrace();
         }
     }
 
     public void chargerVideo(JFileChooser fichier) throws VideoNonSupporte{
-        //Création de deux vidéos à partir du même fichier pour supprimer le lien affichage/traitement.
+        //Creation de deux videos a partir du meme fichier pour supprimer le lien affichage/traitement.
         XuggleVideo videoAAfficher = new XuggleVideo(fichier.getSelectedFile());
         XuggleVideo videoATraiter = new XuggleVideo(fichier.getSelectedFile());
 
@@ -44,7 +45,7 @@ public class ChargerVideo implements ActionListener {
         VideoPlayer player = VideoPlayer.createVideoPlayer(videoAAfficher,audio);
         player.pause();
         player.showFrame();
-        //Création du traitement avec la vidéo à traiter et le conteneur.
+        //Creation du traitement avec la video a traiter et le conteneur.
         new Traitement(videoATraiter,conteneur);
     }
 

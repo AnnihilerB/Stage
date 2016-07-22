@@ -42,7 +42,7 @@ public class TraitementsTest {
     public void testBandeCentrale() throws IOException {
         MBFImage source = creationImgBandeCentrale();
 
-        MBFImage bandeCentrale = Traitement.getBandeCentrale(source);
+        MBFImage bandeCentrale = Traitement.getBandeCentrale(source, TAILLEBANDE);
         ImageUtilities.write(bandeCentrale,new File("test2.png"));
 
         boolean pixelRouge = true;

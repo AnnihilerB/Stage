@@ -18,7 +18,7 @@ public class Main {
         // Instance de traitement
         Traitement t;
 
-        //Déclaration des principales composantes.
+        //Declaration des principales composantes.
         JFrame fenetre;
         JPanel conteneur;
         JPanel panelSource;
@@ -26,7 +26,7 @@ public class Main {
         JMenuBar menu;
 
         //Initialisation de la fenetre et du conteneur
-        fenetre = new JFrame("Video 0.1");
+        fenetre = new JFrame("Video");
         conteneur = new JPanel();
         panelSource = new JPanel();
         panelDest = new JPanel();
@@ -35,8 +35,7 @@ public class Main {
         menu = new JMenuBar();
 
         JMenu traitements = new JMenu("Traitements...");
-
-        JMenuItem barcode = new JMenuItem("Résumé vidéo");
+        JMenuItem barcode = new JMenuItem("Resume video");
         JMenuItem anaglyphe = new JMenuItem("Anaglyphe...");
         JMenuItem sbs = new JMenuItem("Side-by-side");
 
@@ -50,15 +49,15 @@ public class Main {
         JTextArea textSource = new JTextArea(1,35);
         JTextArea textDest = new JTextArea(1,35);
 
-        //Paramètres de la fenètre
+        //Parametres de la fenetre
         fenetre.setPreferredSize(new Dimension(650,175));
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //Paramètres du conteneur.
+        //Parametres du conteneur.
         conteneur.setPreferredSize(fenetre.getPreferredSize());
         conteneur.setLayout(new FlowLayout(FlowLayout.LEFT,15,15));
 
-        //Paramètres des JPanel
+        //Parametres des JPanel
         panelSource.setLayout(new FlowLayout(FlowLayout.LEFT));
         panelDest.setLayout(new FlowLayout(FlowLayout.LEFT));
         panelSource.setPreferredSize(new Dimension(700,40));
@@ -75,26 +74,22 @@ public class Main {
         conteneur.add(panelSource);
         conteneur.add(panelDest);
 
-        //Paramètres des TextBox
+        //Parametres des TextBox
         textSource.setEditable(false);
         textDest.setEditable(false);
 
-        //Ajout des éléments de la barre de menu.
+        //Ajout des elements de la barre de menu.
         menu.add(traitements);
         traitements.add(barcode);
         traitements.add(anaglyphe);
         traitements.add(sbs);
 
-        //Chargement des instances.
-        ChargerVideo loadvideo = new ChargerVideo(textSource,conteneur);
-        Sauvegarder saveVideo = new Sauvegarder(textDest);
-
         //Ajout des Listener sur les boutons.
-        boutonSource.addActionListener(loadvideo);
+        boutonSource.addActionListener(new ChargerVideo(textSource,conteneur));
         barcode.addActionListener(new FenetreOptionsBarcode());
         anaglyphe.addActionListener(new TraitementAnaglyphe());
         sbs.addActionListener(new TraitementSideBySide());
-        boutonDestination.addActionListener(saveVideo);
+        boutonDestination.addActionListener(new Sauvegarder(textDest));
 
         //Construction de la fenetre.
         fenetre.setContentPane(conteneur);
@@ -103,13 +98,5 @@ public class Main {
         fenetre.pack();
         fenetre.setLocationRelativeTo(null);
         fenetre.setVisible(true);
-
-
-
-
     }
-
-
-
-
 }
