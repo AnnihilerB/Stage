@@ -23,8 +23,11 @@ public class Sauvegarder implements ActionListener {
         JFileChooser fichierSortie = new JFileChooser();
         fichierSortie.setDialogTitle("Enregistrer sous...");
         fichierSortie.showSaveDialog(null);
-        text.setText(fichierSortie.getSelectedFile().getAbsolutePath());
-        //Changement dans le traitement du fichier de sortie.
-        Traitement.setFile(fichierSortie.getSelectedFile());
+        //Verification que le chois n'a pas ete annule
+        if (fichierSortie.getSelectedFile().getAbsolutePath() != null) {
+            text.setText(fichierSortie.getSelectedFile().getAbsolutePath());
+            //Changement dans le traitement du fichier de sortie.
+            Traitement.setFile(fichierSortie.getSelectedFile());
+        }
     }
 }
