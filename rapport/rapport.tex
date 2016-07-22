@@ -1,5 +1,7 @@
 \documentclass[10pt,a4paper]{article}
+\usepackage{listings}
 \usepackage[utf8]{inputenc}
+\usepackage{color}
 \usepackage[francais]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
@@ -25,7 +27,7 @@ produire à la fois l'efet d'un prisme et d'une lentille. L'impression de relief
 \caption{Stéréoscope de Brewer.}
 \end{figure}
 
-Un procédé voisin mais néanmoins différent est celui de l'anaglyphe. Ce procédé sera décrit plus en détail dans la section 3.2 \ref{anasbs}.
+Un procédé voisin mais néanmoins différent est celui de l'anaglyphe. Ce procédé sera décrit plus en détail dans la section\ref{anasbs}.
 Actuellement les dispositifs les plus populaires s'inspirent du stéréoscope de Brewer pour reconstruire le relief comme le fait l'Oculus Rift ou l'HTC Vive. La technologie side-by-side est utilisée ici et
 sera vu en détail dans la section \ref{anasbs}.
 
@@ -40,7 +42,20 @@ Le but ici est donc d'automatiser le processus de création d'une vidéo stéré
 
 \section{Laboratoire d'accueil}
 
+Mon stage est effectué au sein du LaBRI, le Laboartoire Bordelais de Recherche en Informatique. Le LaBRI est associé au CNRS, à l'Université de Bordeaux ainsi qu'à l'INP (Institut Polytechnique de Bordeaux).
+Le LaBRI compte environ 300 personnes dont 113 enseignants et chercheurs de l'Université de Bordeaux et de L'INP et 37 chercheurs répartis entre L'INRIA (Institut National de Recherche en Informatique et en Automatique) et le CNRS. Le LaBRI compte également 140 doctorants, post-doctorants et ingénieurs contractuels.
+Six équipes existent au sein du LaBRI axant leur recherche sur différents domaines. Les équipes sont les suivantes :\\
 
+\begin{itemize}
+\item Combinatoire et Algorithmie
+\item Méthodes Formelles
+\item Modèles et Algorithmes pour la Bioinformatique et la Visualisation d'informations
+\item Programmation, Réseaux et Systèmes
+\item Supports et Algorithmes pour les Applications Numériques Hautes performances.
+\item Image et Son\\
+\end{itemize}
+
+Mon stage s'effectuera au sein de l'équipe Image et Son.
 
 \section{Etat de l'art et matériel existant}
 \subsection{Résumé vidéo}
@@ -95,7 +110,6 @@ pour pouvoir l'exporter facilement sur le web.
 
 Le son des vidéos sera quant à lui restitué tel qu'il l'était sur le fichier source.
 
-
 \section{Cahier des charges et architecture}
 
 Besoins fonctionnels :\newline
@@ -124,27 +138,23 @@ pdf.\newline
 
 La première chose que j'ai eu à réaliser a été de créer le projet Maven\footnote{Outil pour la gestion automatique des projets.}. OpenIMAJ étant disponible via Maven,
 j'ai eu a rédiger le fichier pom.xml permettant de récupérer les modules nécessaires. Le fichier es découpé en section à l'aide de balises de façon similaire à l'HTML. Il faut en début de fichier,
-déclarer le projet, sa version, ainsi que les dépots distants où récupérer les modules.
+déclarer le projet, sa version, ainsi que les dépots distants où récupérer les modules. \newpage
 
-\begin{figure}[!h]
-\center
-\includegraphics[scale = 1]{rapport.PNG}
-\caption{En-tête du fichier pom.xml.}
-\end{figure}
+\lstinputlisting[language=XML, firstline=1, lastline=17,frame=tb,columns=fixed,keywordstyle=\color{blue},breaklines=true,keepspaces,caption = En-tête du ficher pom.xml.]{../pom.xml}
 
-Il faut ensuite ouvrir la balise des dépendances et inscrire chaque dépendance que l'on trouve sur le site du dépot Maven de OpenIMAJ\footnote{https://mvnrepository.com/artifact/org.openimaj}.
+~~\\
+Il faut ensuite ouvrir la balise des dépendances et inscrire chaque dépendance que l'on trouve sur le site du dépot Maven de OpenIMAJ\footnote{https://mvnrepository.com/artifact/org.openimaj}.\\
 
-\begin{figure}[h]
-\includegraphics[scale = 1,inner]{dependance.PNG}
-\caption{Inscription des dépendances.}
-\end{figure}
+\lstinputlisting[language=XML, firstline=19, lastline=32,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces,breaklines=true, caption = Dépendances nécessaires.]{../pom.xml}
+~~\\
 
 Une fois ceci fait, j'ai organisé mon projet en créant tous les packages nécessaires c'est-à-dire : boutons, exceptions,traitements et utils.
 A la racine de dossier src se trouve la classe Main me permettant d'initialiser l'interface et de lancer le programme. Un dossier resources est également présent comportant tous les fichiers
 nécessaires pour les tests. J'ai également créé un dossier test et rajouter la dépendance JUnit dasn le fichier pom.xml pour effectuer les tests unitaires.
 
 Tous les algoritmes seront contenus dans la classe Traitement et tout sera implementé en static y compris les données membres, les données membres étant le fichier de sortie et la vidéo.
-Le programme n'ouvrant qu'une vidéo, il est plus simple de la mettre en static pour qu'elle ne dépende pas d'une instance et soit disponible pour tous les traitements.
+Le programme n'ouvre qu'une seule vidéo à la fois, elle est donc la même pour tous les traitements disponible. Le fichier de sortie quand à lui est redéfini au chargement d'une nouvelle vidéo.
+Il est donc plus pratique d'implémenter tout cela en static.
 
 \begin{figure}[!h]
 \center
@@ -159,36 +169,136 @@ Le movie barcode doit pour restaurer la couleur d'une image, récupérer la band
 qui prends en paramètre une frame et retourne la bande centrale de cette frame. L'agortihme se place au milie de l'image et la parcours de la manière suivante : $milieu - tailleBande /2$ jusqu'à
 $milieu + tailleBande /2$.\\
 Ainsi j'ai pu obtenir la bande centrale de n'importe quelle image qui m'est retournée.
+\lstinputlisting[language=JAVA, firstline=257, lastline=278,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Découpage de la bande centrale.]{../src/main/java/traitements/Traitement.java}
+~~\\
 
-\begin{figure}[!h]
-\center
-\includegraphics[scale = 1]{bandecentrale.png}
-\caption{Méthode de récupération de la bande centrale.}
-\end{figure}
-
-Une fois ceci fait, l'algorithme du barcode se contente de concaténer toutes les bandes centrales dans une seule image finale. Le progrramme ne parcours cependant que les keyframes,
-les keyframes étant les seules mages codées complétement dans une vidéo,
-les autres étant calculées à partir des précédentes (P-frame) ou des suivantes (B-frame)\footnote{http://www.dacast.com/blog/what-is-a-key-frame-for-video/}.
+Une fois ceci fait, l'algorithme du barcode se contente de concaténer toutes les bandes centrales dans une seule image finale. Le programme ne parcours cependant que les keyframes de la vidéo,
+les keyframes étant les seules images codées complétement dans une vidéo, les autres étant calculées à partir des précédentes
+(P-frame) ou des suivantes (B-frame)\footnote{http://www.dacast.com/blog/what-is-a-key-frame-for-video/}.
 
 INSERER SCREEN BARCODE.
 
 
-\subsection{Anaglyphe}
+\subsection{Side-by-side}
+
+Concernant le side-by-side, c'est en étudiant des vidéos produites aved deux sources que j'ai pu me faire une idée de l'algorithme à mettre en oeuvre. Outre la persective changeante,
+ce qui change le plus sur une vidéo side-by-side est ce qui est perçu par les deux caméras. J'ai donc décidé de tronquer mon image source. L'image censée reproduire l'oeil gauche sera tronquée sur la droite.
+Il manquera donc une partie sur l'image de droite. Quant à l'image de droite, elle sera tronquée sur la gauche.  Nous aurons donc ici deux images qui mises côte à côte et observées avec le dispoditif adéquat,
+donneront une image complète.
+Ce découpage passe donc par l'appel de deux méthodes \textit{decouperImageGauche()} et \textit{decouperImageDroite()} qui se chargeront de découper les images.
+
+\lstinputlisting[language=JAVA, firstline=341, lastline=360,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Découpage de l'image gauche.]{../src/main/java/traitements/Traitement.java}
+~~\\
+
+\lstinputlisting[language=JAVA, firstline=362, lastline=389,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Découpage de l'image droite.]{../src/main/java/traitements/Traitement.java}
+~~\\
+
+Une fois ce découpage effectué il faut alors assembler les deux images ce que fait la méthode \textit{sideBySideImage(MBFImage source)}.
+Il faut donc créer une image de taille $(largeurImageSource - ESPACEMENT) * 2$. Ici ESPACEMENT, correspond à l'écart moyen entre les deux yeux.
+Les deux images font donc la même taille c'est-à-dire $largeurImageSource - ESPACEMENT$. On peut donc avoir une image finale où la résolution par oeil sera la même que l'image source. L'image
+finale fait donc deux fois cette taille ci.
+
+\lstinputlisting[language=JAVA, firstline=203, lastline=216,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Cr"ation d'une image side-by-side complète.]{../src/main/java/traitements/Traitement.java}
+~~\\
+
+Il reste donc une fois cette image crée à l'ajouter dans une vidéo de sortie. C'est ce que fait la méthode \textit{sideBySide()}.
+
+\lstinputlisting[language=JAVA, firstline=224, lastline=248,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Création de la vidéo.]{../src/main/java/traitements/Traitement.java}
+
+\subsection{Anaglyphe classique et méthode de Dubois}
 
 L'algorithme d'anaglyphe récupère toutes les frames d'une vidéo et leur applique à chacune l'effet d'anaglyphe. Cela passe donc par la méthode \textit{anaglypheImage(MBFImage source, int largeur, int hauteur)}
-qui récupère l'image en paramètre et retourne la même image anaglyphée. Le passage en paramètre de la hauter et de la largeur évite de recalculer ces deux données à chaque appel de la méthode.
+qui récupère l'image en paramètre et retourne la même image anaglyphée. Le passage en paramètre de la hauteur et de la largeur évite de recalculer ces deux données à chaque appel de la méthode.
 
-\begin{figure}[!h]
-\center
-\includegraphics[scale = 1]{anaglypheimage.PNG}
-\caption{Algorithme de création de l'effet anaglyphe.}
-\end{figure}
+\lstinputlisting[language=JAVA, firstline=78, lastline=105,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\small, caption = Création de l'analgyphe sur une image.]{../src/main/java/traitements/Traitement.java}
+~~\\
 
 l'algortihme créant la vidéo anaglyphée consiste à envoyer toutes les frames àa cette méthode et à reconstruire une vidéo à partir de ces frames à l'aide de l'objet
 \textit{XuggleVideoWriter}. Le format de sortie de la vidéo est spécifié par le format d'entrée.
 
-\subsection{side-by-side}
+En ce qui concerne la méthode de Dubois, j'ai utilisé la matrice moyenne élaborée pour modifier les couleurs de l'image. Eric Dubois travaille toujours avec deux images, donnant un effet de relief plus
+convaincant. J'ai donc décidé d'appliquer le même tronquage sur mon image source que celui réalisé sur le side-by-side afin d'obtenir dexsu images différentes en termes d'informations. Je peux nsuite
+appliquer la matrice sur les pixels des deux images. Cela me donne donc une image anaglyphée présentant une effet 3D plus convaincant que l'algorithme classique. L'incovéniant de cette méthode est
+qu'elle demande plus de ressources CPU dû au calcul des nouvelles valeurs des pixels.
 
+
+\section{Interface Graphique et appels des traitements}
+
+Le programme réalise un traitement sur une seule vidéo. J'ai donc créé un interface simple pour cela.
+
+\begin{figure}[!h]
+\center
+\includegraphics[scale = 0.8]{interface.PNG}
+\caption{Interface de l'application}
+\end{figure}
+
+Le JFrame contient un JPanel unique, le conteneur. Il servira à contenir tous les éléments deque l'on ajoutera. Ce conteneur comprends deux JPanel, un pour la source, l'autre pour la destination.
+Chaque JPanel contient un JLabel, un JTextArea et un JButton.
+
+\lstinputlisting[language=JAVA, firstline=15, lastline=32,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Création des éléments de base.]{../src/main/java/Main.java}
+~~\\
+
+Le menu quant à lui est un JMenu contenant plusieurs JMenuItem. Chaque JMenuItem a un ActionListener Associé pour lancer les différents traitements.
+
+\lstinputlisting[language=JAVA, firstline=34, lastline=54,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Instanciation des élèments]{../src/main/java/Main.java}
+~~\\
+
+
+Concernant le placement dans les JPanel, j'ai opté pour un LayoutManager de type FlowLayout me permettant de placer mes élèments les uns à la suite des autres en partant de la gauche.
+
+\lstinputlisting[language=JAVA, firstline=56, lastline=64,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Choix du LayoutManager]{../src/main/java/Main.java}
+~~\\
+
+Les éléments sont ensuite ajoutés dans leur JPanel respectifs puis les JPanel sont ajoutés au conteneur.
+
+\lstinputlisting[language=JAVA, firstline=66, lastline=79,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize,identifierstyle=\ttfamily, caption = Ajout des élèments.]{../src/main/java/Main.java}
+~~\\
+
+Enfin les listeners sont instaciés, et la fenetre est paramétré. La méthode \textit{pack()} permet de prendre le placement tel qu'il a été défini par la méthode \textit{setPreferredSize(Dimension dim)}.
+
+\lstinputlisting[language=JAVA, firstline=81, lastline=100,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Paramètrage global.]{../src/main/java/Main.java}
+~~\\
+\subsection{Chargement d'une vidéo}
+
+Lors de l'appui sur le bouton pour charger une vidéo, c'est la classe ChargerVideo qui est appellée. Elle implémente un ActionListener pour écouter les actions du bouton auquel elle est associé.
+Le constructeur de cette classe prend en paramètre un JTextArea et un JPanel. Le JTextArea permet de faire apparaitre le chemin de la vidéo sélectionnée. Le JPanel quant à lui est le conteneur permettant
+de centrer l'apparation de l'exception \textit{VideoNonSupporte} si le fichier séléctionné ne peut être décodé.
+
+\lstinputlisting[language=JAVA, firstline=13, lastline=33,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Constructeur de classe.]{../src/main/java/boutons/ChargerVideo.java}
+~~\\
+
+Lors de l'appui sur le bouton, un JFileChooser est lancé puis passé à la méthode \textit{chargerVideo(JFileChooser fichier)}.
+Cette méthode se charge d'ouvrir la fenêtre de sélection du fichier puis créé 1 flux audio pour la vidéo seléctionée ainsi qu'un affichage pour visualiser la vidéo. Cette méthode lance l'exception
+\textit{VideoNonSupporte} si la vidéo n'est pas décodable.
+2 flux vidéos sont également créés, l'un servant à être envoyé au traitement et l'autre servant au player vidéo. Il est
+nécessaire de charger deux fois la vidéo pour effacer le lien affichage/traitement. En effet, si la vidéo traitée est la même pour l'affichage, regarder la vidéo jusqu'à par exemple la moitié fera commencer
+le traitement séléctionné à la moitié de la vidéo.
+
+\lstinputlisting[language=JAVA, firstline=35, lastline=50,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Chargement de la vidéo\, création du lecteur et de l'instance du traitement]{../src/main/java/boutons/ChargerVideo.java}
+~~\\
+
+Le bouton permettan de choisir le fichier de destiunatnion fait appel à la classe Sauvegarder qui elle ne prends en paramètre que le JTextArea pour afficher le chemin du fichier de sortie.
+
+\subsection{Exécution d'un traitement}
+
+Tout au long de cette partie, nous prendrons pour exemple le traitement side-by-side. Tous les appels de traitements sont similaires à l'exception du Barcode qui ouvre une fenêtre en plus.
+
+Tous les traitements sont appelés à l'aide de Thread. En effet lors du démarrage d'un thread une fenêtre est crée informant du traitement de la vidéo. Pour que cette fenêtre soit présente
+tout au long du traitement. Il est nécessaire de la démarrer dans un Thread et de démarrer le traitement dans un autre Thread. En effet, l'ouverture de cette fenêtre bloque le déroulement du traitement
+jusqu'à sa fermeture. Il est donc nécessaire de recourir au Threads.
+
+Lors du clic, la classe \textit{TraitementSideBySide} est appelée.
+
+\lstinputlisting[language=JAVA, firstline=11, lastline=18,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Création du thread de traitement.]{../src/main/java/boutons/TraitementSideBySide.java}
+~~\\
+
+Cette classe créé une instance de la classe ThreadSideBySide démarrant le traitement dans un Thread grâce à la méthode run. La méthode capture également l'exception \textit{DestinationManquante} empêchant
+le début du traitement si aucun fichier de sortie n'est précisé.
+
+\lstinputlisting[language=JAVA, firstline=10, lastline=20,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Démarrage du traitement.]{../src/main/java/traitements/ThreadSideBySide.java}
+~~\\
+
+Une fois le traitment terminé, la fenêtre d'avancement est détruite et est remplacée par un message montrant que le traitement s'est terminé.
 
 
 \section{Phase de test}
