@@ -9,17 +9,15 @@ import java.awt.event.ActionListener;
  */
 public class ListenerOkLargeur implements ActionListener {
 
-    OptionsBarcode optionsBarcode;
     JTextArea textLargeur;
 
-    public ListenerOkLargeur(OptionsBarcode op,JTextArea text){
-        optionsBarcode = op;
+    public ListenerOkLargeur(JTextArea text){
         textLargeur = text;
     }
 
     public void actionPerformed(ActionEvent actionEvent) {
-        optionsBarcode.setLargeur(Integer.parseInt(textLargeur.getText()));
-        System.out.println(optionsBarcode.getLargeur());
+        OptionsBarcode.setLargeur(Integer.parseInt(textLargeur.getText()));
+        System.out.println(OptionsBarcode.getLargeur());
     }
 }
 
