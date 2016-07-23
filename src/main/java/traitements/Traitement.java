@@ -148,7 +148,7 @@ public class Traitement {
 
     public static void barcode() throws IOException, DestinationManquante {
 
-        int tailleBande = options.getTailleBande();
+        int tailleBande = OptionsBarcode.getTailleBande();
 
         verifSortie();
 
@@ -160,23 +160,18 @@ public class Traitement {
 
         MBFImage frame;
         MBFImage bandeCentralFrame;
-        MBFImage imgSortie = new MBFImage(options.getLargeur(), video.getCurrentFrame().getHeight());
+        MBFImage imgSortie = new MBFImage(OptionsBarcode.getLargeur(), video.getCurrentFrame().getHeight());
         
         //Récupération de la première frame.
         frame = video.getCurrentFrame();
 
-        while (video.hasNextFrame()) {
+        while (video.hasNextFrame() && (parcoursXImgSortie < OptionsBarcode.getLargeur()) ) {
             if (video.nextFrameIsKeyFrame) {
-                //r&cupération de la keframe
+                //récupération de la keframe
                 frame = video.getNextFrame();
 
                 //Recuperation de la bande centrale.
                 bandeCentralFrame = getBandeCentrale(frame,tailleBande);
-
-                // Arret du traitement si il reste des keyframes mais image complètement remplie.
-                if (parcoursXImgSortie == options.getLargeur()){
-                    break;
-                }
                 //Dessine dans l'image de sortie, la bande centrale récupérée.
                 imgSortie.drawImage(bandeCentralFrame, parcoursXImgSortie, 0);
                 parcoursXImgSortie += tailleBande;
