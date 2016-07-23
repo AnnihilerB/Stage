@@ -26,9 +26,6 @@ public class FenetreOptionsBarcode implements ActionListener {
         // Choix de la textLargeur de l'image, taille de la bande, calcul de la taille de l'image.
         options = new JDialog();
 
-        //Instanciation des options.
-        OptionsBarcode optionsBarcode = new OptionsBarcode();
-
         //Paramètrage des textes.
         JLabel labLargeur = new JLabel("Largeur de l'image : ");
         JLabel labTailleBande = new JLabel("Taille de la bande : ");
@@ -61,7 +58,8 @@ public class FenetreOptionsBarcode implements ActionListener {
 
         //Ajout des Listener sur les boutons.
         lancerTraitement.addActionListener(new TraitementBarcode());
-        validerLargeur.addActionListener(new ListenerOkLargeur(optionsBarcode,textLargeur));
+        validerLargeur.addActionListener(new ListenerOkLargeur(textLargeur));
+        validerTaille.addActionListener(new ListenerOkTailleBande(textTailleBande));
         //Affichage de la fenetre.
         options.setVisible(true);
 
