@@ -1,4 +1,6 @@
-package utils;
+package boutons;
+
+import utils.OptionsBarcode;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
