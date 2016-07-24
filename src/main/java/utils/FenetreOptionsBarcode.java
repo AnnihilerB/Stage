@@ -1,6 +1,8 @@
 package utils;
 
-import boutons.TraitementBarcode;
+import boutons.ListenerOkLargeur;
+import boutons.ListenerOkTailleBande;
+import boutons.ListenerBarcode;
 
 import javax.swing.*;
 import java.awt.*;
@@ -57,7 +59,7 @@ public class FenetreOptionsBarcode implements ActionListener {
         options.add(lancerTraitement);
 
         //Ajout des Listener sur les boutons.
-        lancerTraitement.addActionListener(new TraitementBarcode());
+        lancerTraitement.addActionListener(new ListenerBarcode());
         validerLargeur.addActionListener(new ListenerOkLargeur(textLargeur));
         validerTaille.addActionListener(new ListenerOkTailleBande(textTailleBande));
         //Affichage de la fenetre.
