@@ -1,7 +1,4 @@
-import boutons.ChargerVideo;
-import boutons.Sauvegarder;
-import boutons.TraitementAnaglyphe;
-import boutons.TraitementSideBySide;
+import boutons.*;
 import traitements.Traitement;
 import utils.FenetreOptionsBarcode;
 
@@ -36,7 +33,8 @@ public class Main {
 
         JMenu traitements = new JMenu("Traitements...");
         JMenuItem barcode = new JMenuItem("Resume video");
-        JMenuItem anaglyphe = new JMenuItem("Anaglyphe...");
+        JMenuItem anaglyphe = new JMenuItem("Anaglyphe");
+        JMenuItem anaglypheDubois = new JMenuItem("Anaglyphe Dubois");
         JMenuItem sbs = new JMenuItem("Side-by-side");
 
         //Labels et boutons de l'interface.
@@ -82,13 +80,15 @@ public class Main {
         menu.add(traitements);
         traitements.add(barcode);
         traitements.add(anaglyphe);
+        traitements.add(anaglypheDubois);
         traitements.add(sbs);
 
         //Ajout des Listener sur les boutons.
         boutonSource.addActionListener(new ChargerVideo(textSource,conteneur));
         barcode.addActionListener(new FenetreOptionsBarcode());
-        anaglyphe.addActionListener(new TraitementAnaglyphe());
-        sbs.addActionListener(new TraitementSideBySide());
+        anaglyphe.addActionListener(new ListenerAnaglyphe());
+        anaglypheDubois.addActionListener(new ListenerAnaglypheDubois());
+        sbs.addActionListener(new ListenerSideBySide());
         boutonDestination.addActionListener(new Sauvegarder(textDest));
 
         //Construction de la fenetre.
