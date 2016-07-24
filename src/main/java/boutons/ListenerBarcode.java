@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 /**
  * Created by ali on 29/06/16.
  */
-public class TraitementBarcode implements ActionListener {
+public class ListenerBarcode implements ActionListener {
 
     //Destruction de la fenetre des options et creation du thread
 
