@@ -1,7 +1,6 @@
 package traitements;
 
 import exceptions.DestinationManquante;
-import org.openimaj.image.DisplayUtilities;
 import org.openimaj.image.ImageUtilities;
 import org.openimaj.image.MBFImage;
 import org.openimaj.video.xuggle.XuggleVideo;
@@ -33,23 +32,24 @@ public class Traitement {
         conteneur = cont;
         options = new OptionsBarcode();
     }
+    public static MBFImage  anaglypheDuboisImage(MBFImage source) throws IOException {
 
-    public static void anaglypheDubois() throws IOException {
-
-        MBFImage imgDroite = ImageUtilities.readMBF(new File("testduboisd.png"));
-        MBFImage imgGauche = ImageUtilities.readMBF(new File("testduboisg.png"));
+        MBFImage imgGauche = decouperImageGauche(source);
+        MBFImage imgDroite = decouperImageDroite(source);
 
         int largeur = imgGauche.getWidth();
         int hauteur = imgGauche.getHeight();
 
         MBFImage imgSortie = new MBFImage(largeur,hauteur);
 
+        Float[] pixelsDroite;
+        Float[] pixelsGauche;
+
+        Float[] pixelsDest = new Float[3];
+
         for (int y = 0; y < hauteur; ++y){
             for (int x = 0; x < largeur; ++x){
-                Float[] pixelsDroite;
-                Float[] pixelsGauche;
 
-                Float[] pixelsDest = new Float[3];
 
                 pixelsGauche = imgGauche.getPixel(x,y);
                 pixelsDroite = imgDroite.getPixel(x,y);
@@ -62,9 +62,33 @@ public class Traitement {
 
             }
         }
-        DisplayUtilities.display(imgSortie);
-        ImageUtilities.write(imgSortie,"png",new File("sortie.png"));
+        return imgSortie;
+    }
 
+    public static void anaglypheDubois() throws IOException, DestinationManquante {
+
+        verifSortie();
+
+        //Création du thread inforamtnt sur le déroulement du traitement.
+        ThreadEnCours thread = new ThreadEnCours(conteneur);
+        thread.start();
+
+        XuggleVideoWriter videoSortie = new XuggleVideoWriter(fichierSortie.getAbsolutePath(),video.getWidth(), video.getHeight(),video.getFPS());
+        videoSortie.initialise();
+
+        MBFImage frame;
+        frame = video.getCurrentFrame();
+
+        while(video.hasNextFrame()){
+
+            videoSortie.addFrame( Traitement.anaglypheDuboisImage(frame) );
+            frame = video.getNextFrame();
+
+        }
+        videoSortie.processingComplete();
+        thread.detruire();
+        videoSortie.close();
+        JOptionPane.showMessageDialog(conteneur, "Traitement terminé !", "Anaglyphe Dubois", JOptionPane.PLAIN_MESSAGE);
     }
 
     /** Realise l'effet anaglyphe sur une image passee en parametre et la retourne
@@ -136,7 +160,7 @@ public class Traitement {
         videoSortie.processingComplete();
         thread.detruire();
         videoSortie.close();
-        JOptionPane.showMessageDialog(conteneur, "Traitement terminé !", "Résumé vidéo", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(conteneur, "Traitement terminé !", "Anaglyphe", JOptionPane.PLAIN_MESSAGE);
 
     }
 
@@ -240,7 +264,7 @@ public class Traitement {
         Videosortie.processingComplete();
         thread.detruire();
         Videosortie.close();
-        JOptionPane.showMessageDialog(conteneur, "Traitement termine !", "Resume video", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(conteneur, "Traitement termine !", "Side-by-side", JOptionPane.PLAIN_MESSAGE);
     }
 
     /**
