@@ -88,7 +88,7 @@ public class Traitement {
         videoSortie.processingComplete();
         thread.detruire();
         videoSortie.close();
-        JOptionPane.showMessageDialog(conteneur, "Traitement terminé !", "Anaglyphe Dubois", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(conteneur, "Traitement termine !", "Anaglyphe Dubois", JOptionPane.PLAIN_MESSAGE);
     }
 
     /** Realise l'effet anaglyphe sur une image passee en parametre et la retourne
@@ -160,7 +160,7 @@ public class Traitement {
         videoSortie.processingComplete();
         thread.detruire();
         videoSortie.close();
-        JOptionPane.showMessageDialog(conteneur, "Traitement terminé !", "Anaglyphe", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(conteneur, "Traitement termine !", "Anaglyphe", JOptionPane.PLAIN_MESSAGE);
 
     }
 
@@ -203,19 +203,19 @@ public class Traitement {
                 //Passage a la frame suivante
                 frame = video.getNextFrame();
             }
-            //Frame n'est pas une keyframe, récupération de la suivante
+            //Frame n'est pas une keyframe, recuperation de la suivante
             frame = video.getNextFrame();
         }
         ImageUtilities.write(imgSortie, "png", fichierSortie);
         video.close();
         thread.detruire();
-        JOptionPane.showMessageDialog(conteneur, "Traitement terminé !", "Résumé vidéo", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(conteneur, "Traitement termine !", "Resume video", JOptionPane.PLAIN_MESSAGE);
     }
 
     /**
-     * Réalise le side by side sur une seule image. A partir d'une image, elle est dupliquée,
-     * la première est coupée sur la droite, la seconde sur la gauche.
-     * @param source : image dont on doit réaliser l'effet.
+     * Realise le side by side sur une seule image. A partir d'une image, elle est dupliquee,
+     * la premiere est coupee sur la droite, la seconde sur la gauche.
+     * @param source : image dont on doit realiser l'effet.
      * @return : Retourne une image qui fait deux fois la taille initiale moins le tronquage.
      * @throws IOException
      */
@@ -236,7 +236,7 @@ public class Traitement {
     }
 
     /**
-     * Réalise le side by side sur une vidéo entière.
+     * Realise le side by side sur une video entiere.
      * @throws IOException
      * @throws DestinationManquante
      */
@@ -269,7 +269,7 @@ public class Traitement {
 
     /**
      * Methode permettant de recuperer la bande centrale d'une image. Necessaire pour le movie barcode.
-     * @param source : image dont la bande centrale doit être récuperee.
+     * @param source : image dont la bande centrale doit etre recuperee.
      * @return : la bande centrale de l'image source.
      * @throws IOException
      */
