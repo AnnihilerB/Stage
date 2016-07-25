@@ -19,7 +19,6 @@ public class ListenerOkLargeur implements ActionListener {
 
     public void actionPerformed(ActionEvent actionEvent) {
         OptionsBarcode.setLargeur(Integer.parseInt(textLargeur.getText()));
-        System.out.println(OptionsBarcode.getLargeur());
     }
 }
 

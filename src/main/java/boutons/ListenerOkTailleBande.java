@@ -20,7 +20,6 @@ public class ListenerOkTailleBande implements ActionListener {
 
     public void actionPerformed(ActionEvent actionEvent) {
         OptionsBarcode.setTailleBande(Integer.parseInt(textTailleBande.getText()));
-        System.out.println(OptionsBarcode.getTailleBande());
 
     }
 }
