@@ -34,8 +34,8 @@ public class Traitement {
     }
     public static MBFImage  anaglypheDuboisImage(MBFImage source) throws IOException {
 
-        MBFImage imgGauche = decouperImageGauche(source);
-        MBFImage imgDroite = decouperImageDroite(source);
+        MBFImage imgGauche = decouperImageGauche(source, ESPACEMENT);
+        MBFImage imgDroite = decouperImageDroite(source, ESPACEMENT);
 
         int largeur = imgGauche.getWidth();
         int hauteur = imgGauche.getHeight();
@@ -226,8 +226,8 @@ public class Traitement {
         MBFImage dest = new MBFImage((source.getWidth() - ESPACEMENT) * 2, source.getHeight());
 
         //Creation des deux images gauches et droite auquels on retire un bout corresspondant a ce que voit l'oeil.
-        MBFImage imgGauche = decouperImageGauche(source);
-        MBFImage imgDroite = decouperImageDroite(source);
+        MBFImage imgGauche = decouperImageGauche(source, ESPACEMENT);
+        MBFImage imgDroite = decouperImageDroite(source, ESPACEMENT);
 
         //Remplissage de l'image finale a l'aide des images gauche et droite.
         dest.drawImage(imgGauche, 0, 0);
@@ -358,13 +358,13 @@ public class Traitement {
             throw new DestinationManquante(conteneur);
     }
 
-    public static MBFImage decouperImageGauche(MBFImage source) throws IOException {
+    public static MBFImage decouperImageGauche(MBFImage source, int espacement) throws IOException {
 
         //Creation des deux images gauches et droite auquels on retire un bout correspondant a ce que voit l'oeil.
-        MBFImage imgGauche = new MBFImage(source.getWidth() - ESPACEMENT, source.getHeight());
+        MBFImage imgGauche = new MBFImage(source.getWidth() - espacement, source.getHeight());
 
         //Correspond a l'endroit ou doit s'arreter le parcours de l'image source pour generer l'image gauche.
-        int parcoursXSource = source.getWidth() - ESPACEMENT;
+        int parcoursXSource = source.getWidth() - espacement;
 
 
         //Parcours des y de l'image.
@@ -376,13 +376,14 @@ public class Traitement {
                 imgGauche.setPixel(x, y, pixels);
             }
         }
+        ImageUtilities.write(imgGauche, new File("imggauchedecouperdansmethode.png"));
         return imgGauche;
     }
 
-    public static MBFImage decouperImageDroite(MBFImage source) throws IOException {
+    public static MBFImage decouperImageDroite(MBFImage source, int espacement) throws IOException {
 
         //Creation des deux images gauches et droite auquels on retire un bout corresspondant a  ce que voit l'oeil.
-        MBFImage imgDroite = new MBFImage(source.getWidth() - ESPACEMENT, source.getHeight());
+        MBFImage imgDroite = new MBFImage(source.getWidth() - espacement, source.getHeight());
 
         //Indice de remplissage de l'image de l'oeil droit.
         int indexRemplissageXImageDroite = 0;
@@ -390,7 +391,7 @@ public class Traitement {
         //Parcours des y de l'image.
         for (int y = 0; y < source.getHeight(); ++y) {
             //Remplissage de l'aimge droite. On commence a partir de l'espcaement.
-            for (int xD = ESPACEMENT; xD < source.getWidth(); ++xD) {
+            for (int xD = espacement; xD < source.getWidth(); ++xD) {
                 Float[] pixels;
                 pixels = source.getPixel(xD, y);
                 //Besoin d'un index pour remplir l'imge de destination depuis 0 et non depuis l'espacement.
