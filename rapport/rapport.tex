@@ -6,7 +6,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
 \usepackage[export]{adjustbox}
-\bibliographystyle{plain}
+\bibliographystyle{ieeetr}
 \author{Ali CHERIFI}
 \title{Rapport de stage de licence\\Résumé vidéo et vidéo 3D anaglyphe et side-by-side}
 \begin{document}
@@ -15,35 +15,35 @@
 \tableofcontents
 \newpage
 \section{Introduction}
-Le relief de la vision humaine\cite{greenwade93} provient de la différence de perception entre les deux yeux. La stéréoscopie rassemble toutes les différentes méthodes permettant de reconstruire cet effet à partir d'objets 2D
+Le relief de la vision humaine provient de la différence de perception entre les deux yeux. La stéréoscopie rassemble toutes les différentes méthodes permettant de reconstruire cet effet à partir d'objets 2D
 observés soit à travers un instrument d'optique ou alors à partir de deux photographies prises avec un décalage.
 La stéréoscopie est un domaine qui a interessé l'homme depuis longtemps. En effet, ce principe a été imaginé par Charles Wheatstone\cite{stereoscopie} (physicien et inventeur anglais) en 1832.
 Le premier appareil créant l'effet stéréoscopique a vu le jour en 1843 par David Brewster (physicien et inventeur écossais). Cet appareil ne servait alors qu'à observer deux dessins.
-Cet appareil monta en popularité avec l'apparition des travaux sur la photographie. Il était constitué de deux prismes comporatnt chacun des faces convexes. Cela permettait à chaque oculaire de
-produire à la fois l'efet d'un prisme et d'une lentille. L'impression de relief était donc observable sur deux photographies donc le centre de la deuxième est décalé de quelques centimètres.
+Cet appareil monta en popularité avec l'apparition des travaux sur la photographie. Il était constitué de deux prismes comportant chacun des faces convexes. Cela permettait à chaque oculaire de
+produire à la fois l'effet d'un prisme et d'une lentille. L'impression de relief était donc observable sur deux photographies donc le centre de la deuxième est décalé de quelques centimètres.
 
 \begin{figure}[!h]
 \center
 \includegraphics[scale = 0.5]{brewer.jpg}
-\caption{Stéréoscope de Brewer.}
+\caption{Stéréoscope de Brewer\cite{brewster}.}
 \end{figure}
 
 Un procédé voisin mais néanmoins différent est celui de l'anaglyphe. Ce procédé sera décrit plus en détail dans la section\ref{anasbs}.
 Actuellement les dispositifs les plus populaires s'inspirent du stéréoscope de Brewer pour reconstruire le relief comme le fait l'Oculus Rift ou l'HTC Vive. La technologie side-by-side est utilisée ici et
 sera vu en détail dans la section \ref{anasbs}.
 
-Ces deux procédès ont très vite été adaptés aux vidéos afin de rendre les films plus vivants et réels et ainsi augmenter l'immersion.
+Ces deux procédés ont très vite été adaptés aux vidéos afin de rendre les films plus vivants et réels et ainsi augmenter l'immersion.
 A l'heure actuelle tous ces procédés utilisent 2 photographies ou vidéos prise avec un point de vue différents.  Le rendu du relief est alors très convaincant car très proche de la réalité.
 Cependant, se procurer deux caméras ou appareils photos est très onéreux et n'est pas à la portée de tout le monde. Le but ici sera donc de réfléchir et de trouver un moyen de produire
-cette stéréoscopie à partir d'une seule source vidéo ou d'une seule photographie tout en obtenant un relief le plus convaicant possible. Le résultat ne sera cependant jaais le même qu'avec deux images,
-la perspective étant fixe à partir d'une seule source. Lors d'une prise avec 2 appareils, certains éléments sortent du cadre de la photo tandis que d'autred y entre. La quantité
+cette stéréoscopie à partir d'une seule source vidéo ou d'une seule photographie tout en obtenant un relief le plus convaincant possible. Le résultat ne sera cependant jamais le même qu'avec deux images,
+la perspective étant fixe à partir d'une seule source. Lors d'une prise avec 2 appareils, certains éléments sortent du cadre de la photo tandis que d'autres y entre. La quantité
 d'informations présente sur une image est fixe. La translation qui se fera pour produire le décalage entre les deux yeux constituera alors une perte d'informations sans aucun gain.
 
 Le but ici est donc d'automatiser le processus de création d'une vidéo stéréoscopique anaglyphe et side-by-side à partir d'une seule source vidéo tout ceci en JAVA.
 
 \section{Laboratoire d'accueil}
 
-Mon stage est effectué au sein du LaBRI, le Laboartoire Bordelais de Recherche en Informatique. Le LaBRI est associé au CNRS, à l'Université de Bordeaux ainsi qu'à l'INP (Institut Polytechnique de Bordeaux).
+Mon stage est effectué au sein du LaBRI, le Laboratoire Bordelais de Recherche en Informatique. Le LaBRI est associé au CNRS, à l'Université de Bordeaux ainsi qu'à l'INP (Institut Polytechnique de Bordeaux)\cite{labri}.
 Le LaBRI compte environ 300 personnes dont 113 enseignants et chercheurs de l'Université de Bordeaux et de L'INP et 37 chercheurs répartis entre L'INRIA (Institut National de Recherche en Informatique et en Automatique) et le CNRS. Le LaBRI compte également 140 doctorants, post-doctorants et ingénieurs contractuels.
 Six équipes existent au sein du LaBRI axant leur recherche sur différents domaines. Les équipes sont les suivantes :\\
 
@@ -60,47 +60,47 @@ Mon stage s'effectuera au sein de l'équipe Image et Son.
 
 \section{Etat de l'art et matériel existant}
 \subsection{Résumé vidéo}
-Le résumé vidéo peut aussi être appelé "Movie Barcode". Il permet de faire ressortir la couleur générale d'un film ou d'une vidéo. En récupérant la bande du milieu de chaque image et en concatenant tout cela pour
+Le résumé vidéo peut aussi être appelé "Movie Barcode". Il permet de faire ressortir la couleur générale d'un film ou d'une vidéo. En récupérant la bande du milieu de chaque image et en concaténant tout cela pour
 tout le film, on obtient une image très similaire à un code barre représentant l'ambiance générale de la vidéo.
-Il existe un logiciel disponible réalisant ce traitement nommé "Movie Barcode Generator". Le logiciel est écrit en C\# et ses sources sont disponibles à tous. L'auteur du logiciel accepte la vente des
+Il existe un logiciel disponible réalisant ce traitement nommé "Movie Barcode Generator". Le logiciel est écrit en C\# et ses sources sont disponibles à tous\cite{barcode}. L'auteur du logiciel accepte la vente des
 résultats produit par son logiciel.
 
 \subsection{Anaglyphe et side-by-side}
 \label{anasbs}
 Actuellement, le vidéo 3D par anaglyphe propose deux méthodes majeures, un algorithme simple et la méthode de Dubois.
-Le premier algorithme consiste à séparer et extraire les canaux RGB d'une image 2D et d'en faire une image 3D. Le principe réside dans le filtrage des couleurs par l'oeil devant lequel se trouve un filtre.
-Chaque oeil ayant un filtre différent, il ne perçoit que les couleurs que le filtre laisse passer. Actuellement, le filtre le plus répandu est le filtre rouge/cyan.
-Il suffit donc dans le cas de cet algortihme, d'extraire le canal rouge de l'image et d'en génerer un nouvelle. Ensuite il faut à partir de l'image source créer une nouvelle image à partir du mélange des canaux bleu et vert.
-On obtient ainsi deux images, une cyan et l'autre rouge. Il faut ensuites les superposer en leur appliquant un décalage.\newline
+Le premier algorithme consiste à séparer et extraire les canaux RGB d'une image 2D et d'en faire une image 3D. Le principe réside dans le filtrage des couleurs par l'œil devant lequel se trouve un filtre.
+Chaque œil ayant un filtre différent, il ne perçoit que les couleurs que le filtre laisse passer. Actuellement, le filtre le plus répandu est le filtre rouge/cyan.
+Il suffit donc dans le cas de cet algorithme, d'extraire le canal rouge de l'image et d'en générer un nouvelle. Ensuite il faut à partir de l'image source créer une nouvelle image à partir du mélange des canaux bleu et vert.
+On obtient ainsi deux images, une cyan et l'autre rouge. Il faut ensuite les superposer en leur appliquant un décalage.\newline
 
-La méthode de Dubois propose quant à elle de modifier les couleurs de l'image avant de lui appliquer l'algorithme vu précedemment.
-En effet, afin de génerer des couleurs anaglyphe les plus proche possible de l'originale, Dubois tiens compte de la sensibilité spectrale de l'oeil humain,
-le spectre d'absorption des filtre des lunettes et de la densité du spectre des moniteurs.
+La méthode de Dubois propose quant à elle de modifier les couleurs de l'image avant de lui appliquer l'algorithme vu précédemment.
+En effet, afin de générer des couleurs anaglyphe les plus proche possible de l'originale, Dubois tiens compte de la sensibilité spectrale de l'œil humain,
+le spectre d'absorption des filtre des lunettes et de la densité du spectre des moniteurs\cite{dubois}.
 Dubois a alors pu en déduire une matrice à appliquer sur l'image originale permettant un effet 3D amélioré et la quasi
-disparition des images fantômes qui sont des images résultat d'une supersition mal effectuée.
+disparition des images fantômes qui sont des images résultat d'une superposition mal effectuée.
 Le logiciel open-source Gimpel3D permet de faire de l'anaglyphe à partir d'images seulement et ne propose pas la méthode de Dubois. Nombre de logiciels payant existent et propose de réaliser des vidéos 3D
 anaglyphe suivant l'algorithme basique comme par exemple DVDFab 9 ou  3D Video Converter.\newline
 
-En ce qui concerne le side-by-side, le principe est de reproduire la distinction entre l'oeil droit et l'oeil gauche à travers une vidéo en comportant deux légérement décalés.
+En ce qui concerne le side-by-side, le principe est de reproduire la distinction entre l'œil droit et l'œil gauche à travers une vidéo en comportant deux légèrement décalés.
 Il existe à l'heure actuelle beaucoup de logiciels qui proposent de faire ceci mais uniquement à partir de deux vidéos enregistrés préalablement avec le décalage.
 Un seul logiciel exécute ce traitement avec une seule vidéo et il s'agit de DVDFab 9. Il est cependant payant et il n'existe aucun autre logiciel gratuit ou open-source réalisant ce traitement.
 
 \subsection{Les flux vidéos en JAVA}
 
-Très peu de bibliothèques manipulant des vidéos existent en JAVA. Au fil des recherches, la première bibliothèque que j'ai pu rencontrer est JAVACV, qui est un wrapper\footnote{Englobage d'un élément déjà existant
+Très peu de bibliothèques manipulant des vidéos existent en JAVA. Au fil des recherches, la première bibliothèque que j'ai pu rencontrer est JAVACV\cite{javacv}, qui est un wrapper\footnote{Englobage d'un élément déjà existant
 afin de simplifier son utilisation.} autour d'OpenCV. Cependant, les performances de JAVACV sont encore aujourd'hui sujet de débat.\\
 
-J'ai donc préféré m'orienter vers des bibliothèques multimédias. J'ai trouvé par la suite la bibliothèque nommée Xuggler quiest un wrapper autour de
+J'ai donc préféré m'orienter vers des bibliothèques multimédias. J'ai trouvé par la suite la bibliothèque nommée Xuggler\cite{xuggler} qui est un wrapper autour de
 ffmpeg\footnote{Collection de logiciel libre permettant le traitement de flux audio et vidéos.} pour JAVA. Après quelques essais en ligne de commande de ce qui était offert
-par ffmpeg (extraction des frames d'une vidéo, grands nombre de formats décodables,etc...), j'ai donc voulu essayer Xuggler. Malheureusment, cette bibliothèque n'est plus maintenue à jour, en effet le dernier
-commit GitHub date de 2014. En recherchant d'autres wrapper autour de ffmpeg j'ai finalement pu tomber sur la bibliothèque OpenIMAJ et c'est celle-ci que j'utiliserais.\\
+par ffmpeg (extraction des frames d'une vidéo, grands nombre de formats décodables,etc...), j'ai donc voulu essayer Xuggler. Malheureusement, cette bibliothèque n'est plus maintenue à jour, en effet le dernier
+commit GitHub date de 2014\cite{xugglergit}. En recherchant d'autres wrapper autour de ffmpeg j'ai finalement pu tomber sur la bibliothèque OpenIMAJ\cite{openimaj} et c'est celle-ci que j'utiliserais.\\
 
 Afin de traiter les flux vidéos et de faire le traitement nécessaire sur les images tirées des vidéos, je me servirais de  la bibliothèque OpenImaj car multimédia, et maintenue à jour.
 Cette bibliothèque présente de nombreux avantages. Tout d'abord elle est
-disponible via un dépot Maven sous forme de modules. On peut donc récupérer uniquement les élèments de la bibliothèque
-les plus pertinents. J'ai donc besoin ici des modules de décodage vidéo et de son, du module de traitemant d'images
+disponible via un dépot Maven sous forme de modules\cite{openimajmvn}. On peut donc récupérer uniquement les éléments de la bibliothèque
+les plus pertinents. J'ai donc besoin ici des modules de décodage vidéo et de son, du module de traitement d'images
 et du module gérant les entrées/sorties.
-Comme dit précedemment, OpenIMAJ est un wrapper ffmpeg. On aura donc l'avantage ici de pouvoir décoder les formats vidéos
+Comme dit précédemment, OpenIMAJ est un wrapper ffmpeg. On aura donc l'avantage ici de pouvoir décoder les formats vidéos
 les plus utilisés, causant alors très peu de problèmes de compatibilité dans notre
 programme.\\
 
@@ -109,7 +109,7 @@ le fichier de sortie dans les formats les plus courants c'est-à-dire MP4, AVI o
 En ce qui concerne l'image, notre programme donnera en sortie une image au format PNG afin d'éviter la perte de donnée et
 pour pouvoir l'exporter facilement sur le web.
 
-Le son des vidéos sera quant à lui restitué tel qu'il l'était sur le fichier source.
+Le son des vidéos sera quant devrait être restitué tel qu'il l'était sur le fichier source.
 
 \section{Cahier des charges et architecture}
 
@@ -118,12 +118,12 @@ Besoins fonctionnels :\newline
 \item S'affiche sous forme de fenêtre.
 \item Choisir le fichier à traiter.
 \item Préciser si la vidéo est décodable par le logiciel ou non. Si non, précisez les formats acceptés.
-\item choix du mode de traitement et de l'algorithme (pour l'anaglyphe choisir entre l'agorithme classique ou la méthode
+\item choix du mode de traitement et de l'algorithme (pour l'anaglyphe choisir entre l'algorithme classique ou la méthode
 de Dubois).
 \item Effectuer le traitement à l'aide d'un bouton.
 \item Montrer l'avancement du traitement.
 \item Sauvegarder le fichier sous le nom que l'on veut.
-\item prévisualiser la vidéo séléctionnée\newline
+\item pré-visualiser la vidéo sélectionnée\newline
 \end{itemize}
 
 Non fonctionnels :\newline
@@ -139,21 +139,21 @@ pdf.\newline
 
 La première chose que j'ai eu à réaliser a été de créer le projet Maven\footnote{Outil pour la gestion automatique des projets.}. OpenIMAJ étant disponible via Maven,
 j'ai eu a rédiger le fichier pom.xml permettant de récupérer les modules nécessaires. Le fichier es découpé en section à l'aide de balises de façon similaire à l'HTML. Il faut en début de fichier,
-déclarer le projet, sa version, ainsi que les dépots distants où récupérer les modules. \newpage
+déclarer le projet, sa version, ainsi que les dépôts distants où récupérer les modules. \newpage
 
 \lstinputlisting[language=XML, firstline=1, lastline=17,frame=tb,columns=fixed,keywordstyle=\color{blue},breaklines=true,keepspaces,caption = En-tête du ficher pom.xml.]{../pom.xml}
 
 ~~\\
-Il faut ensuite ouvrir la balise des dépendances et inscrire chaque dépendance que l'on trouve sur le site du dépot Maven de OpenIMAJ\footnote{https://mvnrepository.com/artifact/org.openimaj}.\\
+Il faut ensuite ouvrir la balise des dépendances et inscrire chaque dépendance que l'on trouve sur le site du dépôt Maven de OpenIMAJ\footnote{https://mvnrepository.com/artifact/org.openimaj}.\\
 
 \lstinputlisting[language=XML, firstline=19, lastline=32,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces,breaklines=true, caption = Dépendances nécessaires.]{../pom.xml}
 ~~\\
 
 Une fois ceci fait, j'ai organisé mon projet en créant tous les packages nécessaires c'est-à-dire : boutons, exceptions,traitements et utils.
-A la racine de dossier src se trouve la classe Main me permettant d'initialiser l'interface et de lancer le programme. Un dossier resources est également présent comportant tous les fichiers
-nécessaires pour les tests. J'ai également créé un dossier test et rajouter la dépendance JUnit dasn le fichier pom.xml pour effectuer les tests unitaires.
+À la racine du dossier "src" se trouve la classe Main me permettant d'initialiser l'interface et de lancer le programme. Un dossier "resources" est également présent comportant tous les fichiers
+nécessaires pour les tests. J'ai également créé un dossier test et rajouter la dépendance JUnit dans le fichier pom.xml pour effectuer les tests unitaires.
 
-Tous les algoritmes seront contenus dans la classe Traitement et tout sera implementé en static y compris les données membres, les données membres étant le fichier de sortie et la vidéo.
+Tous les algorithmes seront contenus dans la classe Traitement et tout sera implémenté en static y compris les données membres, les données membres étant le fichier de sortie et la vidéo.
 Le programme n'ouvre qu'une seule vidéo à la fois, elle est donc la même pour tous les traitements disponible. Le fichier de sortie quand à lui est redéfini au chargement d'une nouvelle vidéo.
 Il est donc plus pratique d'implémenter tout cela en static.
 
@@ -167,14 +167,14 @@ Je commence ensuite l'élaboration des algorithmes. J'ai donc commencé par l'é
 \subsection{Movie Barcode}
 
 Le movie barcode doit pour restaurer la couleur d'une image, récupérer la bande centrale de chaque frame de la vidéo. je suis donc passé par l'écriture de la méthode \textit{getBandeCentrale(MBFImage source)},
-qui prends en paramètre une frame et retourne la bande centrale de cette frame. L'agortihme se place au milie de l'image et la parcours de la manière suivante : $milieu - tailleBande /2$ jusqu'à
+qui prends en paramètre une frame et retourne la bande centrale de cette frame. L'algorithme se place au milie de l'image et la parcours de la manière suivante : $milieu - tailleBande /2$ jusqu'à
 $milieu + tailleBande /2$.\\
 Ainsi j'ai pu obtenir la bande centrale de n'importe quelle image qui m'est retournée.
 \lstinputlisting[language=JAVA, firstline=279, lastline=300,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Découpage de la bande centrale.]{../src/main/java/traitements/Traitement.java}
 ~~\\
 
 Une fois ceci fait, l'algorithme du barcode se contente de concaténer toutes les bandes centrales dans une seule image finale. Le programme ne parcours cependant que les keyframes de la vidéo,
-les keyframes étant les seules images codées complétement dans une vidéo, les autres étant calculées à partir des précédentes
+les keyframes étant les seules images codées complètement dans une vidéo, les autres étant calculées à partir des précédentes
 (P-frame) ou des suivantes (B-frame)\footnote{http://www.dacast.com/blog/what-is-a-key-frame-for-video/}.
 
 \lstinputlisting[language=JAVA, firstline=173, lastline=215,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Chargement de la vidéo\, création du lecteur et de l'instance du traitement]{../src/main/java/traitements/Traitement.java}
@@ -185,9 +185,9 @@ les keyframes étant les seules images codées complétement dans une vidéo, le
 
 \subsection{Side-by-side}
 
-Concernant le side-by-side, c'est en étudiant des vidéos produites aved deux sources que j'ai pu me faire une idée de l'algorithme à mettre en oeuvre. Outre la persective changeante,
-ce qui change le plus sur une vidéo side-by-side est ce qui est perçu par les deux caméras. J'ai donc décidé de tronquer mon image source. L'image censée reproduire l'oeil gauche sera tronquée sur la droite.
-Il manquera donc une partie sur l'image de droite. Quant à l'image de droite, elle sera tronquée sur la gauche.  Nous aurons donc ici deux images qui mises côte à côte et observées avec le dispoditif adéquat,
+Concernant le side-by-side, c'est en étudiant des vidéos produites avec deux sources que j'ai pu me faire une idée de l'algorithme à mettre en œuvre. Outre la perspective changeante,
+ce qui change le plus sur une vidéo side-by-side est ce qui est perçu par les deux caméras. J'ai donc décidé de tronquer mon image source. L'image censée reproduire l'œil gauche sera tronquée sur la droite.
+Il manquera donc une partie sur l'image de droite. Quant à l'image de droite, elle sera tronquée sur la gauche.  Nous aurons donc ici deux images qui mises côte à côte et observées avec le dispositif adéquat,
 donneront une image complète.
 Ce découpage passe donc par l'appel de deux méthodes \textit{decouperImageGauche()} et \textit{decouperImageDroite()} qui se chargeront de découper les images.
 
@@ -199,7 +199,7 @@ Ce découpage passe donc par l'appel de deux méthodes \textit{decouperImageGauc
 
 Une fois ce découpage effectué il faut alors assembler les deux images ce que fait la méthode \textit{sideBySideImage(MBFImage source)}.
 Il faut donc créer une image de taille $(largeurImageSource - ESPACEMENT) * 2$. Ici ESPACEMENT, correspond à l'écart moyen entre les deux yeux.
-Les deux images font donc la même taille c'est-à-dire $largeurImageSource - ESPACEMENT$. On peut donc avoir une image finale où la résolution par oeil sera la même que l'image source. L'image
+Les deux images font donc la même taille c'est-à-dire $largeurImageSource - ESPACEMENT$. On peut donc avoir une image finale où la résolution par œil sera la même que l'image source. L'image
 finale fait donc deux fois cette taille ci.
 
 \lstinputlisting[language=JAVA, firstline=225, lastline=238,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Création d'une image side-by-side complète.]{../src/main/java/traitements/Traitement.java}
@@ -217,12 +217,12 @@ qui récupère l'image en paramètre et retourne la même image anaglyphée. Le 
 \lstinputlisting[language=JAVA, firstline=102, lastline=129,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\small, caption = Création de l'analgyphe sur une image.]{../src/main/java/traitements/Traitement.java}
 ~~\\
 
-l'algortihme créant la vidéo anaglyphée consiste à envoyer toutes les frames àa cette méthode et à reconstruire une vidéo à partir de ces frames à l'aide de l'objet
+l'algorithme créant la vidéo anaglyphée consiste à envoyer toutes les frames àa cette méthode et à reconstruire une vidéo à partir de ces frames à l'aide de l'objet
 \textit{XuggleVideoWriter}. Le format de sortie de la vidéo est spécifié par le format d'entrée.
 
-En ce qui concerne la méthode de Dubois, j'ai utilisé la matrice moyenne élaborée pour modifier les couleurs de l'image. Eric Dubois travaille toujours avec deux images, donnant un effet de relief plus
-convaincant. J'ai donc décidé d'appliquer le même tronquage sur mon image source que celui réalisé sur le side-by-side afin d'obtenir dexsu images différentes en termes d'informations. Je peux nsuite
-appliquer la matrice sur les pixels des deux images. Cela me donne donc une image anaglyphée présentant une effet 3D plus convaincant que l'algorithme classique. L'incovéniant de cette méthode est
+En ce qui concerne la méthode de Dubois, j'ai utilisé la matrice moyenne élaborée pour modifier les couleurs de l'image. Éric Dubois travaille toujours avec deux images, donnant un effet de relief plus
+convaincant. J'ai donc décidé d'appliquer le même tronquage sur mon image source que celui réalisé sur le side-by-side afin d'obtenir deux images différentes en termes d'informations. Je peux ensuite
+appliquer la matrice sur les pixels des deux images. Cela me donne donc une image anaglyphée présentant une effet 3D plus convaincant que l'algorithme classique. L'inconvénient de cette méthode est
 qu'elle demande plus de ressources CPU dû au calcul des nouvelles valeurs des pixels.
 
 
@@ -236,7 +236,7 @@ Le programme réalise un traitement sur une seule vidéo. J'ai donc créé un in
 \caption{Interface de l'application}
 \end{figure}
 
-Le JFrame contient un JPanel unique, le conteneur. Il servira à contenir tous les éléments deque l'on ajoutera. Ce conteneur comprends deux JPanel, un pour la source, l'autre pour la destination.
+Le JFrame contient un JPanel unique, le conteneur. Il servira à contenir tous les éléments que l'on ajoutera. Ce conteneur comprends deux JPanel, un pour la source, l'autre pour la destination.
 Chaque JPanel contient un JLabel, un JTextArea et un JButton.
 
 \lstinputlisting[language=JAVA, firstline=15, lastline=32,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Création des éléments de base.]{../src/main/java/Main.java}
@@ -248,7 +248,7 @@ Le menu quant à lui est un JMenu contenant plusieurs JMenuItem. Chaque JMenuIte
 ~~\\
 
 
-Concernant le placement dans les JPanel, j'ai opté pour un LayoutManager de type FlowLayout me permettant de placer mes élèments les uns à la suite des autres en partant de la gauche.
+Concernant le placement dans les JPanel, j'ai opté pour un LayoutManager de type FlowLayout me permettant de placer mes éléments les uns à la suite des autres en partant de la gauche.
 
 \lstinputlisting[language=JAVA, firstline=54, lastline=62,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Choix du LayoutManager]{../src/main/java/Main.java}
 ~~\\
@@ -258,7 +258,7 @@ Les éléments sont ensuite ajoutés dans leur JPanel respectifs puis les JPanel
 \lstinputlisting[language=JAVA, firstline=64, lastline=73,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize,identifierstyle=\ttfamily, caption = Ajout des élèments.]{../src/main/java/Main.java}
 ~~\\
 
-Enfin les listeners sont instaciés, et la fenetre est paramétré. La méthode \textit{pack()} permet de prendre le placement tel qu'il a été défini par la méthode \textit{setPreferredSize(Dimension dim)}.
+Enfin les listeners sont instanciés, et la fenêtre est paramétré. La méthode \textit{pack()} permet de prendre le placement tel qu'il a été défini par la méthode \textit{setPreferredSize(Dimension dim)}.
 
 \lstinputlisting[language=JAVA, firstline=86, lastline=100,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Paramètrage global.]{../src/main/java/Main.java}
 ~~\\
@@ -272,16 +272,16 @@ de centrer l'apparation de l'exception \textit{VideoNonSupporte} si le fichier s
 ~~\\
 
 Lors de l'appui sur le bouton, un JFileChooser est lancé puis passé à la méthode \textit{chargerVideo(JFileChooser fichier)}.
-Cette méthode se charge d'ouvrir la fenêtre de sélection du fichier puis créé 1 flux audio pour la vidéo seléctionée ainsi qu'un affichage pour visualiser la vidéo. Cette méthode lance l'exception
+Cette méthode se charge d'ouvrir la fenêtre de sélection du fichier puis créé 1 flux audio pour la vidéo sélectionnée ainsi qu'un affichage pour visualiser la vidéo. Cette méthode lance l'exception
 \textit{VideoNonSupporte} si la vidéo n'est pas décodable.
-2 flux vidéos sont également créés, l'un servant à être envoyé au traitement et l'autre servant au player vidéo. Il est
+2 flux vidéos sont également créés, l'un servant à être envoyé au traitement et l'autre servant au lecteur vidéo. Il est
 nécessaire de charger deux fois la vidéo pour effacer le lien affichage/traitement. En effet, si la vidéo traitée est la même pour l'affichage, regarder la vidéo jusqu'à par exemple la moitié fera commencer
-le traitement séléctionné à la moitié de la vidéo.
+le traitement sélectionné à la moitié de la vidéo.
 
 \lstinputlisting[language=JAVA, firstline=35, lastline=50,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Chargement de la vidéo\, création du lecteur et de l'instance du traitement]{../src/main/java/boutons/ChargerVideo.java}
 ~~\\
 
-Le bouton permettan de choisir le fichier de destiunatnion fait appel à la classe Sauvegarder qui elle ne prends en paramètre que le JTextArea pour afficher le chemin du fichier de sortie.
+Le bouton permettant de choisir le fichier de destination fait appel à la classe Sauvegarder qui elle ne prends en paramètre que le JTextArea pour afficher le chemin du fichier de sortie.
 
 \subsection{Exécution d'un traitement}
 
@@ -302,27 +302,29 @@ le début du traitement si aucun fichier de sortie n'est précisé.
 \lstinputlisting[language=JAVA, firstline=10, lastline=20,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Démarrage du traitement.]{../src/main/java/traitements/ThreadSideBySide.java}
 ~~\\
 
-Une fois le traitment terminé, la fenêtre d'avancement est détruite et est remplacée par un message montrant que le traitement s'est terminé.
+Une fois le traitement terminé, la fenêtre d'avancement est détruite et est remplacée par un message montrant que le traitement s'est terminé.
 
 
 \section{Phase de test}
 
 \section{Conclusion}
 
+L'échéance arrivée, le programme remplit ses fonctions. Il est capable d'ouvrir une vidéo et d'effectuer le résumé vidéo, l'anaglyphe classique et selon la méthode de Dubois ainsi que le side-by-side. Le programme prévient l'utilisateur si la vidéo est décodable ou non et si l'utilisateur tente des opérations sans fichier source ou sans fichier de destination.
 
+Les traitements sont réalisable cependant excepté le résumé vidéo, les autres traitements ne sont pas réalisé en 1/1 (c'est-à-dire dans le temps de la vidéo). En effet les traitements sont deux voire trois fois plus long que la vidéo. En regardant de plus près le code source d'OpenIMAJ, j'ai pu voir que les pixels sont codés par des flottants entre  0 et 1. Cela pourrait donc induire des temps de calculs plus longs afin de manipuler les nuances de couleurs.
+
+La bibliothèque OpenIMAJ présente également des problèmes de compatibilité entre les différentes plates-formes. Le projet ayant été realisé majoritairement sous Linux, lors d'un test sur une plate-forme Windows, la bibliothèque est incapable d'ouvrir une vidéo situé sur l'ordinateur.
+
+La bibliothèque n'est pas capable de restituer du son. En effet, un flux audio petu être ouvert à partir d'une vidéo mais OpenIMAJ ne peut pas le lier à un flux vidéo. Tous les traitements donnent donc pour résultat une vidéo sans son. De plus, lors de l'ouverture de l'audio et de la vidéo lors de la pré-visualisation, les deux se lancent automatiquement. Il est possible de mettre en pause la vidéo mais pas l'audio. L'audio se lance donc sans la vidéo, il est alors nécessaire de lancer la vidéo puis de mettre la lecture sur pause pour que les deux s'arrêtent.
+
+Avec plus de temps, j'aurais pu optimiser mes traitements afin d'atteindre un temps de rendu égal à celui de la vidéo source. J'aurais également pu chercher une bibliothèque gérant mieux le son qu'OpenIMAJ et ne garder OpenIMAJ que pour la gestion de la vidéo et le traitements des images.
+
+
+
+
+
+\newpage
 \bibliography{biblio}
 
 
 \end{document}
-
-Josette CACHELOU, « STÉRÉOSCOPIE  », Encyclopædia Universalis [en ligne], consulté le 7 juillet 2016. URL : http://www.universalis.fr/encyclopedie/stereoscopie/
-
-https://github.com/artclarke/xuggle-xuggler
-
-https://github.com/bytedeco/javacv
-
-http://www.xuggle.com/xuggler/
-
-http://openimaj.org/
-
-http://www.virtual-reality-shop.co.uk/brewster-stereoscope/
