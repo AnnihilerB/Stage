@@ -104,4 +104,10 @@ public class TestTraitements {
         assertEquals(true,imgDecouper);
     }
 
+    @Test
+    public void testSideBySideImage() throws IOException {
+        imagesTests.creationImgSideBySide();
+
+    }
+
 }
