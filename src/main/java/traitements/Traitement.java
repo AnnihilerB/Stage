@@ -19,7 +19,7 @@ public class Traitement {
 
     private static final int DECALAGE = 5;
     //Correspond à l'espacement entre les deux yeux.
-    private static final int ESPACEMENT =25; //6.5cm -> pixel 246
+    private static final int ESPACEMENT =15; //6.5cm -> pixel 246
 
     //Donnée membre en static pour qu'elle soit la même pour toutes les méthodes. (Non spécifique à une instance).
     protected static XuggleVideo video;
@@ -186,17 +186,18 @@ public class Traitement {
         MBFImage bandeCentralFrame;
         MBFImage imgSortie = new MBFImage(OptionsBarcode.getLargeur(), video.getCurrentFrame().getHeight());
         
-        //Récupération de la première frame.
+        //Recuperation de la premiere frame.
         frame = video.getCurrentFrame();
 
         while (video.hasNextFrame() && (parcoursXImgSortie < OptionsBarcode.getLargeur()) ) {
             if (video.nextFrameIsKeyFrame) {
-                //récupération de la keframe
+                //recuperation de la keframe
                 frame = video.getNextFrame();
 
                 //Recuperation de la bande centrale.
                 bandeCentralFrame = getBandeCentrale(frame,tailleBande);
-                //Dessine dans l'image de sortie, la bande centrale récupérée.
+
+                //Dessine dans l'image de sortie, la bande centrale recuperee.
                 imgSortie.drawImage(bandeCentralFrame, parcoursXImgSortie, 0);
                 parcoursXImgSortie += tailleBande;
 
@@ -209,6 +210,7 @@ public class Traitement {
         ImageUtilities.write(imgSortie, "png", fichierSortie);
         video.close();
         thread.detruire();
+        thread.interrupt();
         JOptionPane.showMessageDialog(conteneur, "Traitement termine !", "Resume video", JOptionPane.PLAIN_MESSAGE);
     }
 
