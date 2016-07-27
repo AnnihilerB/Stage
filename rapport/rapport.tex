@@ -6,6 +6,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
 \usepackage[export]{adjustbox}
+\bibliographystyle{stylename}
 \author{Ali CHERIFI}
 \title{Rapport de stage de licence\\Résumé vidéo et vidéo 3D anaglyphe et side-by-side}
 \begin{document}
@@ -16,7 +17,7 @@
 \section{Introduction}
 Le relief de la vision humaine provient de la différence de perception entre les deux yeux. La stéréoscopie rassemble toutes les différentes méthodes permettant de reconstruire cet effet à partir d'objets 2D
 observés soit à travers un instrument d'optique ou alors à partir de deux photographies prises avec un décalage.
-La stéréoscopie est un domaine qui a interessé l'homme depuis longtemps. En effet, ce principe a été imaginé par Charles Wheatstone (physicien et inventeur anglais) en 1832.
+La stéréoscopie est un domaine qui a interessé l'homme depuis longtemps. En effet, ce principe a été imaginé par Charles Wheatstone\cite{stereoscopie} (physicien et inventeur anglais) en 1832.
 Le premier appareil créant l'effet stéréoscopique a vu le jour en 1843 par David Brewster (physicien et inventeur écossais). Cet appareil ne servait alors qu'à observer deux dessins.
 Cet appareil monta en popularité avec l'apparition des travaux sur la photographie. Il était constitué de deux prismes comporatnt chacun des faces convexes. Cela permettait à chaque oculaire de
 produire à la fois l'efet d'un prisme et d'une lentille. L'impression de relief était donc observable sur deux photographies donc le centre de la deuxième est décalé de quelques centimètres.
@@ -169,14 +170,17 @@ Le movie barcode doit pour restaurer la couleur d'une image, récupérer la band
 qui prends en paramètre une frame et retourne la bande centrale de cette frame. L'agortihme se place au milie de l'image et la parcours de la manière suivante : $milieu - tailleBande /2$ jusqu'à
 $milieu + tailleBande /2$.\\
 Ainsi j'ai pu obtenir la bande centrale de n'importe quelle image qui m'est retournée.
-\lstinputlisting[language=JAVA, firstline=257, lastline=278,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Découpage de la bande centrale.]{../src/main/java/traitements/Traitement.java}
+\lstinputlisting[language=JAVA, firstline=279, lastline=300,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Découpage de la bande centrale.]{../src/main/java/traitements/Traitement.java}
 ~~\\
 
 Une fois ceci fait, l'algorithme du barcode se contente de concaténer toutes les bandes centrales dans une seule image finale. Le programme ne parcours cependant que les keyframes de la vidéo,
 les keyframes étant les seules images codées complétement dans une vidéo, les autres étant calculées à partir des précédentes
 (P-frame) ou des suivantes (B-frame)\footnote{http://www.dacast.com/blog/what-is-a-key-frame-for-video/}.
 
-INSERER SCREEN BARCODE.
+\lstinputlisting[language=JAVA, firstline=173, lastline=215,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Chargement de la vidéo\, création du lecteur et de l'instance du traitement]{../src/main/java/traitements/Traitement.java}
+~~\\
+
+
 
 
 \subsection{Side-by-side}
@@ -187,10 +191,10 @@ Il manquera donc une partie sur l'image de droite. Quant à l'image de droite, e
 donneront une image complète.
 Ce découpage passe donc par l'appel de deux méthodes \textit{decouperImageGauche()} et \textit{decouperImageDroite()} qui se chargeront de découper les images.
 
-\lstinputlisting[language=JAVA, firstline=341, lastline=360,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Découpage de l'image gauche.]{../src/main/java/traitements/Traitement.java}
+\lstinputlisting[language=JAVA, firstline=363, lastline=383,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Découpage de l'image gauche.]{../src/main/java/traitements/Traitement.java}
 ~~\\
 
-\lstinputlisting[language=JAVA, firstline=362, lastline=389,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Découpage de l'image droite.]{../src/main/java/traitements/Traitement.java}
+\lstinputlisting[language=JAVA, firstline=385, lastline=412,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Découpage de l'image droite.]{../src/main/java/traitements/Traitement.java}
 ~~\\
 
 Une fois ce découpage effectué il faut alors assembler les deux images ce que fait la méthode \textit{sideBySideImage(MBFImage source)}.
@@ -198,19 +202,19 @@ Il faut donc créer une image de taille $(largeurImageSource - ESPACEMENT) * 2$.
 Les deux images font donc la même taille c'est-à-dire $largeurImageSource - ESPACEMENT$. On peut donc avoir une image finale où la résolution par oeil sera la même que l'image source. L'image
 finale fait donc deux fois cette taille ci.
 
-\lstinputlisting[language=JAVA, firstline=203, lastline=216,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Cr"ation d'une image side-by-side complète.]{../src/main/java/traitements/Traitement.java}
+\lstinputlisting[language=JAVA, firstline=225, lastline=238,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Création d'une image side-by-side complète.]{../src/main/java/traitements/Traitement.java}
 ~~\\
 
 Il reste donc une fois cette image crée à l'ajouter dans une vidéo de sortie. C'est ce que fait la méthode \textit{sideBySide()}.
 
-\lstinputlisting[language=JAVA, firstline=224, lastline=248,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Création de la vidéo.]{../src/main/java/traitements/Traitement.java}
+\lstinputlisting[language=JAVA, firstline=246, lastline=270,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Création de la vidéo.]{../src/main/java/traitements/Traitement.java}
 
 \subsection{Anaglyphe classique et méthode de Dubois}
 
 L'algorithme d'anaglyphe récupère toutes les frames d'une vidéo et leur applique à chacune l'effet d'anaglyphe. Cela passe donc par la méthode \textit{anaglypheImage(MBFImage source, int largeur, int hauteur)}
 qui récupère l'image en paramètre et retourne la même image anaglyphée. Le passage en paramètre de la hauteur et de la largeur évite de recalculer ces deux données à chaque appel de la méthode.
 
-\lstinputlisting[language=JAVA, firstline=78, lastline=105,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\small, caption = Création de l'analgyphe sur une image.]{../src/main/java/traitements/Traitement.java}
+\lstinputlisting[language=JAVA, firstline=102, lastline=129,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\small, caption = Création de l'analgyphe sur une image.]{../src/main/java/traitements/Traitement.java}
 ~~\\
 
 l'algortihme créant la vidéo anaglyphée consiste à envoyer toutes les frames àa cette méthode et à reconstruire une vidéo à partir de ces frames à l'aide de l'objet
@@ -240,23 +244,23 @@ Chaque JPanel contient un JLabel, un JTextArea et un JButton.
 
 Le menu quant à lui est un JMenu contenant plusieurs JMenuItem. Chaque JMenuItem a un ActionListener Associé pour lancer les différents traitements.
 
-\lstinputlisting[language=JAVA, firstline=34, lastline=54,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Instanciation des élèments]{../src/main/java/Main.java}
+\lstinputlisting[language=JAVA, firstline=34, lastline=49,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Instanciation des élèments]{../src/main/java/Main.java}
 ~~\\
 
 
 Concernant le placement dans les JPanel, j'ai opté pour un LayoutManager de type FlowLayout me permettant de placer mes élèments les uns à la suite des autres en partant de la gauche.
 
-\lstinputlisting[language=JAVA, firstline=56, lastline=64,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Choix du LayoutManager]{../src/main/java/Main.java}
+\lstinputlisting[language=JAVA, firstline=54, lastline=62,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Choix du LayoutManager]{../src/main/java/Main.java}
 ~~\\
 
 Les éléments sont ensuite ajoutés dans leur JPanel respectifs puis les JPanel sont ajoutés au conteneur.
 
-\lstinputlisting[language=JAVA, firstline=66, lastline=79,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize,identifierstyle=\ttfamily, caption = Ajout des élèments.]{../src/main/java/Main.java}
+\lstinputlisting[language=JAVA, firstline=64, lastline=73,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize,identifierstyle=\ttfamily, caption = Ajout des élèments.]{../src/main/java/Main.java}
 ~~\\
 
 Enfin les listeners sont instaciés, et la fenetre est paramétré. La méthode \textit{pack()} permet de prendre le placement tel qu'il a été défini par la méthode \textit{setPreferredSize(Dimension dim)}.
 
-\lstinputlisting[language=JAVA, firstline=81, lastline=100,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Paramètrage global.]{../src/main/java/Main.java}
+\lstinputlisting[language=JAVA, firstline=86, lastline=100,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Paramètrage global.]{../src/main/java/Main.java}
 ~~\\
 \subsection{Chargement d'une vidéo}
 
@@ -287,9 +291,9 @@ Tous les traitements sont appelés à l'aide de Thread. En effet lors du démarr
 tout au long du traitement. Il est nécessaire de la démarrer dans un Thread et de démarrer le traitement dans un autre Thread. En effet, l'ouverture de cette fenêtre bloque le déroulement du traitement
 jusqu'à sa fermeture. Il est donc nécessaire de recourir au Threads.
 
-Lors du clic, la classe \textit{TraitementSideBySide} est appelée.
+Lors du clic, la classe \textit{ListenerSideBySide} est appelée.
 
-\lstinputlisting[language=JAVA, firstline=11, lastline=18,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Création du thread de traitement.]{../src/main/java/boutons/TraitementSideBySide.java}
+\lstinputlisting[language=JAVA, firstline=11, lastline=18,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Création du thread de traitement.]{../src/main/java/boutons/ListenerSideBySide.java}
 ~~\\
 
 Cette classe créé une instance de la classe ThreadSideBySide démarrant le traitement dans un Thread grâce à la méthode run. La méthode capture également l'exception \textit{DestinationManquante} empêchant
@@ -305,6 +309,12 @@ Une fois le traitment terminé, la fenêtre d'avancement est détruite et est re
 
 \section{Conclusion}
 
+
+\bibliography{biblio}
+
+
+\end{document}
+
 Josette CACHELOU, « STÉRÉOSCOPIE  », Encyclopædia Universalis [en ligne], consulté le 7 juillet 2016. URL : http://www.universalis.fr/encyclopedie/stereoscopie/
 
 https://github.com/artclarke/xuggle-xuggler
@@ -316,4 +326,3 @@ http://www.xuggle.com/xuggler/
 http://openimaj.org/
 
 http://www.virtual-reality-shop.co.uk/brewster-stereoscope/
-\end{document}
