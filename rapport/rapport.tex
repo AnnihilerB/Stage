@@ -71,19 +71,31 @@ Actuellement, le vidéo 3D par anaglyphe propose deux méthodes majeures, un alg
 Le premier algorithme consiste à séparer et extraire les canaux RGB d'une image 2D et d'en faire une image 3D. Le principe réside dans le filtrage des couleurs par l'œil devant lequel se trouve un filtre.
 Chaque œil ayant un filtre différent, il ne perçoit que les couleurs que le filtre laisse passer. Actuellement, le filtre le plus répandu est le filtre rouge/cyan.
 Il suffit donc dans le cas de cet algorithme, d'extraire le canal rouge de l'image et d'en générer un nouvelle. Ensuite il faut à partir de l'image source créer une nouvelle image à partir du mélange des canaux bleu et vert.
-On obtient ainsi deux images, une cyan et l'autre rouge. Il faut ensuite les superposer en leur appliquant un décalage.\newline
+On obtient ainsi deux images, une cyan et l'autre rouge. Il faut ensuite les superposer en leur appliquant un décalage(voir figure \ref{anaglyphe}.\newline
 
-La méthode de Dubois propose quant à elle de modifier les couleurs de l'image avant de lui appliquer l'algorithme vu précédemment.
-En effet, afin de générer des couleurs anaglyphe les plus proche possible de l'originale, Dubois tiens compte de la sensibilité spectrale de l'œil humain,
+\begin{figure}[!h]
+\center
+\includegraphics[scale = 0.5]{anaglyphe.jpg}
+\caption{Image anaglyphée.}
+\label{anaglyphe}
+\end{figure}
+
+Éric Dubois est ingénieur et chercheur à l'Université d'Ottawa au Canada\cite{duboisbio}. Ses travaux sur la stéréoscopie commencent lors d'un projet en collaboration avec IMAX\footnote{Entreprise ayant mis au point le format IMAX, dix fois plus large que les tailles d'écrans de cinéma classique.}. Éric Dubois propose de modifier les couleurs de l'image avant de lui appliquer l'algorithme vu précédemment.
+En effet, afin de générer des couleurs anaglyphe les plus proche possible de l'originale, Éric Dubois tiens compte de la sensibilité spectrale de l'œil humain,
 le spectre d'absorption des filtre des lunettes et de la densité du spectre des moniteurs\cite{dubois}.
-Dubois a alors pu en déduire une matrice à appliquer sur l'image originale permettant un effet 3D amélioré et la quasi
-disparition des images fantômes qui sont des images résultat d'une superposition mal effectuée.
-Le logiciel open-source Gimpel3D permet de faire de l'anaglyphe à partir d'images seulement et ne propose pas la méthode de Dubois. Nombre de logiciels payant existent et propose de réaliser des vidéos 3D
-anaglyphe suivant l'algorithme basique comme par exemple DVDFab 9 ou  3D Video Converter.\newline
+Éric Dubois a alors pu en déduire une matrice à appliquer sur l'image originale permettant un effet 3D amélioré et la quasi-disparition des images fantômes qui sont des images résultant d'une superposition mal effectuée. Le résultat obtenu est donc similaire à un anaglyphe classique (cf. \ref{anaglyphe}) aquel se rajjoute une légère modification des couleurs.
+Le logiciel open-source Gimpel3D permet de faire de l'anaglyphe à partir d'images seulement et ne propose pas la méthode d'Éric Dubois. Nombre de logiciels payant existent et propose de réaliser des vidéos 3D anaglyphe suivant l'algorithme basique comme par exemple DVDFab 9 ou  3D Video Converter.\newline
 
-En ce qui concerne le side-by-side, le principe est de reproduire la distinction entre l'œil droit et l'œil gauche à travers une vidéo en comportant deux légèrement décalés.
+En ce qui concerne le side-by-side, le principe est de reproduire la distinction entre l'œil droit et l'œil gauche à travers une vidéo comportant les mêmes images aux mêmes instants mais très légèrement décalés(voir figure \ref{sbs}). On observe donc des éléments tronqués où manquants entre les deux images.
 Il existe à l'heure actuelle beaucoup de logiciels qui proposent de faire ceci mais uniquement à partir de deux vidéos enregistrés préalablement avec le décalage.
 Un seul logiciel exécute ce traitement avec une seule vidéo et il s'agit de DVDFab 9. Il est cependant payant et il n'existe aucun autre logiciel gratuit ou open-source réalisant ce traitement.
+
+\begin{figure}[!h]
+\center
+\includegraphics[scale = 0.3]{sbs.jpg}
+\caption{Image Side-by-side.}
+\label{sbs}
+\end{figure}
 
 \subsection{Les flux vidéos en JAVA}
 
@@ -113,6 +125,8 @@ Le son des vidéos sera quant devrait être restitué tel qu'il l'était sur le 
 
 \section{Cahier des charges et architecture}
 
+\subsection{Cahier des charges}
+
 Besoins fonctionnels :\newline
 \begin{itemize}
 \item S'affiche sous forme de fenêtre.
@@ -133,7 +147,20 @@ Non fonctionnels :\newline
 pdf.\newline
 \end{itemize}
 
+\subsection{Architecture}
 
+Mon projet sera découpé en différents paquetages, correspondant aux éléments le composant(voir figure \ref{arbo}).
+
+\begin{figure}[!h]
+\center
+\includegraphics[scale = 1]{tree.PNG}
+\caption{Arborescence du projet.}
+\label{arbo}
+\end{figure}
+
+Mon application comprendra une interface simple composé d'un menu permettant de choisir les traitements. En dessous de ce menu se trouveront deux champs permettant de renseigner le fichier vidéo à traiter ainsi que de préciser le fichier de sortie.
+
+TODO
 
 \section{Implémentation}
 
@@ -157,11 +184,7 @@ Tous les algorithmes seront contenus dans la classe Traitement et tout sera impl
 Le programme n'ouvre qu'une seule vidéo à la fois, elle est donc la même pour tous les traitements disponible. Le fichier de sortie quand à lui est redéfini au chargement d'une nouvelle vidéo.
 Il est donc plus pratique d'implémenter tout cela en static.
 
-\begin{figure}[!h]
-\center
-\includegraphics[scale = 1]{tree.PNG}
-\caption{Arborescence du projet.}
-\end{figure}
+
 
 Je commence ensuite l'élaboration des algorithmes. J'ai donc commencé par l'écriture de l'algorithme du movie barcode.
 \subsection{Movie Barcode}
@@ -170,8 +193,6 @@ Le movie barcode doit pour restaurer la couleur d'une image, récupérer la band
 qui prends en paramètre une frame et retourne la bande centrale de cette frame. L'algorithme se place au milie de l'image et la parcours de la manière suivante : $milieu - tailleBande /2$ jusqu'à
 $milieu + tailleBande /2$.\\
 Ainsi j'ai pu obtenir la bande centrale de n'importe quelle image qui m'est retournée.
-\lstinputlisting[language=JAVA, firstline=279, lastline=300,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Découpage de la bande centrale.]{../src/main/java/traitements/Traitement.java}
-~~\\
 
 Une fois ceci fait, l'algorithme du barcode se contente de concaténer toutes les bandes centrales dans une seule image finale. Le programme ne parcours cependant que les keyframes de la vidéo,
 les keyframes étant les seules images codées complètement dans une vidéo, les autres étant calculées à partir des précédentes
@@ -194,16 +215,10 @@ Ce découpage passe donc par l'appel de deux méthodes \textit{decouperImageGauc
 \lstinputlisting[language=JAVA, firstline=363, lastline=383,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Découpage de l'image gauche.]{../src/main/java/traitements/Traitement.java}
 ~~\\
 
-\lstinputlisting[language=JAVA, firstline=385, lastline=412,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Découpage de l'image droite.]{../src/main/java/traitements/Traitement.java}
-~~\\
-
 Une fois ce découpage effectué il faut alors assembler les deux images ce que fait la méthode \textit{sideBySideImage(MBFImage source)}.
 Il faut donc créer une image de taille $(largeurImageSource - ESPACEMENT) * 2$. Ici ESPACEMENT, correspond à l'écart moyen entre les deux yeux.
 Les deux images font donc la même taille c'est-à-dire $largeurImageSource - ESPACEMENT$. On peut donc avoir une image finale où la résolution par œil sera la même que l'image source. L'image
 finale fait donc deux fois cette taille ci.
-
-\lstinputlisting[language=JAVA, firstline=225, lastline=238,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Création d'une image side-by-side complète.]{../src/main/java/traitements/Traitement.java}
-~~\\
 
 Il reste donc une fois cette image crée à l'ajouter dans une vidéo de sortie. C'est ce que fait la méthode \textit{sideBySide()}.
 
@@ -214,8 +229,6 @@ Il reste donc une fois cette image crée à l'ajouter dans une vidéo de sortie.
 L'algorithme d'anaglyphe récupère toutes les frames d'une vidéo et leur applique à chacune l'effet d'anaglyphe. Cela passe donc par la méthode \textit{anaglypheImage(MBFImage source, int largeur, int hauteur)}
 qui récupère l'image en paramètre et retourne la même image anaglyphée. Le passage en paramètre de la hauteur et de la largeur évite de recalculer ces deux données à chaque appel de la méthode.
 
-\lstinputlisting[language=JAVA, firstline=102, lastline=129,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\small, caption = Création de l'analgyphe sur une image.]{../src/main/java/traitements/Traitement.java}
-~~\\
 
 l'algorithme créant la vidéo anaglyphée consiste à envoyer toutes les frames àa cette méthode et à reconstruire une vidéo à partir de ces frames à l'aide de l'objet
 \textit{XuggleVideoWriter}. Le format de sortie de la vidéo est spécifié par le format d'entrée.
@@ -239,37 +252,28 @@ Le programme réalise un traitement sur une seule vidéo. J'ai donc créé un in
 Le JFrame contient un JPanel unique, le conteneur. Il servira à contenir tous les éléments que l'on ajoutera. Ce conteneur comprends deux JPanel, un pour la source, l'autre pour la destination.
 Chaque JPanel contient un JLabel, un JTextArea et un JButton.
 
-\lstinputlisting[language=JAVA, firstline=15, lastline=32,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Création des éléments de base.]{../src/main/java/Main.java}
-~~\\
+
 
 Le menu quant à lui est un JMenu contenant plusieurs JMenuItem. Chaque JMenuItem a un ActionListener Associé pour lancer les différents traitements.
 
-\lstinputlisting[language=JAVA, firstline=34, lastline=49,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Instanciation des élèments]{../src/main/java/Main.java}
-~~\\
 
 
 Concernant le placement dans les JPanel, j'ai opté pour un LayoutManager de type FlowLayout me permettant de placer mes éléments les uns à la suite des autres en partant de la gauche.
 
-\lstinputlisting[language=JAVA, firstline=54, lastline=62,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Choix du LayoutManager]{../src/main/java/Main.java}
-~~\\
+
 
 Les éléments sont ensuite ajoutés dans leur JPanel respectifs puis les JPanel sont ajoutés au conteneur.
 
-\lstinputlisting[language=JAVA, firstline=64, lastline=73,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize,identifierstyle=\ttfamily, caption = Ajout des élèments.]{../src/main/java/Main.java}
-~~\\
+
 
 Enfin les listeners sont instanciés, et la fenêtre est paramétré. La méthode \textit{pack()} permet de prendre le placement tel qu'il a été défini par la méthode \textit{setPreferredSize(Dimension dim)}.
 
-\lstinputlisting[language=JAVA, firstline=86, lastline=100,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Paramètrage global.]{../src/main/java/Main.java}
-~~\\
 \subsection{Chargement d'une vidéo}
 
 Lors de l'appui sur le bouton pour charger une vidéo, c'est la classe ChargerVideo qui est appellée. Elle implémente un ActionListener pour écouter les actions du bouton auquel elle est associé.
 Le constructeur de cette classe prend en paramètre un JTextArea et un JPanel. Le JTextArea permet de faire apparaitre le chemin de la vidéo sélectionnée. Le JPanel quant à lui est le conteneur permettant
 de centrer l'apparation de l'exception \textit{VideoNonSupporte} si le fichier séléctionné ne peut être décodé.
 
-\lstinputlisting[language=JAVA, firstline=13, lastline=33,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Constructeur de classe.]{../src/main/java/boutons/ChargerVideo.java}
-~~\\
 
 Lors de l'appui sur le bouton, un JFileChooser est lancé puis passé à la méthode \textit{chargerVideo(JFileChooser fichier)}.
 Cette méthode se charge d'ouvrir la fenêtre de sélection du fichier puis créé 1 flux audio pour la vidéo sélectionnée ainsi qu'un affichage pour visualiser la vidéo. Cette méthode lance l'exception
@@ -278,8 +282,6 @@ Cette méthode se charge d'ouvrir la fenêtre de sélection du fichier puis cré
 nécessaire de charger deux fois la vidéo pour effacer le lien affichage/traitement. En effet, si la vidéo traitée est la même pour l'affichage, regarder la vidéo jusqu'à par exemple la moitié fera commencer
 le traitement sélectionné à la moitié de la vidéo.
 
-\lstinputlisting[language=JAVA, firstline=35, lastline=50,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Chargement de la vidéo\, création du lecteur et de l'instance du traitement]{../src/main/java/boutons/ChargerVideo.java}
-~~\\
 
 Le bouton permettant de choisir le fichier de destination fait appel à la classe Sauvegarder qui elle ne prends en paramètre que le JTextArea pour afficher le chemin du fichier de sortie.
 
