@@ -46,7 +46,8 @@ public class ChargerVideo implements ActionListener {
         player.pause();
         player.showFrame();
         //Creation du traitement avec la video a traiter et le conteneur.
-        new Traitement(videoATraiter,conteneur);
+        Traitement.setVideo(videoATraiter);
+        Traitement.setConteneur(conteneur);
     }
 
 }
