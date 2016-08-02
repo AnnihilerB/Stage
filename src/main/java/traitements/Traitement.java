@@ -19,7 +19,7 @@ public class Traitement {
 
     private static final int DECALAGE = 5;
     //Correspond à l'espacement entre les deux yeux.
-    private static final int ESPACEMENT =15; //6.5cm -> pixel 246
+    private static final int ESPACEMENT =15;
 
     //Donnée membre en static pour qu'elle soit la même pour toutes les méthodes. (Non spécifique à une instance).
     protected static XuggleVideo video;
