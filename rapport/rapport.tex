@@ -248,9 +248,17 @@ l'algorithme créant la vidéo anaglyphée consiste à envoyer toutes les frames
 
 En ce qui concerne la méthode de Dubois, j'ai utilisé la matrice moyenne élaborée pour modifier les couleurs de l'image. Éric Dubois travaille toujours avec deux images, donnant un effet de relief plus
 convaincant. J'ai donc décidé d'appliquer le même tronquage sur mon image source que celui réalisé sur le side-by-side afin d'obtenir deux images différentes en termes d'informations. Je peux ensuite
-appliquer la matrice sur les pixels des deux images. Cela me donne donc une image anaglyphée présentant une effet 3D plus convaincant que l'algorithme classique. L'inconvénient de cette méthode est qu'elle demande plus de ressources CPU dû au calcul des nouvelles valeurs des pixels.
+appliquer la matrice sur les pixels des deux images. Cela me donne donc une image anaglyphée présentant une effet 3D plus convaincant que l'algorithme classique.
 
 \section{Phase de test}
+
+Le projet reposant sur la vision stéréoscopique et donc la reconstruction par le cerveau de la perpective, il va être ici compliqué de tester à l'aide d'algorithmes les images obtenues. Cependant, il est possible de tester automatiquement le movie barcode ainsi que le découpage des images qui a lieu lors du side-by-side ou de l'anaglyphe de Dubois. 
+
+\subsection{Tests sur le movie barcode}
+
+L'essentiel de l'algortihme repose sur la récupération de la bande centrale de l'image. J'ai donc créée une méthode qui me créé une image noir avec une bande centrale rouge. Je fais ensuite appel à la méthode textit{getBandeCentrale(MBFImage image, int tailleBande)} pour récupérer la bande rouge. Afin de vérifier si le découpage est correct, mon algorithme parcourt la bande et vérifie que tous les pixels sont bien rouges. 
+
+En ce qui concerne le découpage des images, je dispose de deux méthodes créant des images spécifiques pour les tests. Sur une même vue observée par l'oeil humain, l'image perçue par l'oeil gauche est tronquée sur la droite et inversement pour l'oeil droit. La méthode textit{creationImgGauche()} créée donc une image noire avec une bande rouge sur la droite. La méthode textit{creationImgDroite()} crée quant à elle une image avec une bande rouge sur la gauche.
 
 \section{Conclusion}
 
