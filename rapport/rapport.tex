@@ -62,8 +62,9 @@ Mon stage s'effectuera au sein de l'équipe Image et Son.
 \subsection{Résumé vidéo}
 Le résumé vidéo peut aussi être appelé "Movie Barcode". Il permet de faire ressortir la couleur générale d'un film ou d'une vidéo. En récupérant la bande du milieu de chaque image et en concaténant tout cela pour
 tout le film, on obtient une image très similaire à un code barre représentant l'ambiance générale de la vidéo.
-Il existe un logiciel disponible réalisant ce traitement nommé "Movie Barcode Generator". Le logiciel est écrit en C\# et ses sources sont disponibles à tous\cite{barcode}. L'auteur du logiciel accepte la vente des
-résultats produit par son logiciel.
+Il existe un logiciel disponible réalisant ce traitement nommé "Movie Barcode Generator". Le logiciel est écrit en C\# et ses sources sont disponibles à tous\cite{barcode}. L'auteur du logiciel accepte la vente des résultats produit par son logiciel.
+
+SCREEN BARCODE
 
 \subsection{Anaglyphe et side-by-side}
 \label{anasbs}
@@ -149,7 +150,7 @@ pdf.\newline
 
 \subsection{Architecture}
 
-Mon projet sera découpé en différents paquetages, correspondant aux éléments le composant(voir figure \ref{arbo}).
+Mon projet sera découpé en différents paquetages, correspondant aux éléments composant le logiciel: traitements, boutons, tests, exceptions et utilitaires (voir figure \ref{arbo}).
 
 \begin{figure}[!h]
 \center
@@ -160,7 +161,36 @@ Mon projet sera découpé en différents paquetages, correspondant aux élément
 
 Mon application comprendra une interface simple composé d'un menu permettant de choisir les traitements. En dessous de ce menu se trouveront deux champs permettant de renseigner le fichier vidéo à traiter ainsi que de préciser le fichier de sortie.
 
-TODO
+SCREEN GLOBAL
+
+Le logiciel comporte deux exceptions. Une de ces exceptions \textit{VideoNonSupporte} est chargée de vérifier si le fichier sélectionné en entrée est supporté par la bibliothèque ou s'il s'agit bien d'une vidéo. OpenImaj ne dispose pas de méthode permettant de vérifier si la vidéo est décodable, l'exception vérifié donc si le fichier sélectionné à un nombre de frames différent de zéro. Une vidéo non décodable ou un fichier quelconque aura un nombre de frame égal à -1 (valeur par défaut dans OpenIMAJ). Lever cette exception interrompt la suite du chargement de la vidéo, elle n'est pas prise en compte.
+
+La deuxième exception se charge de vérifier si un fichier de destination a été précisé. Lors du lancement d'un traitement, si aucun fichier de destination n'est precisé, le traitement ne se lance pas et une boîte de dialogue informe l'utilisateur qu'il faut rentrer une fichier de destination.
+
+
+Lors de l'appui sur le bouton pour charger une vidéo, c'est la classe ChargerVideo qui est appellée.
+Le constructeur de cette classe prend en paramètre un JTextArea et un JPanel. Le JTextArea permet de faire apparaitre le chemin de la vidéo sélectionnée. Le JPanel quant à lui est le conteneur permettant de centrer l'apparation de l'exception \textit{VideoNonSupporte} si le fichier sélectionné ne peut être décodé.
+
+Lors de l'appui sur le bouton, un JFileChooser est lancé puis passé à la méthode \textit{chargerVideo(JFileChooser fichier)}.
+Cette méthode se charge d'ouvrir la fenêtre de sélection du fichier puis créé 1 flux audio pour la vidéo sélectionnée ainsi qu'un affichage pour visualiser la vidéo. Cette méthode lance l'exception \textit{VideoNonSupporte} si la vidéo n'est pas décodable.
+2 flux vidéos sont également créés, l'un servant à être envoyé au traitement et l'autre servant au lecteur vidéo. Il est
+nécessaire de charger deux fois la vidéo pour effacer le lien affichage/traitement. En effet, si la vidéo traitée est la même pour l'affichage, regarder la vidéo jusqu'à par exemple la moitié fera commencer le traitement sélectionné à la moitié de la vidéo.
+
+Le bouton permettant de choisir le fichier de destination fait appel à la classe \textit{Sauvegarder} qui elle ne prends en paramètre que le JTextArea pour afficher le chemin du fichier de sortie. Elle fonctionne de manière similaire à la classe de chargement.
+
+Une fois ces deux renseignements apportés, l'utilisateur peut alors utiliser le menu des traitements pour choisir lequel appliquer sur sa vidéo. A l'exception du movie barcode, tous les traitements se lance directement en cliquant sur leur nom. L'utilisateur verra alors un JOptionPane s'afficher, lui indiquant que le tratiement est en cours. Tous ces traitements s'exécute aux seins de threads qui permettent à la fenêtre de s'afficher et au traitement de s'éxecuter en simultané. Si l'utilisateur choisit par exmple l'anaglyphe, un click provoque un appel à la classe \textit{ListenerAnaglyphe} qui implémente un \textit{ActionListener}. Cette classe instancie un textit{ThreadAnaglyphe} et le lance. Cette dernière hérite de textit{Thread} et lance la méthode textit{Traitement.anaglyphe()}. 
+
+SCREEN FENETRE TRAITEMENT
+
+Concernant le movie barcode, un click sur dans le menu affiche une fenêtre permettant de saisir les options voulues c'est-à-dire la largeur de l'image et la taille de la bande centrale à récupérer. Ces données sont sauvegarder dans la classe textit{OptionsBarcode} implémentée en static. Cette fenêtre comporte deux JTextArea, un pour entrer la largeur de l'image et l'autre pour entrer la taille de la bande. Deux clicks sur deux boutons textit{Ok} sont nécessaires pour sauvegarder les valeurs via les méthodes textit{OptionsBarcode.setLargeur} et textit{OptionsBarcode.setTailleBande}. Un click sur le bouton textit{Valider} permet de lancer le traitement via les threads de manière similaire aux autres traitements.
+
+SCREEN OPTIONS BARCODE
+
+Une fois le traitement selectionné, un JOptionPane indique que le traitement est en cours via la classe textit{ThreadEnCours} lancé au début du traitement. Ce JOptionPane est ensuite détruit en fin de traitement et remplacé par un autre indiquant la fin du traitement.
+
+SCREEN
+
+
 
 \section{Implémentation}
 
@@ -176,32 +206,15 @@ Il faut ensuite ouvrir la balise des dépendances et inscrire chaque dépendance
 \lstinputlisting[language=XML, firstline=19, lastline=32,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces,breaklines=true, caption = Dépendances nécessaires.]{../pom.xml}
 ~~\\
 
-Une fois ceci fait, j'ai organisé mon projet en créant tous les packages nécessaires c'est-à-dire : boutons, exceptions,traitements et utils.
-À la racine du dossier "src" se trouve la classe Main me permettant d'initialiser l'interface et de lancer le programme. Un dossier "resources" est également présent comportant tous les fichiers
-nécessaires pour les tests. J'ai également créé un dossier test et rajouter la dépendance JUnit dans le fichier pom.xml pour effectuer les tests unitaires.
-
-Tous les algorithmes seront contenus dans la classe Traitement et tout sera implémenté en static y compris les données membres, les données membres étant le fichier de sortie et la vidéo.
-Le programme n'ouvre qu'une seule vidéo à la fois, elle est donc la même pour tous les traitements disponible. Le fichier de sortie quand à lui est redéfini au chargement d'une nouvelle vidéo.
-Il est donc plus pratique d'implémenter tout cela en static.
-
-
 
 Je commence ensuite l'élaboration des algorithmes. J'ai donc commencé par l'écriture de l'algorithme du movie barcode.
 \subsection{Movie Barcode}
 
-Le movie barcode doit pour restaurer la couleur d'une image, récupérer la bande centrale de chaque frame de la vidéo. je suis donc passé par l'écriture de la méthode \textit{getBandeCentrale(MBFImage source)},
-qui prends en paramètre une frame et retourne la bande centrale de cette frame. L'algorithme se place au milie de l'image et la parcours de la manière suivante : $milieu - tailleBande /2$ jusqu'à
-$milieu + tailleBande /2$.\\
-Ainsi j'ai pu obtenir la bande centrale de n'importe quelle image qui m'est retournée.
+Le movie barcode doit, pour restaurer la couleur d'une image, récupérer la bande centrale de chaque frame de la vidéo. Je suis donc passé par l'écriture de la méthode \textit{getBandeCentrale(MBFImage source)},
+qui prends en paramètre une frame et retourne la bande centrale de cette frame. L'algorithme se place au milieu de l'image et la parcours de la manière suivante : $milieu - tailleBande /2$ jusqu'à $milieu + tailleBande /2$. Une nouvelle image est créée de hauteur similaire à l'image source et de largeur de la taille de  la bande. Dans cette image sont placés la couleur des pixels extraits de l'image source. La méthode retourne ensuite cette image.
 
-Une fois ceci fait, l'algorithme du barcode se contente de concaténer toutes les bandes centrales dans une seule image finale. Le programme ne parcours cependant que les keyframes de la vidéo,
-les keyframes étant les seules images codées complètement dans une vidéo, les autres étant calculées à partir des précédentes
-(P-frame) ou des suivantes (B-frame)\footnote{http://www.dacast.com/blog/what-is-a-key-frame-for-video/}.
-
-\lstinputlisting[language=JAVA, firstline=173, lastline=215,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Chargement de la vidéo\, création du lecteur et de l'instance du traitement]{../src/main/java/traitements/Traitement.java}
-~~\\
-
-
+Une fois ceci fait, l'algorithme du barcode se contente de concaténer toutes les bandes centrales dans une seule image finale. Le programme ne parcours cependant que les keyframes de la vidéo, les keyframes étant les seules images codées complètement dans une vidéo, les autres étant calculées à partir des précédentes
+(P-frame) ou des suivantes (B-frame)\footnote{http://www.dacast.com/blog/what-is-a-key-frame-for-video/}. OpenIMAJ dispose d'une méthode permettant de dessiner une image dans une autre. Comme la hauteur a été renseignée par l'utilisateur 
 
 
 \subsection{Side-by-side}
@@ -235,77 +248,7 @@ l'algorithme créant la vidéo anaglyphée consiste à envoyer toutes les frames
 
 En ce qui concerne la méthode de Dubois, j'ai utilisé la matrice moyenne élaborée pour modifier les couleurs de l'image. Éric Dubois travaille toujours avec deux images, donnant un effet de relief plus
 convaincant. J'ai donc décidé d'appliquer le même tronquage sur mon image source que celui réalisé sur le side-by-side afin d'obtenir deux images différentes en termes d'informations. Je peux ensuite
-appliquer la matrice sur les pixels des deux images. Cela me donne donc une image anaglyphée présentant une effet 3D plus convaincant que l'algorithme classique. L'inconvénient de cette méthode est
-qu'elle demande plus de ressources CPU dû au calcul des nouvelles valeurs des pixels.
-
-
-\section{Interface Graphique et appels des traitements}
-
-Le programme réalise un traitement sur une seule vidéo. J'ai donc créé un interface simple pour cela.
-
-\begin{figure}[!h]
-\center
-\includegraphics[scale = 0.8]{interface.PNG}
-\caption{Interface de l'application}
-\end{figure}
-
-Le JFrame contient un JPanel unique, le conteneur. Il servira à contenir tous les éléments que l'on ajoutera. Ce conteneur comprends deux JPanel, un pour la source, l'autre pour la destination.
-Chaque JPanel contient un JLabel, un JTextArea et un JButton.
-
-
-
-Le menu quant à lui est un JMenu contenant plusieurs JMenuItem. Chaque JMenuItem a un ActionListener Associé pour lancer les différents traitements.
-
-
-
-Concernant le placement dans les JPanel, j'ai opté pour un LayoutManager de type FlowLayout me permettant de placer mes éléments les uns à la suite des autres en partant de la gauche.
-
-
-
-Les éléments sont ensuite ajoutés dans leur JPanel respectifs puis les JPanel sont ajoutés au conteneur.
-
-
-
-Enfin les listeners sont instanciés, et la fenêtre est paramétré. La méthode \textit{pack()} permet de prendre le placement tel qu'il a été défini par la méthode \textit{setPreferredSize(Dimension dim)}.
-
-\subsection{Chargement d'une vidéo}
-
-Lors de l'appui sur le bouton pour charger une vidéo, c'est la classe ChargerVideo qui est appellée. Elle implémente un ActionListener pour écouter les actions du bouton auquel elle est associé.
-Le constructeur de cette classe prend en paramètre un JTextArea et un JPanel. Le JTextArea permet de faire apparaitre le chemin de la vidéo sélectionnée. Le JPanel quant à lui est le conteneur permettant
-de centrer l'apparation de l'exception \textit{VideoNonSupporte} si le fichier séléctionné ne peut être décodé.
-
-
-Lors de l'appui sur le bouton, un JFileChooser est lancé puis passé à la méthode \textit{chargerVideo(JFileChooser fichier)}.
-Cette méthode se charge d'ouvrir la fenêtre de sélection du fichier puis créé 1 flux audio pour la vidéo sélectionnée ainsi qu'un affichage pour visualiser la vidéo. Cette méthode lance l'exception
-\textit{VideoNonSupporte} si la vidéo n'est pas décodable.
-2 flux vidéos sont également créés, l'un servant à être envoyé au traitement et l'autre servant au lecteur vidéo. Il est
-nécessaire de charger deux fois la vidéo pour effacer le lien affichage/traitement. En effet, si la vidéo traitée est la même pour l'affichage, regarder la vidéo jusqu'à par exemple la moitié fera commencer
-le traitement sélectionné à la moitié de la vidéo.
-
-
-Le bouton permettant de choisir le fichier de destination fait appel à la classe Sauvegarder qui elle ne prends en paramètre que le JTextArea pour afficher le chemin du fichier de sortie.
-
-\subsection{Exécution d'un traitement}
-
-Tout au long de cette partie, nous prendrons pour exemple le traitement side-by-side. Tous les appels de traitements sont similaires à l'exception du Barcode qui ouvre une fenêtre en plus.
-
-Tous les traitements sont appelés à l'aide de Thread. En effet lors du démarrage d'un thread une fenêtre est crée informant du traitement de la vidéo. Pour que cette fenêtre soit présente
-tout au long du traitement. Il est nécessaire de la démarrer dans un Thread et de démarrer le traitement dans un autre Thread. En effet, l'ouverture de cette fenêtre bloque le déroulement du traitement
-jusqu'à sa fermeture. Il est donc nécessaire de recourir au Threads.
-
-Lors du clic, la classe \textit{ListenerSideBySide} est appelée.
-
-\lstinputlisting[language=JAVA, firstline=11, lastline=18,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Création du thread de traitement.]{../src/main/java/boutons/ListenerSideBySide.java}
-~~\\
-
-Cette classe créé une instance de la classe ThreadSideBySide démarrant le traitement dans un Thread grâce à la méthode run. La méthode capture également l'exception \textit{DestinationManquante} empêchant
-le début du traitement si aucun fichier de sortie n'est précisé.
-
-\lstinputlisting[language=JAVA, firstline=10, lastline=20,frame=tb,columns=fixed,keywordstyle=\color{blue},keepspaces, breaklines=true,  basicstyle=\footnotesize, caption = Démarrage du traitement.]{../src/main/java/traitements/ThreadSideBySide.java}
-~~\\
-
-Une fois le traitement terminé, la fenêtre d'avancement est détruite et est remplacée par un message montrant que le traitement s'est terminé.
-
+appliquer la matrice sur les pixels des deux images. Cela me donne donc une image anaglyphée présentant une effet 3D plus convaincant que l'algorithme classique. L'inconvénient de cette méthode est qu'elle demande plus de ressources CPU dû au calcul des nouvelles valeurs des pixels.
 
 \section{Phase de test}
 
