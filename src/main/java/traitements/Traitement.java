@@ -25,12 +25,10 @@ public class Traitement {
     protected static XuggleVideo video;
     protected static File fichierSortie;
     protected static JPanel conteneur;
-    private static OptionsBarcode options;
 
     public Traitement(XuggleVideo v, JPanel cont) {
         video = v;
         conteneur = cont;
-        options = new OptionsBarcode();
     }
     public static MBFImage  anaglypheDuboisImage(MBFImage source) throws IOException {
 
@@ -411,5 +409,11 @@ public class Traitement {
         return imgDroite;
     }
 
+    public static void setVideo(XuggleVideo video) {
+        Traitement.video = video;
+    }
 
+    public static void setConteneur(JPanel conteneur) {
+        Traitement.conteneur = conteneur;
+    }
 }

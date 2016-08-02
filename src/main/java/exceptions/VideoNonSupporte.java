@@ -11,6 +11,6 @@ public class VideoNonSupporte extends Exception {
     }
 
     private void afficherMessage(){
-        JOptionPane.showMessageDialog(conteneur, "Traitement terminé !", "Résumé vidéo", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(conteneur, "Le fichier n'est pas supporté où n'est pas une vidéo.", "Erreur", JOptionPane.WARNING_MESSAGE);
     }
 }
