@@ -14,7 +14,7 @@ public class ThreadAnaglyphe extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (DestinationManquante destinationManquante) {
-
+            destinationManquante.printStackTrace();
         }
     }
 
