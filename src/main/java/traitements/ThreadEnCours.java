@@ -5,13 +5,13 @@ import javax.swing.*;
 /**
  * Created by ali on 03/07/16.
  */
-public class ThreadEnCours extends Thread {
+class ThreadEnCours extends Thread {
 
     //Ce thread est lancé en parallèle aux autres traitements.
 
-    JDialog dialog;
-    JLabel label;
-    JPanel conteneur;
+    private JDialog dialog;
+    private JLabel label;
+    private JPanel conteneur;
 
     public ThreadEnCours(JPanel cont){
         dialog = new JDialog();

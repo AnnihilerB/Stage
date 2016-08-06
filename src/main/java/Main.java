@@ -1,5 +1,4 @@
 import boutons.*;
-import traitements.Traitement;
 import utils.FenetreOptionsBarcode;
 
 import javax.swing.*;
@@ -12,8 +11,6 @@ import java.io.IOException;
 public class Main {
 
     public static void main (String args[]) throws IOException {
-        // Instance de traitement
-        Traitement t;
 
         //Declaration des principales composantes.
         JFrame fenetre;

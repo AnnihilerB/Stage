@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
  */
 public class ListenerOkLargeur implements ActionListener {
 
-    JTextArea textLargeur;
+    private JTextArea textLargeur;
 
     public ListenerOkLargeur(JTextArea text){
         textLargeur = text;

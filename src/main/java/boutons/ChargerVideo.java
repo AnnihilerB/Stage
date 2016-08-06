@@ -13,9 +13,9 @@ import java.awt.event.ActionListener;
 public class ChargerVideo implements ActionListener {
 
     //TextArea contenant le chemin de la source
-    JTextArea text;
+    private JTextArea text;
     //Conteneur principal pour le placement
-    JPanel conteneur;
+    private JPanel conteneur;
 
     public ChargerVideo(JTextArea t, JPanel cont){
         text = t;
@@ -32,7 +32,7 @@ public class ChargerVideo implements ActionListener {
         }
     }
 
-    public void chargerVideo(JFileChooser fichier) throws VideoNonSupporte{
+    private void chargerVideo(JFileChooser fichier) throws VideoNonSupporte{
         //Creation de deux videos a partir du meme fichier pour supprimer le lien affichage/traitement.
         XuggleVideo videoAAfficher = new XuggleVideo(fichier.getSelectedFile());
         XuggleVideo videoATraiter = new XuggleVideo(fichier.getSelectedFile());

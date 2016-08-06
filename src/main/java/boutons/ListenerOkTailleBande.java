@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
  */
 public class ListenerOkTailleBande implements ActionListener {
 
-    JTextArea textTailleBande;
+    private JTextArea textTailleBande;
 
     public ListenerOkTailleBande(JTextArea text){
         textTailleBande = text;

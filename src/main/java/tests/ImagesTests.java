@@ -2,7 +2,6 @@ package tests;
 
 import org.openimaj.image.ImageUtilities;
 import org.openimaj.image.MBFImage;
-import traitements.Traitement;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +24,11 @@ public class ImagesTests {
         return ESPACEMENT;
     }
 
+    /**
+     * Création d'une image noire avec une bande centrale rouge.
+     * @return l'image créée
+     * @throws IOException
+     */
     public MBFImage creationImgBandeCentrale() throws IOException {
         MBFImage source = new MBFImage(500,500);
 
@@ -47,7 +51,12 @@ public class ImagesTests {
         return source;
     }
 
-    public  MBFImage creationImgDroite() throws IOException {
+    /**
+     * Création d'une image noire avec une bance rouge sur la gauche.
+     * @return l'iamge créee
+     * @throws IOException
+     */
+    public  MBFImage creationImgDroite() {
         MBFImage imgDroite = new MBFImage(largeur,hauteur);
 
         Float[] rouge = new Float[3];
@@ -64,6 +73,11 @@ public class ImagesTests {
         return imgDroite;
     }
 
+    /**
+     * Création d'une image noire avec une bande rougesur la droite
+     * @return l'image créee
+     * @throws IOException
+     */
     public  MBFImage creationImgGauche() throws IOException {
         MBFImage imgGauche = new MBFImage(largeur,hauteur);
 
@@ -81,21 +95,4 @@ public class ImagesTests {
         ImageUtilities.write(imgGauche, new File ("imggauche.png"));
         return imgGauche;
     }
-
-    public MBFImage creationImgSideBySide() throws IOException {
-        MBFImage imgGauche = creationImgGauche();
-        MBFImage imgDroite = creationImgDroite();
-
-        MBFImage imgSBS = new MBFImage(imgGauche.getWidth() * 2, imgGauche.getHeight());
-        imgSBS.drawImage(imgDroite,0,0);
-        imgSBS.drawImage(imgGauche,imgGauche.getWidth(),0);
-        ImageUtilities.write(imgSBS, new File ("SBSss.png"));
-
-        MBFImage imgSortie = Traitement.sideBySideImage(imgSBS);
-
-        ImageUtilities.write(imgSortie, new File ("SBS.png"));
-        return imgSBS;
-    }
-
-
 }

@@ -1,11 +1,9 @@
 package tests;
 
 import org.junit.Test;
-import org.openimaj.image.ImageUtilities;
 import org.openimaj.image.MBFImage;
 import traitements.Traitement;
 
-import java.io.File;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
@@ -16,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 
 public class TestTraitements {
 
-    ImagesTests imagesTests = new ImagesTests();
+    private ImagesTests imagesTests = new ImagesTests();
 
 
 
@@ -79,10 +77,8 @@ public class TestTraitements {
     public void testDecouperGauche() throws IOException {
 
         MBFImage imgGauche = imagesTests.creationImgGauche();
-        MBFImage test = ImageUtilities.readMBF(new File ("src/main/resources/sbs.jpg"));
 
         MBFImage imgGaucheDecouper = Traitement.decouperImageGauche(imgGauche, imagesTests.getEspacement());
-        ImageUtilities.write(imgGaucheDecouper, new File("imggauchedecouper.png"));
 
         boolean imgDecouper = true;
 
@@ -103,11 +99,4 @@ public class TestTraitements {
         }
         assertEquals(true,imgDecouper);
     }
-
-    @Test
-    public void testSideBySideImage() throws IOException {
-        imagesTests.creationImgSideBySide();
-
-    }
-
 }

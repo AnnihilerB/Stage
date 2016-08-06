@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
  */
 public class FenetreOptionsBarcode implements ActionListener {
 
-    static JDialog options;
+    private static JDialog options;
 
     public void actionPerformed(ActionEvent actionEvent) {
         this.ouvrirFenetreOptions();

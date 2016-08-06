@@ -5,13 +5,9 @@ package utils;
  */
 public class OptionsBarcode {
 
-    static private int largeur;
-    static private int tailleBande;
+    static private int largeur = 1080;
+    static private int tailleBande = 2;
 
-    public OptionsBarcode(){
-        largeur = 1080;
-        tailleBande = 5;
-    }
 
     public static int getLargeur() {
         return largeur;

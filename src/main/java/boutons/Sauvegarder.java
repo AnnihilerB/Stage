@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 public class Sauvegarder implements ActionListener {
 
     //TextArea pour afficher la destination
-    JTextArea text;
+    private JTextArea text;
 
     public Sauvegarder(JTextArea t){
         text = t;

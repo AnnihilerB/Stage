@@ -7,13 +7,13 @@ import javax.swing.*;
  */
 public class DestinationManquante extends Exception {
 
-    JPanel conteneur;
+    private JPanel conteneur;
 
     public DestinationManquante(JPanel cont){
         conteneur = cont;
         afficherMessage();
     }
-    public void afficherMessage(){
+    private void afficherMessage(){
         JOptionPane.showMessageDialog(conteneur, "Aucun fichier de sortie renseigné.", "Erreur", JOptionPane.WARNING_MESSAGE);
     }
 }

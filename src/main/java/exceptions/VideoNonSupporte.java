@@ -3,7 +3,7 @@ package exceptions;
 import javax.swing.*;
 
 public class VideoNonSupporte extends Exception {
-    JPanel conteneur;
+    private JPanel conteneur;
 
     public VideoNonSupporte(JPanel cont){
         conteneur = cont;

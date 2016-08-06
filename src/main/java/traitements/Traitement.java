@@ -26,10 +26,6 @@ public class Traitement {
     protected static File fichierSortie;
     protected static JPanel conteneur;
 
-    public Traitement(XuggleVideo v, JPanel cont) {
-        video = v;
-        conteneur = cont;
-    }
     public static MBFImage  anaglypheDuboisImage(MBFImage source) throws IOException {
 
         MBFImage imgGauche = decouperImageGauche(source, ESPACEMENT);
@@ -86,7 +82,7 @@ public class Traitement {
         videoSortie.processingComplete();
         thread.detruire();
         videoSortie.close();
-        JOptionPane.showMessageDialog(conteneur, "Traitement termine !", "Anaglyphe Dubois", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(conteneur, "Traitement terminé !", "Anaglyphe Dubois", JOptionPane.PLAIN_MESSAGE);
     }
 
     /** Realise l'effet anaglyphe sur une image passee en parametre et la retourne
@@ -149,16 +145,13 @@ public class Traitement {
         frame = video.getCurrentFrame();
 
         while(video.hasNextFrame()){
-
             videoSortie.addFrame(Traitement.anaglypheImage(frame,video.getWidth(),video.getHeight()));
-            //System.out.println("Traitement");
             frame = video.getNextFrame();
-
         }
         videoSortie.processingComplete();
         thread.detruire();
         videoSortie.close();
-        JOptionPane.showMessageDialog(conteneur, "Traitement termine !", "Anaglyphe", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(conteneur, "Traitement terminé !", "Anaglyphe", JOptionPane.PLAIN_MESSAGE);
 
     }
 
@@ -209,7 +202,7 @@ public class Traitement {
         video.close();
         thread.detruire();
         thread.interrupt();
-        JOptionPane.showMessageDialog(conteneur, "Traitement termine !", "Resume video", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(conteneur, "Traitement terminé !", "Résumé vidéo", JOptionPane.PLAIN_MESSAGE);
     }
 
     /**
@@ -255,16 +248,13 @@ public class Traitement {
         frame = video.getCurrentFrame();
 
         while(video.hasNextFrame()){
-
             Videosortie.addFrame(sideBySideImage(frame));
-            //System.out.println("Traitement");
             frame = video.getNextFrame();
-
         }
         Videosortie.processingComplete();
         thread.detruire();
         Videosortie.close();
-        JOptionPane.showMessageDialog(conteneur, "Traitement termine !", "Side-by-side", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(conteneur, "Traitement terminé !", "Side-by-side", JOptionPane.PLAIN_MESSAGE);
     }
 
     /**
@@ -362,21 +352,7 @@ public class Traitement {
 
         //Creation des deux images gauches et droite auquels on retire un bout correspondant a ce que voit l'oeil.
         MBFImage imgGauche = new MBFImage(source.getWidth() - espacement, source.getHeight());
-
-        //Correspond a l'endroit ou doit s'arreter le parcours de l'image source pour generer l'image gauche.
-        int parcoursXSource = source.getWidth() - espacement;
-
-
-        //Parcours des y de l'image.
-        for (int y = 0; y < source.getHeight(); ++y) {
-            //Remplissage de l'image gauche.
-            for (int x = 0; x < parcoursXSource; ++x) {
-                Float[] pixels;
-                pixels = source.getPixel(x, y);
-                imgGauche.setPixel(x, y, pixels);
-            }
-        }
-        ImageUtilities.write(imgGauche, new File("imggauchedecouperdansmethode.png"));
+        imgGauche.drawImage(source,0,0);
         return imgGauche;
     }
 
